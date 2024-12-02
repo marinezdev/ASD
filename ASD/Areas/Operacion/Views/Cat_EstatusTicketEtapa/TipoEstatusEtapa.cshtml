@@ -1,0 +1,406 @@
+﻿
+@{
+    ViewData["Title"] = "TipoEstatusEtapa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--Modal Nuevo Estatus-->
+<div class="modal fade" id="ModalTipoEstatusEtapa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoEstatus">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Tipo de estatus Etapa</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Estatus Etapa </label>
+                                <input type="text" class="form-control" placeholder="Estatus Etapa" id="Modal_NTEstatusEtapa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-3 col-form-label form-control-label">Color del Estatus</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="Color_NEstatusEtapa">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="ti-close"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="RegistrarEEtapas()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="ti-save"></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Tipo Estatus Etapa-->
+<div class="modal fade" id="ModalEditarEstatusEtapa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar Estatus Etapa </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre del Estatus Etapa </label>
+                                <input type="text" class="form-control" placeholder="Estatus Etapa" id="Modal_EstatusEtapa_NombreEditar" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-3 col-form-label form-control-label">Color del Estatus</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="colorEstatusEtapa">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button id="EditarEstatusEtapa" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Actualizar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Estatus Etapas</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Etapas </a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!------------>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Estatus Etapa</h5>
+                </div>
+                <div class="card-block">
+                    <form action="#" id="Estatus Etapa">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <br>
+                                <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-placement="top" data-target="#ModalTipoEstatusEtapa" data-original-title=".icofont-search-alt-2">
+                                    <i class="icofont icofont-plus"></i> <span class="m-l-10">Nuevo Tipo Estatus Etapa</span>
+                                </button>
+                                <br /><br />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 table-responsive">
+                            <table id="TEtapas" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th style="text-align:center">Color</th>
+                                        <th style="text-align:center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="BEstatusEtapa">
+                                    @{
+                                        if (ViewBag.EstatusEtapa != null)
+                                        {
+                                            foreach (var item in ViewBag.EstatusEtapa)
+                                            {
+                                            <tr>
+                                                <td>@item.Nombre</td>
+                                                <td style="text-align:center; border-right: 2px solid #eceeef; padding-right: 10px; position: relative;">
+                                                    <i class="icofont icofont-square" style="color:@item.Color;font-size: 176%;"></i>
+                                                </td>
+                                                <td style="text-align:center">
+                                                    <i class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" onclick="InfoStatusEtapa('@item.Id', '@item.Nombre', '@item.Color')" data-toggle="modal" data-target="#ModalEditarEstatusEtapa"></i>
+                                                    <i class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light" onclick="eliminarEstatusEtapa(@item.Id)"></i>
+                                                </td>
+                                            </tr>
+
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#MenuTicket").addClass("active");
+        $("#TipoEstatusE").addClass("active");
+
+        $('#TEtapas').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        }).on('init.dt', function () {
+            $('.dataTables_filter input').attr('placeholder', 'Tipo De Estatus Etapa');
+        });
+
+
+    });
+
+    function eliminarEstatusEtapa(Ids) {
+        swal({
+            title: "¿Estás seguro?",
+            text: "Esta acción eliminará el estatus. ¿Estás seguro de continuar?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, eliminar!",
+            cancelButtonText: "No, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    const Cat_EstatusTicketEtapa = {
+                        Id: Ids
+                    };
+
+                    fetch("/Operacion/Cat_EstatusTicketEtapa/DeleteTipoEstatusEtapa", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        body: JSON.stringify(Cat_EstatusTicketEtapa)
+                    })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.id > 0) {
+                                swal({
+                                    title: "Eliminado!",
+                                    text: "El registro ha sido eliminado.",
+                                    imageUrl: "http://localhost:5269/icons/operacion/delete.png",
+                                },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            CargaEstatusEtapa();
+                                        }
+                                    });
+                            } else {
+                                swal({
+                                    title: "Registro no eliminado",
+                                    text: "No es posible realizar la operación seleccionada!",
+                                    imageUrl: "http://localhost:5269/icons/operacion/alert.png",
+                                    buttons: true,
+                                    dangerMode: true,
+                                }).then((willDelete) => {
+                                    
+                                });
+                            }
+                        });
+                } else {
+                    // Manejar el caso en el que se cancela la eliminación
+                    swal("Cancelado", "La eliminación ha sido cancelada", "error");
+                }
+            });
+    }
+
+    function InfoStatusEtapa(Id, nombre, color) {
+        $("#Modal_EstatusEtapa_NombreEditar").val(nombre);
+        $("#colorEstatusEtapa").val(color);
+        $("#EditarEstatusEtapa").off("click").on("click", function () {
+            EditarEstatusEtapa(Id);
+        });
+    }
+
+    function EditarEstatusEtapa(Id) {
+        if (ValidarEditarEstatusEtapa()) {
+            const Cat_EstatusTicketEtapa = {
+                Id: Id,
+                Nombre: $("#Modal_EstatusEtapa_NombreEditar").val(),
+                Color: $("#colorEstatusEtapa").val()
+            };
+            fetch("/Operacion/Cat_EstatusTicketEtapa/UpdateTipoEstatusEtapa", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(Cat_EstatusTicketEtapa)
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.id == 1) {
+                        swal({
+                            title: "Actualizado!",
+                            text: "El registro ha sido Actualizado.",
+                            imageUrl: "http://localhost:5269/icons/operacion/update.png",
+                        },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                    swal.close();
+                                    $('#ModalEditarEstatusEtapa').modal('hide');
+                                    CargaEstatusEtapa();
+                                }
+                            });
+                    } else {
+                        swal({
+                            title: "Registro no Actualizado",
+                            text: "No es posible realizar la operación seleccionada!",
+                            imageUrl: "http://localhost:5269/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+                        });
+                    }
+                });
+        }
+
+
+    }
+
+    function ValidarEditarEstatusEtapa() {
+        var result = false;
+
+        $('#Modal_EstatusEtapa_NombreEditar').css("border", "1px solid red");
+
+        if ($('#Modal_EstatusEtapa_NombreEditar').val().length > 0) {
+            $('#Modal_EstatusEtapa_NombreEditar').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_EstatusEtapa_NombreEditar').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    function CargaEstatusEtapa() {
+        fetch("/Operacion/Cat_EstatusTicketEtapa/GetCat_TipoEstatusEtapa", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+        })
+            .then(res => res.json())
+            .then(res => {
+                TablaTipoEstatusEtapa(res);
+            });
+    }
+
+    function TablaTipoEstatusEtapa(datos) {
+        var table = $('#TEtapas').DataTable();
+        table.destroy();
+        BEstatusEtapa.innerHTML = "";
+
+
+        for (let valor of datos) {
+
+            BEstatusEtapa.innerHTML += `
+                      <tr>
+                            <td>${valor.nombre}</td>
+                        <td style="text-align:center; border-right: 2px solid #eceeef; padding-right: 10px; position: relative;">
+                              <i class="icofont icofont-square" style="color:${valor.color};font-size: 176%;"></i>
+                        </td>
+                        <td style="text-align:center">
+                                        <i class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" onclick="InfoStatusEtapa('${valor.id}', '${valor.nombre}', '${valor.color}')" data-toggle="modal" data-target="#ModalEditarEstatusEtapa"></i>
+                                <i class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light" onclick="eliminarEstatusEtapa(${valor.id})"></i>
+                        </td>
+                     </tr>
+                    `
+        }
+
+        $('#TEtapas').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 15, 20, -1], [5, 10, 15, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        }).on('init.dt', function () {
+            $('.dataTables_filter input').attr('placeholder', 'Estatus Etapa');
+        });
+    }
+
+    function RegistrarEEtapas() {
+        if (ValidarNuevoEstatusEtapa()) { 
+        const Cat_EstatusTicketEtapa = {
+            Nombre: $("#Modal_NTEstatusEtapa").val(),
+            Color: $("#Color_NEstatusEtapa").val()
+        };
+        fetch("/Operacion/Cat_EstatusTicketEtapa/InsertTipoEstatusEtapa", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Cat_EstatusTicketEtapa)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.id == 1) {
+                    swal({
+                        title: "Registrado!",
+                        text: "Tipo de Estatus Etapa Registrado",
+                        imageUrl: "http://localhost:5269/icons/operacion/create.png",
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                location.reload();
+                            }
+                        });
+                } else {
+                    swal({
+                        title: "Error",
+                        text: "No es posible realizar la operación seleccionada!",
+                        imageUrl: "http://localhost:5269/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                    });
+                }
+            });
+        }
+    }
+ 
+    function ValidarNuevoEstatusEtapa() {
+        var result = false;
+
+        $('#Modal_NTEstatusEtapa').css("border", "1px solid red");
+
+        if ($('#Modal_NTEstatusEtapa').val().length > 0) {
+            $('#Modal_NTEstatusEtapa').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_NTEstatusEtapa').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+    }
+
+</script>

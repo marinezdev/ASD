@@ -1,0 +1,354 @@
+﻿
+@{
+    ViewData["Title"] = "TipoEmail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+} 
+
+<!-- Modal Nuevo tipo email -->
+<div class="modal fade" id="ModalTipoEmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="NuevoTipoEmail">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Tipo de Email </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Tipo Email </label>
+                                <input type="text" class="form-control" placeholder="Tipo Email" id="Modal_TipoEmail_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="NuevoEmail()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+
+<!-- Modal Editar tipo email -->
+<div class="modal fade" id="ModalTipoEmailEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar Tipo de Email </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Tipo Email </label>
+                                <input type="text" class="form-control" placeholder="Tipo email" id="Modal_TipoEmail_NombreEditar" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button id="EditarTipoEmail" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Actualizar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Tipo de Email</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Tipo de Email </a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!------------> 
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Tipo de Email </h5>
+                    <p>Catálogo de Tipos de Correos Disponibles</p>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+
+                        <div class="col-md-6 text-right">
+
+                            <button type="button" class="btn btn-success waves-effect waves-light" data-toggle="modal" data-placement="top" data-target="#ModalTipoEmail" data-original-title=".icofont-search-alt-2">
+                                <i class="icofont icofont-plus"></i> <span class="m-l-10">Nuevo Tipo de Email</span>
+                            </button>
+                        </div>
+                    </div>  
+                    <br /><br />
+
+                    <div class="col-sm-12 table-responsive">
+                        <table id="TTipoEmail" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tipos de Email</th> 
+                                    <th style="text-align:center">Acciones</th>
+                                </tr>
+                            </thead> 
+                            <tbody id="Contenido"> 
+                                 @{
+                                    if (ViewBag.CatTipoEmail != null)
+                                        {
+                                        foreach (var item in ViewBag.CatTipoEmail)
+                                            {
+                                                            <tr>
+                                                            <td>@item.Nombre</td>
+                                                            
+                                                                <td style="padding-right: 10px; position: relative; text-align:center;">
+                                                                        <i onclick="InfoEditar('@item.Id','@item.Nombre')" class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" data-toggle="modal" data-target="#ModalTipoEmailEditar"></i>
+                                                                        <i onclick="eliminar(@item.Id)" class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light"></i>
+                                                   
+                                                                </td> 
+                                                            </tr> 
+                                            }
+                                        }
+                                  }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#MenuTipoEmail").addClass("active");
+        $("#MenuPersonaTipoEmail").addClass("active"); 
+
+        $('#TTipoEmail').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        }).on('init.dt', function () {
+
+            $('.dataTables_filter input').attr('placeholder', 'Tipo email');
+        });
+    }); 
+    function eliminar(Ids) {
+        swal({
+            title: "Eliminar",
+            text: "Eliminar registro?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, Eliminar!",
+            cancelButtonText: "No, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+
+                    const cat_TipoEmail = {
+                        Id: Ids
+                    };
+
+                    fetch("/Persona/TipoEmail/Delete_TipoEmail", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        body: JSON.stringify(cat_TipoEmail)
+                    })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.id > 0) {
+                                swal({
+                                    title: "Eliminado!",
+                                    text: "El registro ha sido eliminado.",
+                                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/delete.png",
+                                },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            // CargaEmail();
+                                            location.reload();
+                                        }
+                                    });
+
+                            } else {
+                                swal({
+                                    title: "Registro no eliminado",
+                                    text: "No es posible realizar la operacion selecionada!",
+                                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                    buttons: true,
+                                    dangerMode: true,
+                                }).then((willDelete) => {
+
+                                });
+                            }
+                        });
+
+                }
+            });
+    } 
+
+    /////// NUEVO TIPO EMAIL /////// 
+    function NuevoEmail() {
+
+        if (ValidateFormNuevoTipoEmail()) {
+            var NewIdTipoEmail = 0;
+            const _model = {
+                Nombre: $("#Modal_TipoEmail_Nombre").val(),
+            };
+
+            fetch("/Persona/TipoEmail/CreateCat_TipoEmail", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(_model)
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.id == -1) {
+                        swal({
+                            title: "Tipo email no registrado",
+                            text: "El tipo de email que intentas agregar ya se encuentra registrado. !",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+
+                        });
+                    } else if (res.id == 0) {
+                        swal({
+                            title: "Tipo email no registrado",
+                            text: "No es posible registrar el tipo de email. !",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+
+                        });
+                    } else if (res.id > 0) {
+                        NewIdTipoEmail = res.id;
+                        swal({
+                            title: "Nuevo tipo de email registrado.",
+                            text: $("#Modal_TipoEmail_Nombre").val(),
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+
+                            showCancelButton: false,
+                            confirmButtonColor: "#3070A9",
+                            confirmButtonText: "Aceptar",
+                            closeOnConfirm: false,
+                        },
+                            function (isConfirm) {
+                                swal.close();
+                                $('#ModalTipoEmail').modal('hide');
+
+                                location.reload();
+                                // CargaEmail();
+
+                            }
+                        );
+                    }
+                });
+        }
+    }
+
+    function ValidateFormNuevoTipoEmail() {
+        var result = false; 
+        $('#Modal_TipoEmail_Nombre').css("border", "1px solid red"); 
+
+        if ($('#Modal_TipoEmail_Nombre').val().length > 0) {
+            $('#Modal_TipoEmail_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        } 
+
+        if ($('#Modal_TipoEmail_Nombre').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+
+    } 
+
+    function InfoEditar(Id, nombre) {
+        $("#Modal_TipoEmail_NombreEditar").val(nombre);
+        $("#EditarTipoEmail").off("click").on("click", function () {
+            EditarTipoEmail(Id);
+        });
+    }
+
+    function EditarTipoEmail(Id) {
+        const cat_TipoEmail = {
+            Id: Id,
+            Nombre: $("#Modal_TipoEmail_NombreEditar").val()
+        };
+        fetch("/Persona/TipoEmail/Update_TipoEmail", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(cat_TipoEmail)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.id == 1) {
+                    swal({
+                        title: "Actualizado!",
+                        text: "El registro ha sido Actualizado.",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/update.png",
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                $('#ModalTipoEmailEditar').modal('hide');
+                                // CargaEmail(); 
+                                location.reload();
+                            }
+                        });
+                } else {
+                    swal({
+                        title: "Registro no Actualizado",
+                        text: "No es posible realizar la operación seleccionada!",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                    });
+                }
+            });
+    }
+
+</script>
+

@@ -1,0 +1,186 @@
+﻿
+@{
+    ViewData["Title"] = "ValidadoCliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    select.form-control:not([size]):not([multiple]) {
+        height: 17px;
+        width: 160px;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+
+    div.container {
+        width: 80%;
+    }
+</style>
+
+
+<!-- Modal tiempos de atencion -->
+<div class="modal fade" id="ModalTiempoAtencion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Tiempos de atentación </h5>
+            </div>
+            <div class="modal-body" >
+                <div class="row">
+                    <div id="DivModalTiempoAtencion">
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                    <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Tickets validados  </h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Tickets </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Validados por supervisor</a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>Tickets validados por supervisor
+                    </h5>
+                    <p>Lista de tickets validados por supervisores,  <code> selecciona el registro </code>  para mostrar mas detalles y tiempos de atencion</p>
+
+                </div>
+                <div class="card-block">
+                    <div class="row align-items-center">
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table stripe row-border order-column table-hover" id="mydatatable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        @*<th>Periodo </th>*@
+                                        <th style="background-color: #ffffff;">Folio</th>
+                                        <th> Asignado </th>
+                                        <th class="text-center">Tipo de servicio</th>
+                                        <th>Sucursal </th>
+                                        <th>Creación </th>
+                                        <th class="text-center">Fecha atención </th>
+                                        <th class="text-center">Tiempo de atención  </th>
+                                        <th>Cuadrilla </th>
+                                        <th class="text-center"> Usuario (asignado) </th>
+                                        <th>Status </th>
+                                        <th>Prioridad </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Tickets != null)
+                                        {
+                                            foreach (var item in ViewBag.Tickets)
+                                            {
+
+                                                <tr>
+                                                    <!-- <td>1-2024</td> -->
+                                                    <td style="background-color:#FFFFFF">@item.Folio.Folio</td>
+                                                    <td>
+                                                        @{
+                                                            if (@item.Cat_AsignacionEmpresa != null)
+                                                            {
+                                                                @item.Cat_AsignacionEmpresa.Nombre
+                                                            }
+                                                        }
+
+                                                    </td>
+                                                    <td>@item.Ticket.Flujo.Nombre</td>
+                                                    <td>@item.Ticket.Sucursal.Nombre</td>
+                                                    <td>@Convert.ToDateTime(@item.Ticket.FechaRegistro).ToString("yyyy-MM-dd")</td>
+                                                    <td class="text-center">
+                                                        @Convert.ToDateTime(@item.FechaAtencion.FechaAtencion).ToString("yyyy-MM-dd")
+                                                    </td>
+                                                    <td>@item.TiempoAtencion</td>
+                                                    <td>
+                                                        @{
+                                                            if (@item.Cuadrilla != null)
+                                                            {
+                                                                @item.Cuadrilla.Nombre
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            if (@item.CuadrillaUsuario != null)
+                                                            {
+                                                                @item.CuadrillaUsuario.Persona.Nombre
+
+                                                                @item.CuadrillaUsuario.Persona.ApellidoPaterno
+
+                                                                @item.CuadrillaUsuario.Persona.ApellidoMaterno
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <div class="label-main"><label class="label label-md" style="background-color: @item.Ticket.Cat_EstatusTicket.Color">@item.Ticket.Cat_EstatusTicket.Nombre</label></div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="label-main"><label class="label label-md" style="background-color: @item.Ticket.Cat_Prioridad.Color">@item.Ticket.Cat_Prioridad.Nombre</label></div>
+                                                    </td>
+                                                    <td>
+                                                        <button onclick="ConsultarTiempos(@item.Ticket.Id)" type="button" class="btn btn-defualt waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tiempos de atentación">
+                                                            <i class="icofont icofont-clock-time"></i>
+                                                        </button>
+                                                        <button onclick="ConsultarTicket(@item.Ticket.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mostrar ticket">
+                                                            <i class="icofont icofont-eye-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- Main content ends -->
+<script src="~/js/ticket/ticket/_validadocliente.js"></script>

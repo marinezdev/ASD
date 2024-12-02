@@ -1,0 +1,207 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Modal Nuevo Flujo-->
+<div class="modal fade" id="ModalFlujo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="ANuevoFlujo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Asignar Nuevo flujo</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect2" class="form-control-label">* Flujos disponibles para el usuario</label>
+
+                                <select class="form-control " id="selectNFlujo">
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="AsignarFlujo()"  type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Asignar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+
+<!-- Modal Nueva Etapa-->
+<div class="modal fade" id="ModalAgregarE" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaEtapa">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Asigna una Nueva Etapa</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Etapas disponibles para el usuario</label>
+                                <select class="form-control " id="selectNEtapa">
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="button" onclick="AsignarEtapa()" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Asignar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Operación Flujo</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li> 
+                    <li class="breadcrumb-item">
+                        <a href="#">Proyecto </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Operación Flujo </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+
+                    <div class="row">
+                        <div class="col-sm-8 col-md-9 col-lg-10">
+                            <h5 class="card-header-text">Operación flujo</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-block">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label" style="margin-left: 3%;">Usuario</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="icofont icofont-user"></i>
+                                    </span>
+                                <select class="form-control " id="selectUsuario"  onchange="CargaRol(); CargaFlujo();">
+                                    <option value="0">Seleccionar</option>
+                                     @foreach (var item in ViewBag.Usuario)
+                                    {
+                                        <option value="@item.Usuario.Id">@item.Persona.Nombre</option>
+                                    } 
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label" style="margin-left: 3%;">Rol</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="icofont icofont-users"></i>
+                                    </span>
+                                    <select class="form-control " id="selectRol">
+                                        <option value="0">Seleccionar</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label" style="margin-left: 3%;">Flujo</label>
+                                <div class="input-group">
+                                    <span onclick="CargaFlujoFaltante()" id="AsignarFlujo" class="input-group-addon" data-toggle="modal" data-placement="top">
+                                        <i class="icofont icofont-plus"></i>
+                                    </span>
+                                    <select class="form-control " id="selectFlujo" onchange="CargaEtapas();">
+                                        <option value="0">Seleccionar</option>
+                                    </select>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <p style="margin-top: 44px;">Lista de etapas asignadas al usuario</p>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <p style="margin-top: 32px;"> </p>
+                            <button onclick="CargaEtapaFaltante()" id="AgregarE" type="button" class="btn btn-success waves-effect waves-light" data-toggle="modal" data-placement="top">
+                                <i class="icofont icofont-plus-circle"></i>
+                                <span class="m-l-10">Agregar etapa</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table id="TablaEtapas" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Color</th>
+                                        <th style="text-align: center;">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider" id="Contenido">
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+<!-- Main content ends -->
+<script src="~/js/Operacion/Administracion/_main.js"></script>

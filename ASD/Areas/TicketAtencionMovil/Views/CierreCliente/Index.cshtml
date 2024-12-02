@@ -1,0 +1,156 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    input[type="color"] {
+        border-radius: 2px;
+    }
+
+    .content-footer .btn {
+        margin: 3px;
+    }
+
+    .form-control {
+        width: 100% !important;
+    }
+
+    .form-control-label {
+        text-transform: none !important;
+    }
+</style>
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Ticket: @ViewBag.Ticket.Folio.Folio </h4>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text text-center"> Firma electrónica supervisor tienda </h5>
+                </div>
+                <div class="container">
+                    <div class="form-group">
+                        <label for="exampleSelect1" class="form-control-label">La unidad de negocio quedó en operación tras el mantenimiento?</label>
+                        <select class="form-control" id="Pregunta1">
+                            <option value="0" @(ViewBag.Info != null && ViewBag.Info.Pregunta1 == 0 ? "selected" : "")>Seleccionar</option>
+                            <option value="1" @(ViewBag.Info != null && ViewBag.Info.Pregunta1 == 1 ? "selected" : "")>Si</option>
+                            <option value="2" @(ViewBag.Info != null && ViewBag.Info.Pregunta1 == 2 ? "selected" : "")>No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleSelect1" class="form-control-label">Cómo evalúa el servicio de mantenimiento proporcionado?</label>
+                        <select class="form-control" id="Pregunta2">
+                            <option value="0" @(ViewBag.Info != null && ViewBag.Info.Pregunta2 == 0 ? "selected" : "")>Seleccionar</option>
+                            <option value="1" @(ViewBag.Info != null && ViewBag.Info.Pregunta2 == 1 ? "selected" : "")>Malo</option>
+                            <option value="2" @(ViewBag.Info != null && ViewBag.Info.Pregunta2 == 2 ? "selected" : "")>Bueno</option>
+                            <option value="3" @(ViewBag.Info != null && ViewBag.Info.Pregunta2 == 3 ? "selected" : "")>Excelente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleSelect1" class="form-control-label">El aspecto y trato de los ingenieros de servicio fueron?</label>
+                        <select class="form-control" id="Pregunta3">
+                            <option value="0" @(ViewBag.Info != null && ViewBag.Info.Pregunta3 == 0 ? "selected" : "")>Seleccionar</option>
+                            <option value="1" @(ViewBag.Info != null && ViewBag.Info.Pregunta3 == 1 ? "selected" : "")>Malo</option>
+                            <option value="2" @(ViewBag.Info != null && ViewBag.Info.Pregunta3 == 2 ? "selected" : "")>Bueno</option>
+                            <option value="3" @(ViewBag.Info != null && ViewBag.Info.Pregunta3 == 3 ? "selected" : "")>Excelente</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" class="form-control-label">Recibido por:</label>
+                        <input type="text" class="form-control" id="Nombre" aria-describedby="emailHelp" placeholder="Nombre del receptor" value="@ViewBag.Info?.Nombre">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleTextarea" class="form-control-label">Observaciones</label>
+                        <textarea class="form-control" id="Observaciones" rows="4">@ViewBag.Info?.Observaciones</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" class="form-control-label">Firma Recibido por:</label>
+                    </div>
+
+                </div>
+                <div class="form-group row container">
+                    <label for="example-color-input" class="col-xs-2 col-sm-1 col-form-label form-control-label">
+                        Color:
+                    </label>
+                    <div class="col-sm-10">
+                        <input type="color" id="colorPicker" name="favcolor" value="#000000">
+                    </div>
+                </div>
+                <div class="card-block" id="ContenedorFirma" style="display: flex;justify-content: center;align-items: center;">
+                    <div class="row">
+                        @{
+                            if (ViewBag.Info != null && ViewBag.Info.Firma != null)
+                            {
+                                <img src="data:@ViewBag.Info.Firma" alt="Imagen" style="width:100%"/>
+                            }
+                            else
+                            {
+                                <canvas id="FirmaAtencion" class="z-depth-left-1"></canvas>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="content-footer col-12" style="display: flex;justify-content: center;align-items: center;">
+                        @{
+                            if (ViewBag.Info != null && ViewBag.Info.Firma != null)
+                            {
+                                <button onclick="EliminarFirma()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                    <i class="icofont icofont-brush"></i><span class="m-l-12"> Cambiar firma </span>
+                                </button>
+                            }
+                            else
+                            {
+                                <button onclick="atras()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                    <i class="icofont icofont-undo"></i><span class="m-l-12"> Deshacer </span>
+                                </button>
+
+                                <button onclick="LimpiarFirma()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                    <i class="icofont icofont-brush"></i><span class="m-l-12"> Limpiar </span>
+                                </button>
+                            }
+                        }
+                    </div>
+                </div>
+
+
+                <br />
+                <div class="card-footer">
+                    <div class="row">
+                        <button type="submit" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="Anterior(@ViewBag.Ticket.Ticket.Id)">
+                            <i class="icofont icofont-arrow-left"></i><span class="m-l-12"> Anterior </span>
+                        </button>
+
+                        <button type="button" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="saveSignature(@ViewBag.Ticket.Ticket.Id)">
+                            <span class="m-l-12"> Siguiente </span> <i class="icofont icofont-arrow-right"></i>
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+<!-- Main content ends -->
+<script src="~/js/ticketatencion/movil/_cierrecliente.js"></script>
+

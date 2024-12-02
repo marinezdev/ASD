@@ -1,0 +1,1624 @@
+﻿
+@{
+    ViewData["Title"] = "EquipoLista";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Equipo Lista</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Equipo Lista </a>
+                    </li>
+                    
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!------------> 
+    <div class="row"> 
+        <div class="col-sm-12"> 
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-9 col-lg-10">
+                            <h5 class="card-header-text"><strong>
+                                    <i class="ti-notepad"></i>
+                        </strong>
+                        Equipo Lista</h5>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="card-block">
+                    <div class="form-group row">
+                        <div class="col-md-3"> 
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label" style="margin-left: 3%;">Empresa</label>
+                                <select class="form-control " id="selectEmp" style="margin-left: 10px;" onchange="CargaSucursal();">
+                                    <option value="0">Seleccionar</option>
+                                    @foreach (var item in ViewBag.Empresa)
+                                    {
+                                        <option value="@item.Id">@item.Nombre</option>
+                                    }
+                                </select>
+                            </div>
+                        </div> 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label" style="margin-left: 3%;">Sucursal</label>
+                                <select class="form-control " id="Ticket_Sucursal" style="margin-left: 10px;" onchange="Buscar()">
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                        </div> 
+                        <div class="col-md-3 text-center">
+                           
+                        </div>  
+                        <div class="col-md-3 text-center">
+                            <div class="form-group">
+                                <p style="margin-top: 32px;"> </p>
+                                <button id="AgregarBtn" type="button" class="btn btn-flat flat-info txt-info waves-effect waves-light">
+                                    <i class="icofont icofont-plus"></i>
+                                    <span class="m-l-10">Agregar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table id="TablaEquipo" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Modelo</th>
+                                        <th style="text-align: center;">Tipo Equipo</th>
+                                        <th style="text-align: center;">Categoría</th>
+                                        <th style="text-align: center;">Estatus Equipo</th>
+                                        <th style="text-align: center;">Número De Serie</th>
+                                        @* <th style="text-align: center;">Fecha de Apertura</th>
+                                        <th style="text-align: center;">Fecha De Adquisición</th>
+                                        <th style="text-align: center;">Fecha Caducidad</th>
+                                        <th style="text-align: center;">Fecha Garantía</th> *@
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider" id="Contenido"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <br />
+                    <div class="col-md-12">
+                            <div class="card-block accordion-block">
+                                <div id="accordion" role="tablist" aria-multiselectable="true">
+                                    
+                                    <div class="accordion-panel">
+                                        <div class="accordion-heading" role="tab" id="headingTwo">
+                                            <h3 class="card-title accordion-title">
+                                            <a style="border-top: 0px solid #ddd;" class="accordion-msg" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> </a>
+                                            </h3>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                            <div class="accordion-content accordion-desc">
+                                            <form onsubmit="return false;" action="#" id="NuevoEquipo">
+                                                <div class="card-block">
+                                                    <div class="row">
+                                                        <div class="col-xl-12 col-lg-6">
+                                                            <h4>Nuevo equipo</h4>
+                                                            <hr />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-grup row">
+                                                            <div class="col-xl-4 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label class="form-control-label" style="margin-left: 3%;">*Tipo Equipo</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon" data-toggle="modal" data-target="#ModalTipoEquipo">
+                                                                            <i class="icofont icofont-plus"></i>
+                                                                        </span>
+                                                                        <select class="form-control" id='NEquipo_TipoEquipo' onchange="CargaCategorias();">
+                                                                            <option value="0">Seleccionar</option>
+                                                                            @{
+                                                                                if (ViewBag.CatTipoEquipo != null)
+                                                                                {
+                                                                                    foreach (var item in ViewBag.CatTipoEquipo)
+                                                                                    {
+                                                                                            <option value="@item.Id">@item.Nombre</option>
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-4 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label class="form-control-label" style="margin-left: 3%;">*Categoría</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon" onclick="MostrarModalCategoria()">
+                                                                            <i class="icofont icofont-plus"></i>
+                                                                        </span>
+                                                                        <select class="form-control" id="NEquipo_Categoria" onchange="CargaModelos();">
+                                                                            <option value="0">Seleccionar</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-4 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label class="form-control-label" style="margin-left: 3%;">*Modelo</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon" onclick="MostrarModalModelo()">
+                                                                            <i class="icofont icofont-plus"></i>
+                                                                        </span>
+                                                                        <select class="form-control" id="NEquipo_Modelo">
+                                                                            <option value="0">Seleccionar</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-grup row">
+                                                            <div class="col-xl-4 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label class="form-control-label" style="margin-left: 3%;">*Estatus equipo</label>
+                                                                    <div class="input-group">
+                                                                        <select class="form-control" id="NEquipo_EstatusEquipo">
+                                                                            <option value="0">Seleccionar</option>
+                                                                            @{
+                                                                                if (ViewBag.CatEstatusEquipo != null)
+                                                                                {
+                                                                                    foreach (var item in ViewBag.CatEstatusEquipo)
+                                                                                    {
+                                                                                            <option value="@item.Id">@item.Nombre</option>
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-4 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label for="exampleSelect1" class="form-control-label">* Numero de serie  </label>
+                                                                    <input type="text" class="form-control" id="NEquipo_NumeroSerie" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-4 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label for="exampleSelect1" class="form-control-label">* Fecha de apertura  </label>
+                                                                    <input class="form-control" type="date" value="" id="NEquipo_FechaApartura">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-grup row">
+                                                            <div class="col-xl-4 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label for="exampleSelect1" class="form-control-label">* Fecha de adquisición  </label>
+                                                                    <input class="form-control" type="date" value="" id="NEquipo_FechaAdquisicion">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-4 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label for="exampleSelect1" class="form-control-label">* Fecha caducidad </label>
+                                                                    <input class="form-control" type="date" value="" id="NEquipo_FechaCaducidad">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-4 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label for="exampleSelect1" class="form-control-label">* Fecha garantía </label>
+                                                                    <input class="form-control" type="date" value="" id="NEquipo_FechaGarantia">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-xl-12 col-lg-6">
+                                                            <div class="row">
+                                                                <div class="col-sm-12 table-responsive">
+                                                                    <table class="table text-center">
+                                                                        <thead>
+                                                                            <tr>
+                                                                            <tr>
+                                                                                <th class="text-center">Rutina de la solución</th>
+                                                                                <th class="text-center">Imágenes obligatorias</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <span id="NumRutina"> 0 </span> &nbsp;
+                                                                                    <button class="btn btn-primary" type="button" onclick="MostrarModalRutina()">+</button>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span id="NumImagenes"> 0 </span> &nbsp;
+                                                                                    <button class="btn btn-primary" type="button" onclick="MostrarModalImagen()">+</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-lg-6">
+                                                            <div class="form-group">
+                                                                <label for="exampleSelect1" class="form-control-label">Observaciones  </label>
+                                                                <textarea class="form-control max-textarea" rows="4" id="NEquipo_Observaciones"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="row">
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" onclick="AgregarEquipo()">
+                                                            <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                 
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Nueva rutina de solucion -->
+<div class="modal fade" id="ModalRutinaSolucion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="NuevaRutina">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nueva regla de rutina </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Rutina </label>
+                                <input type="text" class="form-control" placeholder="Nueva rutina" id="Modal_NRutina_Nombre" />
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NRutina_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6 text-right">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                <i class="icofont icofont-save "></i><span class="m-l-12"> Agregar </span>
+                            </button>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <p> Lista de ruitna del equipo </p>
+                            <hr />
+                        </div>
+                        <div class="col-xl-12 col-lg-6" id="TabRutinaEquipo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar  </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva imagen equipo -->
+<div class="modal fade" id="ModalImagenEquipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="NuevaImagen">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nueva imagen fotográfica </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Título de la imagen  </label>
+                                <input type="text" class="form-control" placeholder="titulo de la imagen" id="Modal_NImagen_Nombre" />
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NImagen_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6 text-right">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                <i class="icofont icofont-save "></i><span class="m-l-12"> Agregar </span>
+                            </button>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <p> Lista de imágenes solicitadas para el equipo </p>
+                            <hr />
+                        </div>
+                        <div class="col-xl-12 col-lg-6" id="TabImagenEquipo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar  </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo tipo equipo -->
+<div class="modal fade" id="ModalTipoEquipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;"  id="NuevoTipoEquipo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo tipo equipo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Tipo Equipo </label>
+                                <input type="text" class="form-control" placeholder="Tipo equipo" id="Modal_TipoEquipo_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Nueva categoria -->
+<div class="modal fade" id="ModalCategoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="NuevaCategoria">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nueva Categoría  </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre categoría </label>
+                                <input type="text" class="form-control" placeholder="Categoria" id="Modal_Categoria_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Nuevo modelo-->
+<div class="modal fade" id="ModalModelo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo modelo de equipo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre modelo </label>
+                                <input type="text" class="form-control" placeholder="Nombre modelo" id="Modal_Modelo_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#MenuEquipo").addClass("active");
+        $("#MenuInventarioEquipo").addClass("active");
+
+        $('#TablaEquipo').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5,10, 15,20, -1], [5,10, 15,20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        }).on('init.dt', function () {
+            $('.dataTables_filter input').attr('placeholder', 'Buscar Equipos');
+        });
+
+
+        $("#AgregarBtn").on("click", function () {
+            if (Validar()) {
+                $("#accordion .accordion-msg").click();
+            }
+           
+        });
+      
+    });
+
+    function AgregarEquipo() {
+     if (ValidateFormNuevoEquipo()) {
+                var NewIdEquipo = 0;
+
+                const Sucursal = {
+                    Id: $("#Ticket_Sucursal option:selected").val(),
+                }
+
+                const Cat_Modelo = {
+                    Id: $("#NEquipo_Modelo option:selected").val(),
+                }
+
+                const Cat_EstatusEquipo = {
+                    Id: $("#NEquipo_EstatusEquipo option:selected").val(),
+                }
+
+                const _model = {
+                    Sucursal: Sucursal,
+                    Cat_Modelo: Cat_Modelo,
+                    Cat_EstatusEquipo: Cat_EstatusEquipo,
+                    Serie: $('#NEquipo_NumeroSerie').val(),
+                    FechaApertura: $('#NEquipo_FechaApartura').val(),
+                    FechaAdquisicion: $('#NEquipo_FechaAdquisicion').val(),
+                    FechaCaducidad: $('#NEquipo_FechaCaducidad').val(),
+                    FechaGarantia: $('#NEquipo_FechaGarantia').val(),
+                    Observaciones: $('#NEquipo_Observaciones').val(),
+                };
+
+                fetch("/Inventario/Equipo/CreateEquipo", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(_model)
+                })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.id == -1) {
+                            swal({
+                                title: "Equipo no registrado",
+                                text: "El equipo que intentas agregar ya se encuentra registrado. !",
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                buttons: true,
+                                dangerMode: true,
+                            }).then((willDelete) => {
+
+                            });
+                        } else if (res.id == 0) {
+                            swal({
+                                title: "Equipo no registrado",
+                                text: "No es posible registrar el equipo. !",
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                buttons: true,
+                                dangerMode: true,
+                            }).then((willDelete) => {
+
+                            });
+                        } else if (res.id > 0) {
+                            NewIdEquipo = res.id;
+                            swal({
+                                title: "Nuevo equipo registrado.",
+                                text: $('#NEquipo_NumeroSerie').val(),
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+
+                                showCancelButton: false,
+                                confirmButtonColor: "#3070A9",
+                                confirmButtonText: "Aceptar",
+                                closeOnConfirm: false,
+                            },
+                                function (isConfirm) {
+                                    if (isConfirm) {
+                                        swal.close();
+
+                                        fetch("/Inventario/Equipo/Equipo_Seleccionar_IdSucursal", {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json; charset=utf-8" },
+                                            body: JSON.stringify(Sucursal)
+                                        })
+                                            .then(res => res.json())
+                                            .then(res => {
+                                                if (res.length > 0) {
+
+                                                    CargaEquipos();
+
+                                                    $("#Ticket_Equipo").empty();
+
+                                                    var option = $(document.createElement('option'));
+                                                    option.text("SELECCIONAR");
+                                                    option.val(0);
+
+                                                    $("#Ticket_Equipo").append(option);
+
+                                                    $(res).each(function () {
+                                                        var option = $(document.createElement('option'));
+
+                                                        option.text(this.serie + " - " + this.cat_Modelo.nombre.toUpperCase());
+                                                        option.val(this.id);
+
+                                                        $("#Ticket_Equipo").append(option);
+                                                    });
+
+                                                    $('#Ticket_Equipo option[value="' + NewIdEquipo + '"]').attr("selected", true);
+
+                                                    $('#NEquipo_NumeroSerie').val("");
+                                                    $('#NEquipo_FechaApartura').val("");
+                                                    $('#NEquipo_FechaAdquisicion').val("");
+                                                    $('#NEquipo_FechaCaducidad').val("");
+                                                    $('#NEquipo_FechaGarantia').val("");
+                                                    $('#NEquipo_Observaciones').val("");
+
+                                                    $("#NEquipo_Categoria").empty();
+                                                    $("#NEquipo_Modelo").empty();
+
+                                                    var option = $(document.createElement('option'));
+                                                    option.text("SELECCIONAR");
+                                                    option.val(0);
+
+                                                    var option2 = $(document.createElement('option'));
+                                                    option2.text("SELECCIONAR");
+                                                    option2.val(0);
+
+                                                    $("#NEquipo_Categoria").append(option);
+                                                    $("#NEquipo_Modelo").append(option2);
+
+                                                    $('#FormNuevoEquipo').fadeOut(100);
+                                                    $("#NumRutina").html("0");
+                                                    $("#NumImagenes").html("0");
+                                                    $("#TabImagenEquipo").html("");
+                                                    $("#TabRutinaEquipo").html("");
+                                                    $("html, body").animate({
+                                                        scrollTop: $("#Ticket_Equipo").offset().top - 100
+                                                    }, 500);
+
+
+
+                                                }
+                                            });
+
+                                    }
+                                }
+                            );
+                        }
+                    });
+            }
+    }
+
+    function CargaSucursal() {
+        let Id = $("#selectEmp").val();
+
+        const Sucursal = {
+            Id: Id
+        };
+
+        fetch("/Empresa/Sucursal/GetSucursalIdEmpresa", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Sucursal)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#Ticket_Sucursal").empty();
+
+                var option = $(document.createElement('option'));
+                option.text("SELECCIONAR");
+                option.val(0);
+
+                $("#Ticket_Sucursal").append(option);
+
+                if (res.length > 0) {
+                    $(res).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.nombre);
+                        option.val(this.id);
+
+                        $("#Ticket_Sucursal").append(option);
+                    });
+                }
+            });
+    }
+    function Buscar() {
+        if (Validar()) {
+            CargaEquipos();
+        } 
+    }
+    function Validar(){
+        var result = false;
+        $('#selectEmp, #Ticket_Sucursal').css("border", "1px solid #ff0049");
+        if ($("#selectEmp option:selected").val() > 0) { $('#selectEmp').css("border", "1px solid #cccccc"); }
+        if ($("#Ticket_Sucursal option:selected").val() > 0) { $('#Ticket_Sucursal').css("border", "1px solid #cccccc"); }
+        result = (
+            $("#selectEmp option:selected").val() > 0 &&
+            $("#Ticket_Sucursal option:selected").val() > 0
+        );
+        return result;
+    }
+    function CargaEquipos() {
+        var IdSucursal = $("#Ticket_Sucursal option:selected").val();
+
+        const _modelo = {
+            Id: IdSucursal,
+        };
+
+        fetch("/Inventario/Equipo/Equipo_Seleccionar_IdSucursal", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                tabla(res);
+            });
+    }
+    function tabla(datos) {
+        var table = $('#TablaEquipo').DataTable();
+        table.destroy();
+        Contenido.innerHTML = "";
+
+
+        for (let valor of datos) {
+
+            Contenido.innerHTML += `
+
+                <tr>
+                    <td >${valor.cat_Modelo.nombre}</td>
+                    <td style="text-align: center;">${valor.cat_TipoEquipo.nombre}</td>
+                    <td style="text-align: center;">${valor.cat_Categoria.nombre}</td>
+                    <td style="text-align: center;">${valor.cat_EstatusEquipo.nombre}</td>
+                    <td style="text-align: center;">${valor.serie}</td>
+                </tr>
+            `
+        }
+
+        $('#TablaEquipo').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 15, 20, -1], [5, 10, 15, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        }).on('init.dt', function () {
+            $('.dataTables_filter input').attr('placeholder', 'Buscar Equipos');
+        });
+    }
+    function CargaCategorias() {
+        var IdTipoEquipo = $("#NEquipo_TipoEquipo option:selected").val();
+
+        const _modelo = {
+            Id: IdTipoEquipo,
+        };
+
+        fetch("/Inventario/CatCategoria/GetCat_Categoria_Seleccionar_IdTipoEquipo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#NEquipo_Categoria").empty();
+                $("#NEquipo_Modelo").empty();
+
+                var option = $(document.createElement('option'));
+                option.text("SELECCIONAR");
+                option.val(0);
+
+                var option2 = $(document.createElement('option'));
+                option2.text("SELECCIONAR");
+                option2.val(0);
+
+
+                $("#NEquipo_Categoria").append(option);
+                $("#NEquipo_Modelo").append(option2);
+
+                if (res === null) {
+
+                } else if (res.length > 0) {
+
+                    $(res).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.nombre.toUpperCase());
+                        option.val(this.id);
+
+                        $("#NEquipo_Categoria").append(option);
+                    });
+                }
+
+            });
+    }
+    function CargaModelos() {
+        var IdCategoria = $("#NEquipo_Categoria option:selected").val();
+
+        const _modelo = {
+            Id: IdCategoria,
+        };
+
+        fetch("/Inventario/CatModelo/GetCat_Modelo_Seleccionar_IdCategoria", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#NEquipo_Modelo").empty();
+
+                var option = $(document.createElement('option'));
+                option.text("SELECCIONAR");
+                option.val(0);
+
+                $("#NEquipo_Modelo").append(option);
+
+                if (res === null) {
+
+                } else if (res.length > 0) {
+
+                    $(res).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.nombre.toUpperCase());
+                        option.val(this.id);
+
+                        $("#NEquipo_Modelo").append(option);
+                    });
+                }
+
+            });
+    }
+    function ValidateFormNuevoEquipo() {
+
+        var result = false;
+        var posicion = "NEquipo_TipoEquipo";
+
+        $('#select2-NEquipo_TipoEquipo-container').css("border", "1px solid red");
+        $('#select2-NEquipo_Categoria-container').css("border", "1px solid red");
+        $('#select2-NEquipo_Modelo-container').css("border", "1px solid red");
+        $('#select2-NEquipo_EstatusEquipo-container').css("border", "1px solid red");
+
+        $('#NEquipo_NumeroSerie').css("border", "1px solid red");
+        $('#NEquipo_FechaApartura').css("border", "1px solid red");
+        $('#NEquipo_FechaAdquisicion').css("border", "1px solid red");
+        $('#NEquipo_FechaCaducidad').css("border", "1px solid red");
+        $('#NEquipo_FechaGarantia').css("border", "1px solid red");
+
+        if ($("#NEquipo_TipoEquipo option:selected").val() > 0) {
+            $('#select2-NEquipo_TipoEquipo-container').css("border", "0px solid #d9dee3");
+        }
+        if ($("#NEquipo_Categoria option:selected").val() > 0) {
+            $('#select2-NEquipo_Categoria-container').css("border", "0px solid #d9dee3");
+        }
+        if ($("#NEquipo_Modelo option:selected").val() > 0) {
+            $('#select2-NEquipo_Modelo-container').css("border", "0px solid #d9dee3");
+        }
+        if ($("#NEquipo_EstatusEquipo option:selected").val() > 0) {
+            $('#select2-NEquipo_EstatusEquipo-container').css("border", "0px solid #d9dee3");
+        }
+
+        if ($('#NEquipo_NumeroSerie').val().length > 0) {
+            $('#NEquipo_NumeroSerie').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+        if ($('#NEquipo_FechaApartura').val().length > 0) {
+            $('#NEquipo_FechaApartura').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+        if ($('#NEquipo_FechaAdquisicion').val().length > 0) {
+            $('#NEquipo_FechaAdquisicion').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+        if ($('#NEquipo_FechaCaducidad').val().length > 0) {
+            $('#NEquipo_FechaCaducidad').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+        if ($('#NEquipo_FechaGarantia').val().length > 0) {
+            $('#NEquipo_FechaGarantia').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+
+        if ($("#NEquipo_TipoEquipo option:selected").val() > 0) {
+            if ($("#NEquipo_Categoria option:selected").val() > 0) {
+                if ($("#NEquipo_Modelo option:selected").val() > 0) {
+                    if ($("#NEquipo_EstatusEquipo option:selected").val() > 0) {
+                        if ($('#NEquipo_NumeroSerie').val().length > 0) {
+                            if ($('#NEquipo_FechaApartura').val().length > 0) {
+                                if ($('#NEquipo_FechaAdquisicion').val().length > 0) {
+                                    if ($('#NEquipo_FechaCaducidad').val().length > 0) {
+                                        if ($('#NEquipo_FechaGarantia').val().length > 0) {
+                                            result = true;
+                                        } else {
+                                            posicion = $("#NEquipo_FechaGarantia").offset().top;
+                                        }
+                                    } else {
+                                        posicion = $("#NEquipo_FechaCaducidad").offset().top;
+                                    }
+                                } else {
+                                    posicion = $("#NEquipo_FechaAdquisicion").offset().top;
+                                }
+                            } else {
+                                posicion = $("#NEquipo_FechaApartura").offset().top;
+                            }
+                        } else {
+                            posicion = $("#NEquipo_NumeroSerie").offset().top;
+                        }
+                    } else {
+                        posicion = $("#NEquipo_EstatusEquipo").offset().top;
+                    }
+                } else {
+                    posicion = $("#NEquipo_Modelo").offset().top;
+                }
+            } else {
+                posicion = $("#NEquipo_Categoria").offset().top;
+            }
+        } else {
+            posicion = $("#NEquipo_TipoEquipo").offset().top;
+        }
+
+        $("html, body").animate({
+            scrollTop: posicion - 100
+        }, 500);
+
+        return result;
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// NUEVA REGLA  /////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    $(document).ready(function () {
+        $("#NuevaRutina").on("submit", function (event) {
+
+            // Prevenir el envío del formulario por defecto
+            event.preventDefault();
+
+            if (ValidateFormNuevaRutina()) {
+
+                const _modelo = {
+                    Nombre: $('#Modal_NRutina_Nombre').val(),
+                    Observaciones: $('#Modal_NRutina_Observaciones').val(),
+                };
+
+                fetch("/Inventario/CatEquipoRutina/AddListEquipoRutina", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(_modelo)
+                })
+                    .then(res => res.json())
+                    .then(res => {
+
+                        var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                            "<table class='table text-center'>" +
+                            "<thead>" +
+                            "<tr>" +
+                            "<tr>" +
+                            "<th class='text-center'>Rutina de la solucion</th>" +
+                            "<th class='text-center'></th>" +
+                            "</tr>" +
+                            "</thead>" +
+                            "<tbody>";
+
+
+                        var TableFooter = "</tbody>" +
+                            "</table>" +
+                            "</div>";
+
+                        var Tabla = "";
+                        if (res === null) {
+                            $("#NumRutina").html("0");
+                            Tabla = "<tr>" +
+                                "<td>" +
+                                "</td>" +
+                                "<td>" +
+                                "</td>" +
+                                "</tr>";
+                        } else if (res.length > 0) {
+                            $("#NumRutina").html(res.length);
+                            $(res).each(function () {
+                                Tabla += "<tr>" +
+                                    "<td>" +
+                                    this.nombre.toUpperCase() +
+                                    "</td>" +
+                                    "<td>" +
+                                    "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarRutinaEquipol(" + this.id + ")'>" +
+                                    "<i class='icofont icofont-trash'></i>" +
+                                    "</button>" +
+                                    "</td>" +
+                                    "</tr>";
+                            });
+                        }
+
+                        $("#TabRutinaEquipo").html(TableHeader + Tabla + TableFooter);
+
+                        $("#Modal_NRutina_Nombre").val("");
+                        $("#Modal_NRutina_Observaciones").val("");
+
+                    });
+            }
+        });
+    });
+    function EliminarRutinaEquipol(Id) {
+
+        const _modelo = {
+            Id: Id,
+        };
+
+        fetch("/Inventario/CatEquipoRutina/DeleteListEquipoRutina", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#NumRutina").html("0");
+                var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                    "<table class='table text-center'>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<tr>" +
+                    "<th class='text-center'>Rutina de la solucion</th>" +
+                    "<th class='text-center'></th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
+
+
+                var TableFooter = "</tbody>" +
+                    "</table>" +
+                    "</div>";
+
+                var Tabla = "";
+                if (res === null) {
+                    $("#NumRutina").html("0");
+                    Tabla = "<tr>" +
+                        "<td>" +
+                        "</td>" +
+                        "<td>" +
+                        "</td>" +
+                        "</tr>";
+                } else if (res.length > 0) {
+                    $(res).each(function () {
+                        $("#NumRutina").html(res.length);
+                        Tabla += "<tr>" +
+                            "<td>" +
+                            this.nombre.toUpperCase() +
+                            "</td>" +
+                            "<td>" +
+                            "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarRutinaEquipol(" + this.id + ")'>" +
+                            "<i class='icofont icofont-trash'></i>" +
+                            "</button>" +
+                            "</td>" +
+                            "</tr>";
+                    });
+                }
+
+                $("#TabRutinaEquipo").html(TableHeader + Tabla + TableFooter);
+            });
+    }
+    function ValidateFormNuevaRutina() {
+        var result = false;
+
+        $('#Modal_NRutina_Nombre').css("border", "1px solid red");
+
+        if ($('#Modal_NRutina_Nombre').val().length > 0) {
+            $('#Modal_NRutina_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_NRutina_Nombre').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+    }
+    function MostrarModalRutina() {
+        $("#ModalRutinaSolucion").modal("show");
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// NUEVA IMAGEN /////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    $(document).ready(function () {
+        $("#NuevaImagen").on("submit", function (event) {
+
+            // Prevenir el envío del formulario por defecto
+            event.preventDefault();
+
+            if (ValidateFormNuevaImagen()) {
+
+                const _modelo = {
+                    Nombre: $('#Modal_NImagen_Nombre').val(),
+                    Observaciones: $('#Modal_NImagen_Observaciones').val(),
+                };
+
+                fetch("/Inventario/CatEquipoImagen/AddListEquipoImagen", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(_modelo)
+                })
+                    .then(res => res.json())
+                    .then(res => {
+
+                        var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                            "<table class='table text-center'>" +
+                            "<thead>" +
+                            "<tr>" +
+                            "<tr>" +
+                            "<th class='text-center'>Imágenes solicitadas para el equipo</th>" +
+                            "<th class='text-center'></th>" +
+                            "</tr>" +
+                            "</thead>" +
+                            "<tbody>";
+
+
+                        var TableFooter = "</tbody>" +
+                            "</table>" +
+                            "</div>";
+
+                        var Tabla = "";
+                        if (res === null) {
+                            $("#NumImagenes").html("0");
+                            Tabla = "<tr>" +
+                                "<td>" +
+                                "</td>" +
+                                "<td>" +
+                                "</td>" +
+                                "</tr>";
+                        } else if (res.length > 0) {
+                            $("#NumImagenes").html(res.length);
+                            $(res).each(function () {
+                                Tabla += "<tr>" +
+                                    "<td>" +
+                                    this.nombre.toUpperCase() +
+                                    "</td>" +
+                                    "<td>" +
+                                    "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarImagenEquipo(" + this.id + ")'>" +
+                                    "<i class='icofont icofont-trash'></i>" +
+                                    "</button>" +
+                                    "</td>" +
+                                    "</tr>";
+                            });
+                        }
+
+                        $("#TabImagenEquipo").html(TableHeader + Tabla + TableFooter);
+
+                        $("#Modal_NImagen_Nombre").val("");
+                        $("#Modal_NImagen_Observaciones").val("");
+
+                    });
+            }
+        });
+    });
+    function EliminarImagenEquipo(Id) {
+        const _modelo = {
+            Id: Id,
+        };
+
+        fetch("/Inventario/CatEquipoImagen/DeleteListEquipoImagen", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#NumImagenes").html("0");
+                var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                    "<table class='table text-center'>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<tr>" +
+                    "<th class='text-center'>Rutina de la solucion</th>" +
+                    "<th class='text-center'></th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
+
+
+                var TableFooter = "</tbody>" +
+                    "</table>" +
+                    "</div>";
+
+                var Tabla = "";
+                if (res === null) {
+                    $("#NumImagenes").html("0");
+                    Tabla = "<tr>" +
+                        "<td>" +
+                        "</td>" +
+                        "<td>" +
+                        "</td>" +
+                        "</tr>";
+                } else if (res.length > 0) {
+                    $(res).each(function () {
+                        $("#NumImagenes").html(res.length);
+                        Tabla += "<tr>" +
+                            "<td>" +
+                            this.nombre.toUpperCase() +
+                            "</td>" +
+                            "<td>" +
+                            "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarImagenEquipo(" + this.id + ")'>" +
+                            "<i class='icofont icofont-trash'></i>" +
+                            "</button>" +
+                            "</td>" +
+                            "</tr>";
+                    });
+                }
+
+                $("#TabImagenEquipo").html(TableHeader + Tabla + TableFooter);
+            });
+    }
+    function MostrarModalImagen() {
+        $("#ModalImagenEquipo").modal("show");
+    }
+    function ValidateFormNuevaImagen() {
+        var result = false;
+
+        $('#Modal_NImagen_Nombre').css("border", "1px solid red");
+
+        if ($('#Modal_NImagen_Nombre').val().length > 0) {
+            $('#Modal_NImagen_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_NImagen_Nombre').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    ////////////////////////////////
+    ////// NUEVO TIPO EQUIPO ///////
+    ////////////////////////////////
+
+    $(document).ready(function () {
+        $("#NuevoTipoEquipo").on("submit", function (event) {
+
+            // Prevenir el envío del formulario por defecto
+            event.preventDefault();
+
+            if (ValidateFormNuevoTipoEquipo()) {
+                var NewIdTipoEquipo = 0;
+                const _model = {
+                    Nombre: $("#Modal_TipoEquipo_Nombre").val(),
+                };
+
+                fetch("/Inventario/CatTipoEquipo/CreateCat_TipoEquipo", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(_model)
+                })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.id == -1) {
+                            swal({
+                                title: "Tipo equipo no registrado",
+                                text: "El tipo de equipo que intentas agregar ya se encuentra registrado. !",
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                buttons: true,
+                                dangerMode: true,
+                            }).then((willDelete) => {
+
+                            });
+                        } else if (res.id == 0) {
+                            swal({
+                                title: "Tipo equipo no registrado",
+                                text: "No es posible registrar el tipo de quipo. !",
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                buttons: true,
+                                dangerMode: true,
+                            }).then((willDelete) => {
+
+                            });
+                        } else if (res.id > 0) {
+                            NewIdTipoEquipo = res.id;
+                            swal({
+                                title: "Nuevo tipo de quipo registrado.",
+                                text: $("#Modal_TipoEquipo_Nombre").val(),
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+
+                                showCancelButton: false,
+                                confirmButtonColor: "#3070A9",
+                                confirmButtonText: "Aceptar",
+                                closeOnConfirm: false,
+                            },
+                                function (isConfirm) {
+                                    swal.close();
+                                    $('#ModalTipoEquipo').modal('hide');
+
+
+                                    fetch("/Inventario/CatTipoEquipo/GetCat_TipoEquipo_Seleccionar", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                                    })
+                                        .then(res => res.json())
+                                        .then(res => {
+                                            $("#NEquipo_TipoEquipo").empty();
+                                            $("#NEquipo_Categoria").empty();
+                                            $("#NEquipo_Modelo").empty();
+
+                                            var option = $(document.createElement('option'));
+                                            option.text("SELECCIONAR");
+                                            option.val(0);
+
+                                            var option2 = $(document.createElement('option'));
+                                            option2.text("SELECCIONAR");
+                                            option2.val(0);
+
+                                            var option3 = $(document.createElement('option'));
+                                            option3.text("SELECCIONAR");
+                                            option3.val(0);
+
+                                            $("#NEquipo_TipoEquipo").append(option);
+                                            $("#NEquipo_Categoria").append(option2);
+                                            $("#NEquipo_Modelo").append(option3);
+
+                                            if (res === null) {
+
+                                            } else if (res.length > 0) {
+
+                                                $(res).each(function () {
+                                                    var option = $(document.createElement('option'));
+
+                                                    option.text(this.nombre.toUpperCase());
+                                                    option.val(this.id);
+
+                                                    $("#NEquipo_TipoEquipo").append(option);
+                                                });
+
+                                                $('#NEquipo_TipoEquipo option[value="' + NewIdTipoEquipo + '"]').attr("selected", true);
+                                                $('#Modal_TipoEquipo_Nombre').val("");
+                                            }
+
+                                        });
+                                }
+                            );
+                        }
+                    });
+            }
+        });
+    });
+    function ValidateFormNuevoTipoEquipo() {
+        var result = false;
+
+        $('#Modal_TipoEquipo_Nombre').css("border", "1px solid red");
+
+        if ($('#Modal_TipoEquipo_Nombre').val().length > 0) {
+            $('#Modal_TipoEquipo_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_TipoEquipo_Nombre').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    ////////////////////////////////
+    //////// NUEVA CATEGORIA ///////
+    ////////////////////////////////
+
+    $(document).ready(function () {
+        $("#NuevaCategoria").on("submit", function (event) {
+
+            // Prevenir el envío del formulario por defecto
+            event.preventDefault();
+
+            if (ValidateFormNuevaCategoria()) {
+                var NewIdCategoria = 0;
+
+                const Cat_TipoEquipo = {
+                    Id: $("#NEquipo_TipoEquipo option:selected").val(),
+                }
+
+                const _model = {
+                    Cat_TipoEquipo: Cat_TipoEquipo,
+                    Nombre: $("#Modal_Categoria_Nombre").val(),
+                };
+
+                fetch("/Inventario/CatCategoria/CreateCat_TipoEquipo", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(_model)
+                })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.id == -1) {
+                            swal({
+                                title: "Categoria no registrada",
+                                text: "La categoria que intentas agregar ya se encuentra registrada. !",
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                buttons: true,
+                                dangerMode: true,
+                            }).then((willDelete) => {
+
+                            });
+                        } else if (res.id == 0) {
+                            swal({
+                                title: "Categoria no registrada",
+                                text: "No es posible registrar la categoria. !",
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                buttons: true,
+                                dangerMode: true,
+                            }).then((willDelete) => {
+
+                            });
+                        } else if (res.id > 0) {
+                            NewIdCategoria = res.id;
+                            swal({
+                                title: "Nueva categoria registrada.",
+                                text: $("#Modal_Categoria_Nombre").val(),
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+
+                                showCancelButton: false,
+                                confirmButtonColor: "#3070A9",
+                                confirmButtonText: "Aceptar",
+                                closeOnConfirm: false,
+                            },
+                                function (isConfirm) {
+                                    swal.close();
+                                    $('#ModalCategoria').modal('hide');
+
+                                    fetch("/Inventario/CatCategoria/GetCat_Categoria_Seleccionar_IdTipoEquipo", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                                        body: JSON.stringify(Cat_TipoEquipo)
+                                    })
+                                        .then(res => res.json())
+                                        .then(res => {
+                                            $("#NEquipo_Categoria").empty();
+                                            $("#NEquipo_Modelo").empty();
+
+                                            var option = $(document.createElement('option'));
+                                            option.text("SELECCIONAR");
+                                            option.val(0);
+
+                                            var option2 = $(document.createElement('option'));
+                                            option2.text("SELECCIONAR");
+                                            option2.val(0);
+
+                                            $("#NEquipo_Categoria").append(option);
+                                            $("#NEquipo_Modelo").append(option2);
+
+                                            if (res === null) {
+
+                                            } else if (res.length > 0) {
+
+                                                $(res).each(function () {
+                                                    var option = $(document.createElement('option'));
+
+                                                    option.text(this.nombre.toUpperCase());
+                                                    option.val(this.id);
+
+                                                    $("#NEquipo_Categoria").append(option);
+                                                });
+
+                                                $('#NEquipo_Categoria option[value="' + NewIdCategoria + '"]').attr("selected", true);
+                                                $('#Modal_Categoria_Nombre').val("");
+                                            }
+
+                                        });
+                                }
+                            );
+                        }
+                    });
+            }
+        });
+    });
+
+    function ValidateFormNuevaCategoria() {
+        var result = false;
+
+        $('#Modal_Categoria_Nombre').css("border", "1px solid red");
+
+        if ($('#Modal_Categoria_Nombre').val().length > 0) {
+            $('#Modal_Categoria_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_Categoria_Nombre').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    function MostrarModalCategoria() {
+
+        $('#select2-NEquipo_TipoEquipo-container').css("border", "1px solid red");
+
+        if ($("#NEquipo_TipoEquipo option:selected").val() > 0) {
+            $('#select2-NEquipo_TipoEquipo-container').css("border", "0px solid #d9dee3");
+
+            $("#ModalCategoria").modal("show");
+        }
+    }
+
+    ////////////////////////////////
+    //// NUEVO MODELO DE EQUIPO ////
+    ////////////////////////////////
+
+    $(document).ready(function () {
+        $("#NuevoModelo").on("submit", function (event) {
+
+            // Prevenir el envío del formulario por defecto
+            event.preventDefault();
+
+            if (ValidateFormNuevoModelo()) {
+                var NewIdModelo = 0;
+
+                const Cat_Categoria = {
+                    Id: $("#NEquipo_Categoria option:selected").val(),
+                }
+
+                const _model = {
+                    Cat_Categoria: Cat_Categoria,
+                    Nombre: $("#Modal_Modelo_Nombre").val(),
+                };
+
+                fetch("/Inventario/CatModelo/CreateCat_Modelo", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(_model)
+                })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.id == -1) {
+                            swal({
+                                title: "Modelo no registrado",
+                                text: "El modelo que intentas agregar ya se encuentra registrado. !",
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                buttons: true,
+                                dangerMode: true,
+                            }).then((willDelete) => {
+
+                            });
+                        } else if (res.id == 0) {
+                            swal({
+                                title: "Modelo no registrado",
+                                text: "No es posible registrar el modelo. !",
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                buttons: true,
+                                dangerMode: true,
+                            }).then((willDelete) => {
+
+                            });
+                        } else if (res.id > 0) {
+                            NewIdModelo = res.id;
+                            swal({
+                                title: "Nuevo modelo registrado.",
+                                text: $("#Modal_Modelo_Nombre").val(),
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+
+                                showCancelButton: false,
+                                confirmButtonColor: "#3070A9",
+                                confirmButtonText: "Aceptar",
+                                closeOnConfirm: false,
+                            },
+                                function (isConfirm) {
+                                    swal.close();
+                                    $('#ModalModelo').modal('hide');
+
+                                    fetch("/Inventario/CatModelo/GetCat_Modelo_Seleccionar_IdCategoria", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                                        body: JSON.stringify(Cat_Categoria)
+                                    })
+                                        .then(res => res.json())
+                                        .then(res => {
+                                            $("#NEquipo_Modelo").empty();
+
+                                            var option = $(document.createElement('option'));
+                                            option.text("SELECCIONAR");
+                                            option.val(0);
+
+                                            $("#NEquipo_Modelo").append(option);
+
+                                            if (res === null) {
+
+                                            } else if (res.length > 0) {
+
+                                                $(res).each(function () {
+                                                    var option = $(document.createElement('option'));
+
+                                                    option.text(this.nombre.toUpperCase());
+                                                    option.val(this.id);
+
+                                                    $("#NEquipo_Modelo").append(option);
+                                                });
+
+                                                $('#NEquipo_Modelo option[value="' + NewIdModelo + '"]').attr("selected", true);
+                                                $('#Modal_Modelo_Nombre').val("");
+                                            }
+
+                                        });
+                                }
+                            );
+                        }
+                    });
+            }
+        });
+    });
+
+    function ValidateFormNuevoModelo() {
+        var result = false;
+
+        $('#Modal_Modelo_Nombre').css("border", "1px solid red");
+
+        if ($('#Modal_Modelo_Nombre').val().length > 0) {
+            $('#Modal_Modelo_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_Modelo_Nombre').val().length > 0) {
+            result = true;
+        }
+        return result;
+    }
+
+    function MostrarModalModelo() {
+
+        $('#select2-NEquipo_Categoria-container').css("border", "1px solid red");
+
+        if ($("#NEquipo_Categoria option:selected").val() > 0) {
+            $('#select2-NEquipo_Categoria-container').css("border", "0px solid #d9dee3");
+
+            $("#ModalModelo").modal("show");
+        }
+    }
+
+</script>

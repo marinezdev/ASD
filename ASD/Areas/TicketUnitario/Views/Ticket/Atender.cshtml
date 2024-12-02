@@ -1,0 +1,452 @@
+@{
+    ViewData["Title"] = "Atender";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .ColorHeaderInfor {
+        padding: 20px;
+        background-color: transparent;
+        color: #ffffff;
+        border-bottom: none;
+        background: linear-gradient(to top, #39444e, #495865);
+        color: #ffffff;
+    }
+
+</style>
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Atender ticket</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Ticket </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Atender </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong><i class="ti-ticket"></i></strong> @ViewBag.Ticket.Ticket.Titulo
+                    </h5>
+                    <p>Completa los campos obligatorios, <code>*</code> para marcar el ticket como atendido.</p>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <!-- Fecha de Inicio -->
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center">
+                                            <label class="form-label flex-shrink-0" for="fecha-inicio" style="width: 118px;">
+                                                <i class="bx bx-calendar"></i> * Fecha inicio:
+                                            </label>
+                                            <input type="datetime-local"
+                                                   class="form-control flex-grow-1"
+                                                   id="fecha-inicio"
+                                                   name="fecha-inicio"
+                                                   aria-label="Fecha de Inicio"
+                                                   aria-describedby="fecha-inicio"
+                                                   onchange="ValidaInput('fecha-inicio')"
+                                                   disabled
+                                                   value="@(ViewBag.Ticket.Ticket.FechaRegistro.ToString("yyyy-MM-ddTHH:mm"))" />
+                                        </div>
+                                        <small id="fecha-inicio" class="form-text text-muted">Seleccione la fecha y hora de inicio del ticket.</small>
+                                    </div>
+                                </div>
+
+                                <!-- Fecha de Término -->
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center">
+                                            <label class="form-label flex-shrink-0" for="fecha-termino" style="width: 150px;">
+                                                <i class="bx bx-calendar"></i> * Fecha termino:
+                                            </label>
+                                            <input type="datetime-local"
+                                                   class="form-control flex-grow-1"
+                                                   id="fecha-termino"
+                                                   name="fecha-termino"
+                                                   aria-label="Fecha de término"
+                                                   aria-describedby="fecha-termino"
+                                                   onchange="ValidaInput('fecha-termino')" />
+                                        </div>
+                                        <small id="fecha-termino" class="form-text text-muted">Seleccione la fecha y hora de término del ticket.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="exampleFormControlTextarea1" class="form-label">Descripción </label>
+                                    <textarea class="form-control" id="Ticket_Descripcion" rows="5" onkeyup="Mayus(this);"></textarea>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-header ColorHeaderInfor">
+                                    <h5 class="card-header-text" style="color: #ffffff">
+                                        <strong><i class="ti-files"></i></strong> Documentación
+                                    </h5>
+                                </div>
+                                <br />
+                                <div class="card-block accordion-block">
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-12 text-center">
+                                            <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivoAdicional()">Capturar archivo</button>
+                                            <input id="FileArchivo" type="file" style="visibility:hidden" onchange="ValidaUploadFileAdicional(@ViewBag.Ticket.Ticket.Id)">
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center mt-3">
+                                        <div class="col-md-12">
+                                            <div id="ListArchivos" class="text-center">
+                                                @if (ViewBag.Archivos != null)
+                                                {
+                                                    <div class='table-responsive'>
+                                                        <table class='table text-center'>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class='text-center'>Archivo</th>
+                                                                    <th class='text-center'></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var item in ViewBag.Archivos)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@item.NmOriginal</td>
+                                                                        <td>
+                                                                            <button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarArchivo(@item.Id, @ViewBag.Ticket.Ticket.Id)'>
+                                                                                <i class='icofont icofont-trash'></i>
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-lg-6 checklist">
+                            <label class="check-item">
+                                <input type="checkbox" checked disabled>
+                                <span class="checkmark"></span>
+                                Notificar por correo
+                            </label>
+                            &nbsp;
+                            <label class="check-item">
+                                <input type="checkbox" id="fecha-inicio-checkbox">
+                                <span class="checkmark"></span>
+                                Cambiar fecha de inicio
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4" style="justify-content: flex-end;">
+                        <button onclick="Cancelar()" type="button" class="btn btn-default waves-effect waves-light" style="margin-left: 10px;">
+                            <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                        </button>
+                        <button onclick="Atender(@ViewBag.Ticket.Ticket.Id)" class="btn btn-primary waves-effect waves-light" style="margin-left: 10px;">
+                            <i class="icofont icofont-save"></i><span class="m-l-12"> Atender </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- Modal carga orden de trabajo -->
+<div class="modal fade" id="ModalCargaArchivo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Carga de archivo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12" id="DivCargaArchivo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal" id="BtnCargaArchivo">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#fecha-inicio-checkbox').change(function () {
+            if ($(this).is(':checked')) {
+                $('#fecha-inicio').removeAttr('disabled');
+            } else {
+                $('#fecha-inicio').attr('disabled', 'disabled');
+            }
+        });
+    });
+    function Atender(Id) {
+        const _modelo = {
+            Id: Id,
+            Observaciones: $('#Ticket_Descripcion').val(),
+            FechaTermino: $('#fecha-termino').val(),
+            FechaInicio: $('#fecha-inicio').val(),
+            ClaveEncriptada: search('cont')
+        };
+
+        fetch("/TicketUnitario/Ticket/Ticket_Procesar_Atendido", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+        .then(res => res.json())
+        .then(res => {
+            window.location.href = "/TicketUnitario/Operacion";
+        });
+    }
+
+    function Cancelar() {
+        window.location.href = "/TicketUnitario/Operacion";
+    }
+
+    function SubirArchivoAdicional() {
+        $("#FileArchivo").click();
+    }
+
+    function ValidaUploadFileAdicional(Id) {
+        var fileInput = document.getElementById('FileArchivo');
+
+        if (fileInput.files.length > 0) {
+
+            for (i = 0; i < fileInput.files.length; i++) {
+                var Formato = "";
+                var Carga = false;
+                var ext = fileInput.files[i].name.split('.').pop();
+                Extencion = fileInput.files[i].name.split('.').pop();
+
+                // Convertimos en min�scula porque
+                // la extensi�n del archivo puede estar en may�scula
+                ext = ext.toLowerCase();
+
+                if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' || ext == 'docx' || ext == 'xlsx' || ext == 'rar' || ext == 'pdf') {
+                    Carga = true;
+                } else {
+                    Carga = false;
+                    Formato = ext;
+                    /*break;*/
+                }
+
+                if (Carga) {
+                    var Div = "<div class='col-md-12 col-lg-12'>" +
+                        "<progress id='progressBar' style='width:100%; height: 30px;' value='0' max='100'></progress>" +
+                        "</div>";
+
+                    $("#DivCargaArchivo").html(Div);
+                    $("#ModalCargaArchivo").modal("show");
+
+                    UploadFileAdicional(Id);
+
+                } else {
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "showDuration": "500",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "iconClass": "toast-error"
+                    };
+
+                    toastr.error("Intentas cargar un formato no permitido: <strong>" + Formato + "</strong> Formato de archivo permitido: <strong>.png, .jpg, .jpeg, .docx, .xlsx, .rar, .pdf  </strong>", "Notificacion");
+                }
+            }
+        }
+    }
+
+    function UploadFileAdicional(Id) {
+
+        var progressBar = document.getElementById('progressBar');
+        var formData = new FormData();
+        var fileInput = document.getElementById('FileArchivo');
+
+        formData.append('file', fileInput.files[0]);
+        formData.append('IdTicket', Id);
+
+        fetch('/Ticket/Archivo/CreateArchivo', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                // Puedes necesitar configurar los encabezados seg�n tu API
+            },
+            // Importante: Desactiva el cach� para evitar problemas de lectura de FormData
+            cache: 'no-cache',
+        })
+            .then(response => {
+
+                var total = response.headers.get('Content-Length');
+                var reader = response.body.getReader();
+                var loaded = 0;
+
+                return reader.read().then(function process(result) {
+                    if (result.done) {
+
+                        $("#BtnCargaArchivo").click();
+
+                        // Carga completada
+                        /* console.log('Carga completada');*/
+                        $('#ListArchivos').html("");
+                        // id de la nueva imagen
+                        CargaArchivos(Id);
+
+                        return;
+                    }
+
+                    loaded += result.value.length;
+
+                    progressBar.value = (loaded / total) * 100;
+
+                    // Continuar leyendo el siguiente fragmento del cuerpo de la respuesta
+                    return reader.read().then(process);
+                });
+            })
+            .then(data => {
+                /*console.log('�xito:', data);*/
+            })
+            .catch(error => {
+                /* console.error('Error:', error);*/
+            });
+    }
+
+    function CargaArchivos(Id) {
+
+        const _modelo = {
+            Id: Id,
+        };
+
+        fetch("/Ticket/Archivo/GetArchivo_Seleccionar_IdTicket", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                    "<table class='table text-center'>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<th class='text-center'>Archivo</th>" +
+                    "<th class='text-center'></th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
+
+
+                var TableFooter = "</tbody>" +
+                    "</table>" +
+                    "</div>";
+
+                var Tabla = "";
+                if (res === null) {
+                    Tabla = "<tr>" +
+                        "<td>" +
+                        "</td>" +
+                        "<td>" +
+                        "</td>" +
+                        "</tr>";
+                } else if (res.length > 0) {
+                    $(res).each(function () {
+                        Tabla += "<tr>" +
+                            "<td>" +
+                            this.nmOriginal.toUpperCase() +
+                            "</td>" +
+                            "<td>" +
+                            "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarArchivo(" + this.id + "," + Id + ")'>" +
+                            "<i class='icofont icofont-trash'></i>" +
+                            "</button>" +
+                            "</td>" +
+                            "</tr>";
+                    });
+                }
+
+                $("#ListArchivos").html(TableHeader + Tabla + TableFooter);
+
+            });
+    }
+
+    function EliminarArchivo(Id, IdTicket) {
+        const _modelo = {
+            Id: Id,
+        };
+
+        fetch("/Ticket/Archivo/DeleteArchivo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+
+                if (res.id > 0) {
+                    CargaArchivos(IdTicket);
+
+                } else {
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "showDuration": "500",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "iconClass": "toast-error"
+                    };
+
+                    toastr.error("Archivo no eliminado ", "Notificacion");
+                }
+
+            });
+    }
+
+    function search(variable) {
+        return new URLSearchParams(window.location.search).get(variable);
+    }
+</script>

@@ -1,0 +1,431 @@
+﻿
+@{
+    ViewData["Title"] = "Estatus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--Modal Nuevo Estatus--> 
+<div class="modal fade" id="ModalEstatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoEstatus">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo estatus</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Estatus </label>
+                                <input type="text" class="form-control" placeholder="Estatus" id="Modal_NEstatus" />
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-3 col-form-label form-control-label">Color del Estatus</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="Color_NEstatus">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="ti-close"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="RegistrarE()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="ti-save"></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+
+<!--Modal Editar--> 
+<div class="modal fade" id="ModalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form id="EditarEstatus">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar estatus</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Estatus </label>
+                                <input type="text" class="form-control" placeholder="Estatus" id="Modal_EEstatus" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-3 col-form-label form-control-label">Color del Estatus</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor"  id="color">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="ti-close"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="button" id="Editar" class="btn btn-primary waves-effect waves-light">
+                        <i class="ti-save"></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Estatus ticket</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Ticket </a>
+                    </li>
+                   
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!------------>  
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Estatus Ticket</h5>
+                </div> 
+                <div class="card-block">
+                    <form action="#" id="Estatus Ticket">
+     
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <br>
+                                <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-placement="top" data-target="#ModalEstatus" data-original-title=".icofont-search-alt-2">
+                                    <i class="icofont icofont-plus"></i> <span class="m-l-10">Nuevo Estatus</span>
+                                </button>
+                                <br /><br />
+                            </div>
+                        </div> 
+                         
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th >Estatus</th>
+                                        <th style="border-right: 2px solid #eceeef; padding-right: 10px;">Color</th>
+                                        <th style="text-align:center">Total Ticket</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Estatus != null)
+                                        {
+                                            foreach (var item in ViewBag.Estatus)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.Ticket.Cat_EstatusTicket.Nombre
+                                                    </td>
+                                                    <td style="border-right: 2px solid #eceeef; padding-right: 10px; position: relative;">
+                                                        <i class="icofont icofont-ui-press" style="color:@item.Ticket.Cat_EstatusTicket.Color;font-size: 176%;"></i>
+
+                                                        <span style="position: absolute; right: 5%; text-align:center">
+                                                            <i class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" onclick="InfoStatus('@item.Ticket.Cat_EstatusTicket.Id', '@item.Ticket.Cat_EstatusTicket.Nombre', '@item.Ticket.Cat_EstatusTicket.Color')" data-toggle="modal" data-target="#ModalEditar"></i>
+                                                            <i class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light" onclick="eliminarElemento(@item.Ticket.Cat_EstatusTicket.Id)"></i>
+                                                        </span>
+                                                    </td>
+                                                    <td style="display: flex; justify-content: center; align-items: center; position: relative;">
+                                                        @item.total
+                                                        <span onclick="Consultar(@item.Ticket.Cat_EstatusTicket.Id)" style="position: absolute; right: 5%;">
+                                                            <i class="icofont icofont-eye-alt btn btn-inverse-success waves-effect waves-light"></i>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                      }
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div> 
+
+    </div>
+
+
+
+</div>   
+
+<div class="container-fluid">
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Tickets</h5>
+                    <p>Lista de tickets registrados.</p>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table id="Tickets" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Folio</th>
+                                        <th>Tipo de servicio</th>
+                                        <th>Sucursal </th>
+                                        <th>Creación </th>
+                                        <th>Fecha atención </th>
+                                        <th>Tiempo de solución </th>
+                                        <th>Status </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider" id="Contenido"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+    
+<script>
+    $(document).ready(function () {
+        $('#Tickets').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        }).on('init.dt', function () {
+            $('.dataTables_filter input').attr('placeholder', 'Buscar Tickets');
+        });
+
+        $("#MenuTicket").addClass("active");
+        $("#EstatusT").addClass("active");
+    });
+    function eliminarElemento(Ids) {
+        swal({
+            title: "¿Estás seguro?",
+            text: "Esta acción eliminará el estatus. ¿Estás seguro de continuar?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, eliminar!",
+            cancelButtonText: "No, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    const Cat_EstatusTicket = {
+                        Id: Ids
+                    };
+
+                    fetch("/Ticket/Ticket/DeleteStatusTicket", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        body: JSON.stringify(Cat_EstatusTicket)
+                    })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.id > 0) {
+                                swal({
+                                    title: "Eliminado!",
+                                    text: "El registro ha sido eliminado.",
+                                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/delete.png",
+                                },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            location.reload();
+                                        }
+                                    });
+                            } else {
+                                swal({
+                                    title: "Registro no eliminado",
+                                    text: "No es posible realizar la operación seleccionada!",
+                                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                    buttons: true,
+                                    dangerMode: true,
+                                }).then((willDelete) => {
+                                });
+                            }
+                        });
+                } else {
+                    swal("Cancelado", "La eliminación ha sido cancelada", "error");
+                }
+            });
+    }
+    function EditarStatus(Id) {
+        const Cat_EstatusTicket = {
+            Id: Id,
+            Nombre: $("#Modal_EEstatus").val(),
+            Color: $("#color").val()
+        };
+        fetch("/Ticket/Ticket/UpdateStatusTicket", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Cat_EstatusTicket)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.id == 1) {
+                    swal({
+                        title: "Actualizado!",
+                        text: "El registro ha sido Actualizado.",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/update.png",
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                location.reload();
+                            }
+                        });
+                } else {
+                    swal({
+                        title: "Registro no Actualizado",
+                        text: "No es posible realizar la operación seleccionada!",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                    });
+                }
+            });
+
+    }
+    function InfoStatus(Id, nombre, color) {
+        $("#Modal_EEstatus").val(nombre);
+        $("#color").val(color);
+        $("#Editar").off("click").on("click", function () {
+            EditarStatus(Id);
+        });
+    }
+    function RegistrarE() {
+        const Cat_EstatusTicket = {
+            Nombre: $("#Modal_NEstatus").val(),
+            Color: $("#Color_NEstatus").val()
+        };
+        fetch("/Ticket/Ticket/InsertStatusTicket", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Cat_EstatusTicket)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.id == 1) {
+                    swal({
+                        title: "Registrado!",
+                        text: "Estatus Registrado",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                location.reload();
+                            }
+                        });
+                } else {
+                    swal({
+                        title: "Error",
+                        text: "No es posible realizar la operación seleccionada!",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                    });
+                }
+            });
+    }
+    function Consultar(Id) {
+
+        if (Id === "0") {
+            swal({
+                title: "Error",
+                text: "Selecciona una empresa a consultar",
+                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                }
+            });
+        } else {
+            const ticket = {
+                Id: Id
+            };
+
+            fetch("/Ticket/Ticket/GetTicket_Seleccionar_IdEstatus", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(ticket)
+            })
+                .then(res => res.json())
+                .then(res => {
+                    tabla(res);
+                });
+        }
+    }
+    function tabla(datos) {
+        var table = $('#Tickets').DataTable();
+        table.destroy();
+        Contenido.innerHTML = "";
+
+
+        for (let valor of datos) {
+
+            let fechaRegistro = new Date(valor.ticket.fechaRegistro);
+            let formattedFechaRegistro = fechaRegistro.toISOString().split('T')[0];
+
+            let fechaAtencion = new Date(valor.fechaAtencion.fechaAtencion);
+            let formattedFechaAtencion = fechaAtencion.toISOString().split('T')[0];
+
+            Contenido.innerHTML += `
+            <tr>
+                <td>${valor.folio.folio}</td>
+                <td class="text-center">${valor.ticket.flujo.nombre}</td>
+                <td class="text-center">${valor.ticket.sucursal.nombre}</td>
+                <td class="text-center">${formattedFechaRegistro}</td>
+                <td class="text-center">${formattedFechaAtencion}</td>
+                <td class="text-center"></td>
+                <td class="text-center">${valor.ticket.cat_EstatusTicket.nombre}</td>
+                <td class="text-center"></td>
+            </tr>
+        `;
+        }
+
+        $('#Tickets').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        });
+    }
+</script>
+
+                                                

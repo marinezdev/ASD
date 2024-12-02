@@ -1,0 +1,228 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- Modal carga orden de trabajo -->
+<div class="modal fade" id="ModalCargaArchivo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Carga de archivo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12" id="DivCargaArchivo">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal" id="BtnCargaArchivo">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Ticket: @ViewBag.Ticket.Folio.Folio </h4>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text text-center"> Información de la sucursal </h5>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <dl class="dl-horizontal row">
+                                <dt class="col-sm-3"> Sucursal   </dt>
+                                <dd class="col-sm-9"> @ViewBag.Ticket.Ticket.Sucursal.Nombre </dd>
+
+                                <dt class="col-sm-3"> Domicilio  </dt>
+                                <dd class="col-sm-9"> @ViewBag.Ticket.Ticket.Sucursal.Direccion </dd>
+
+                                <dt class="col-sm-3"> Dirección </dt>
+                                <dd class="col-sm-9">
+                                    @ViewBag.Ticket.Ticket.Sucursal.Cat_Colonia.Cat_CP.Cat_Poblacion.Cat_Estado.Nombre ,
+                                    @ViewBag.Ticket.Ticket.Sucursal.Cat_Colonia.Cat_CP.Cat_Poblacion.Nombre ,
+                                    @ViewBag.Ticket.Ticket.Sucursal.Cat_Colonia.Cat_CP.Nombre ,
+                                    @ViewBag.Ticket.Ticket.Sucursal.Cat_Colonia.Nombre
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12  text-center">
+                            <h5 class="card-header-text text-center"> Imágenes fotográficas </h5>
+                            <p>Imagen fechada tienda / sucursal</p>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivo()">Capturar imagen</button>
+                            <input id="FileArchivoFachada" type="file" style="visibility:hidden" onchange="ValidaUploadFile(@ViewBag.Ticket.Ticket.Id)">
+                        </div>
+                        <!-- Single images starts -->
+						<div class="col-md-12">
+                            <div id="image1">
+                                
+                               @* @if (ViewBag.Imagen != null)
+                                {
+                                    foreach (var item in ViewBag.Imagen)
+                                    {
+                                        if (item.Cat_SucursalImagen.Nombre == "Tienda/Sucursal")
+                                        {
+                                            <div class='card'>
+                                                <div class='card-block'>
+                                                    <div class='row'>
+                                                        <div class='col-xl-2 col-lg-3 col-sm-3 col-xs-12'>
+                                                            <a href='@item.NmArchivo' data-lightbox='roadtrip'>
+                                                                <img src='@item.NmArchivo' class='img-fluid' alt='' />
+                                                                
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }*@
+                            </div>
+						</div>
+						<!-- Single images ends -->
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12  text-center">
+                            <br />
+                            <p>Imagen mostrador tienda / sucursal</p>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivoMostrador()">Capturar imagen</button>
+                            <input id="FileArchivoMostrador" type="file" style="visibility:hidden" onchange="ValidaUploadFile2(@ViewBag.Ticket.Ticket.Id)">
+                        </div>
+                        <!-- Single images starts -->
+                        <div class="col-md-12">
+                            <div id="image2">
+                                @*@if (ViewBag.Imagen != null)
+                                {
+                                    foreach (var item in ViewBag.Imagen)
+                                    {
+                                        if (item.Cat_SucursalImagen.Nombre == "Mostrador")
+                                        {
+                                            <div class='card'>
+                                                <div class='card-block'>
+                                                    <div class='row'>
+                                                        <div class='col-xl-2 col-lg-3 col-sm-3 col-xs-12'>
+                                                            <a href='@item.NmArchivo' data-lightbox='roadtrip'>
+                                                                <img src='@item.NmArchivo' class='img-fluid' alt='' />
+
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }*@
+                            </div>
+                        </div>
+                        <!-- Single images ends -->
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12  text-center">
+                            <br />
+                            <p>Video recorrido 20 segundos</p>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivoVideo()">Capturar video</button>
+                            <input id="FileArchivoVideo" type="file" style="visibility:hidden" onchange="ValidaUploadFile3(@ViewBag.Ticket.Ticket.Id)">
+                        </div>
+                        <!-- Single images starts -->
+                        <div class="col-md-12">
+                            <div id="VideoRecorridoAntes">
+
+                                @*@if (ViewBag.Video != null)
+                                {
+                                    foreach (var item in ViewBag.Video)
+                                    {
+                                        if (item.Cat_SucursalVideo.Nombre == "Recorrido antes")
+                                        {
+                                            <div class='card'>
+                                                <div class='card-block'>
+                                                    <div class='row'>
+                                                        <div class='col-xl-12 col-xs-12'>
+                                                            <video width="100%" controls >
+                                                                <source src="@item.NmArchivo" type="video/mp4">
+                                                            </video>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }*@
+                            </div>
+                        </div>
+                        <!-- Single images ends -->
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <button type="submit" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="Anterior(@ViewBag.Ticket.Ticket.Id)">
+                            <i class="icofont icofont-arrow-left"></i><span class="m-l-12"> Anterior </span>
+                        </button>
+
+                        <button type="button" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="Siguiente(@ViewBag.Ticket.Ticket.Id)">
+                            <span class="m-l-12"> Siguiente </span> <i class="icofont icofont-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content ends -->
+<script src="~/js/ticketatencion/movil/_UnidadNegocio.js"></script>
+<script>
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            CargaImagenesInicial(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+            CargaVideoInicial(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+        }, 1000); // 2 segundos de retardo
+    });
+
+
+</script>

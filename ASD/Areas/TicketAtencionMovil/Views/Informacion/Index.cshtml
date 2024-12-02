@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Ticket: @ViewBag.Ticket.Folio.Folio </h4>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text text-center">Información del ticket  </h5>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <dl class="dl-horizontal row">
+                                <dt class="col-sm-3"> Titulo (Asunto)  </dt>
+                                <dd class="col-sm-9"> @ViewBag.Ticket.Ticket.Titulo </dd>
+
+                                <dt class="col-sm-3"> Tipo de servicio</dt>
+                                <dd class="col-sm-9"> @ViewBag.Ticket.Ticket.Flujo.Nombre </dd>
+
+                                <dt class="col-sm-3"> Folio </dt>
+                                <dd class="col-sm-9"> @ViewBag.Ticket.Folio.Folio </dd>
+
+                                <dt class="col-sm-3"> Prioridad</dt>
+                                <dd class="col-sm-9"> @ViewBag.Ticket.Ticket.Cat_Prioridad.Nombre </dd>
+
+                                <dt class="col-sm-3 text-truncate">Detalle Del Ticket</dt>
+                                <dd class="col-sm-9"> @ViewBag.Ticket.Ticket.Detalle </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12  text-center">
+                            <h5 class="card-header-text text-center"> Información de los equipos  </h5>
+                        </div>
+                        <div class="col-sm-12">
+                            
+                            @{
+                                if (ViewBag.Equipos != null)
+                                {
+                                    foreach (var item in ViewBag.Equipos)
+                                    {
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <div class="panel panel-default" style="border-color: #9E9E9E;">
+                                                    <div class="panel-heading bg-default txt-white">
+                                                        @item.Equipo.Serie
+                                                    </div>
+                                                    <div class="panel-body" style="padding: 15px;">
+                                                        <div class="row">
+                                                            <div class="col-xl-12">
+                                                                <p>Tipo de equipo: <strong>@item.Cat_TipoEquipo.Nombre</strong></p>
+                                                                <p>Categoría : <strong>@item.Cat_Categoria.Nombre</strong></p>
+                                                                <p>Modelo : <strong>@item.Cat_Modelo.Nombre</strong></p>
+                                                                <p>Numero de serie : <strong>@item.Equipo.Serie</strong></p>
+                                                                <p>Observaciones : <strong>@item.Equipo.Observaciones</strong></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel-footer">
+                                                        <strong>@item.Cat_EstatusEquipo.Nombre</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <button type="submit" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="Salir()">
+                            <i class="icofont icofont-exit"></i><span class="m-l-12"> Salir </span>
+                        </button>
+
+                        <button type="button" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="Siguiente(@ViewBag.Ticket.Ticket.Id)">
+                            <span class="m-l-12"> Siguiente </span> <i class="icofont icofont-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content ends -->
+<script src="~/js/ticketatencion/movil/_informacion.js"></script>

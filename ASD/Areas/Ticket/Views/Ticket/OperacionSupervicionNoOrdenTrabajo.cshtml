@@ -1,0 +1,459 @@
+﻿
+@{
+    ViewData["Title"] = "OperacionSupervicionNoOrdenTrabajo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    select.form-control:not([size]):not([multiple]) {
+        height: 17px;
+        width: 160px;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+
+    div.container {
+        width: 80%;
+    }
+
+</style>
+
+<!-- Modal asignar ticket -->
+<div class="modal fade" id="ModalAsignarTicket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        Asignación del ticket a cuadrilla
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <p class="m-b-20">
+                                Cuadrilla: <strong><span id="TituloCuadrilla"></span></strong> <br />
+                                Usuario:  <strong><span id="TituloCuadrillaUsaurio"></span></strong>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NAsignacion_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-check">
+                                <label for="Modal_NAsignacion_Notificar" class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" id="Modal_NAsignacion_Notificar">
+                                    Notificar a IDC
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="DivAsignacionTicket">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal actualizar fecha de atencion -->
+<div class="modal fade" id="ModalFechaAtencion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        Solicitar nueva fecha de atención
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Fecha de atencion  </label>
+                                <input type="date" id="Modal_NuevaFecha_FechaAtencion" class="form-control floating-label" placeholder="Nueva fecha de atencion">
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NuevaFecha_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-check">
+                                <label for="Modal_NuevaFechaAtencion_Notificar" class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" id="Modal_NuevaFechaAtencion_Notificar">
+                                    Notificar
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="DivFechaAtencion">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal actualizar estatus ticket -->
+<div class="modal fade" id="ModalCambioEstatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Cambio de estatus del ticket a <strong><span id="TituloEstatusTicket"></span></strong> </h5>
+                    <p></p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NEstatusTicket_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label">Firma de confirmación</label>
+                                <canvas id="Firma" class="z-depth-left-1" width="570;"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-check">
+                                <label for="Modal_NEstatusTicket_Notificar" class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" id="Modal_NEstatusTicket_Notificar">
+                                    Notificar 
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="DivEstatusTicket">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Tickets en operación  </h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Proyecto </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Operación </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>
+                        Tickets en operación </h5>
+                    <p>Lista de tickets registrados aun no estan cerrados,  <code> selecciona el registro </code>  para mostrar mas detalles</p>
+                    <P style="text-align: right;">Los folios enmarcados con los colores representa </P>
+                    <div class="col-sm-12" style="text-align: right;">
+                        <i class="icofont icofont-ui-press" style="color:#cee99d;font-size: 100%;"><span style="font-family:Arial, Helvetica, sans-serif; color:black"> 1 día de retraso </span></i>
+                        <i class="icofont icofont-ui-press" style="color:#fac105;font-size: 100%;"><span style="font-family:Arial, Helvetica, sans-serif; color:black"> 2 días de retraso</span></i>
+                        <i class="icofont icofont-ui-press" style="color:#ee8787;font-size: 100%;"><span style="font-family:Arial, Helvetica, sans-serif; color:black"> Mayor o igual a 3 días de retraso</span></i>
+                    </div>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table stripe row-border order-column table-hover" id="mydatatable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        @*<th>Periodo </th>*@
+                                        <th style="background-color: #ffffff;">Folio</th>
+                                        <th> Asignado </th>
+                                        <th class="text-center">Tipo de servicio</th>
+                                        <th>Sucursal </th>
+                                        <th>Creación </th>
+                                        <th class="text-center">Fecha atención </th>
+                                        <th class="text-center">Tiempo de atención  </th>
+                                        <th>Cuadrilla </th>
+                                        <th class="text-center"> Usuario (asignado) </th>
+                                        <th>Status </th>
+                                        <th>Prioridad </th>
+                                        <th></th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Tickets != null)
+                                        {
+                                            foreach (var item in ViewBag.Tickets)
+                                            {
+                                                
+                                                    <tr>
+                                                        <!-- <td>1-2024</td> -->
+                                                        <td style="@(item.ColorFechaAtencion != null ? "background-color:"+item.ColorFechaAtencion : "background-color:#FFFFFF")">@item.Folio.Folio</td>
+                                                        <td>
+                                                            <select class="form-control" id="Ticket_AsignacionEmpresa@{ @item.Ticket.Id}" onchange="CambioAsignacionEmpresa(@item.Ticket.Id)">
+                                                                <option value="0" selected>Seleccionar</option>
+                                                                @{
+
+                                                                    if (ViewBag.CatAsigacionEmpresa != null)
+                                                                    {
+                                                                        foreach (var itemOp in ViewBag.CatAsigacionEmpresa)
+                                                                        {
+                                                                            if (@item.Cat_AsignacionEmpresa != null)
+                                                                            {
+                                                                                if (@item.Cat_AsignacionEmpresa.Id == @itemOp.Id)
+                                                                                {
+                                                                                    <option value="@itemOp.Id" selected>@itemOp.Nombre</option>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <option value="@itemOp.Id">@itemOp.Nombre</option>
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="@itemOp.Id">@itemOp.Nombre</option>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                        <td>@item.Ticket.Flujo.Nombre</td>
+                                                        <td>@item.Ticket.Sucursal.Nombre</td>
+                                                        <td>@Convert.ToDateTime(@item.Ticket.FechaRegistro).ToString("yyyy-MM-dd")</td>
+                                                        <td class="text-center">
+                                                            <span id="Ticket_NuevaFecha@{@item.Ticket.Id}">
+                                                                @{
+                                                                    if (@item.NuevaFecha > 0)
+                                                                    {
+                                                                        @Convert.ToDateTime(@item.NuevaFechaAtencion).ToString("yyyy-MM-dd");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @Convert.ToDateTime(@item.FechaAtencion.FechaAtencion).ToString("yyyy-MM-dd");
+                                                                    }
+                                                                }
+                                                            </span>
+                                                            <a href="" data-toggle="modal" data-target="#round-icon-Modal" onclick="CambioFechaAtencion(@item.Ticket.Id)">
+                                                                <i class="icofont icofont-edit"></i>
+                                                            </a>
+                                                            <div id="Ticket_NuevaFechaLabel@{@item.Ticket.Id}">
+                                                                @{
+                                                                    if (@item.NuevaFecha > 0)
+                                                                    {
+                                                                        <div class="label-main"><label class="label bg-warning">Por validar </label></div>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                            
+                                                        </td>
+                                                        <td>@item.TiempoAtencion</td>
+                                                        <td>
+
+                                                            <select class="form-control" id="Ticket_Cuadrilla@{@item.Ticket.Id}" onchange="CambioCuadrillaTicket(@item.Ticket.Id)" 
+                                                            @{
+                                                                if (@item.Ticket.Cat_EstatusTicket.Nombre != "Planeado")
+                                                                {
+                                                                    @Html.DisplayName("disabled");
+                                                                }
+                                                            } >
+                                                                <option value="0" selected>Seleccionar</option>
+                                                                @{
+
+                                                                    if (ViewBag.Cuadrillas != null)
+                                                                    {
+                                                                        foreach (var itemCuadrilla in ViewBag.Cuadrillas)
+                                                                        {
+                                                                            if (@item.Cuadrilla != null)
+                                                                            {
+                                                                                if (@item.Cuadrilla.Id == @itemCuadrilla.Id)
+                                                                                {
+                                                                                    <option value="@itemCuadrilla.Id" selected>@itemCuadrilla.Nombre</option>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <option value="@itemCuadrilla.Id">@itemCuadrilla.Nombre</option>
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="@itemCuadrilla.Id">@itemCuadrilla.Nombre</option>
+                                                                            }
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="form-control" id="Ticket_UsuarioAtencion@{  @item.Ticket.Id}" onchange="CambioUsuarioAtencion(@item.Ticket.Id)" @{
+                                                                if (@item.Ticket.Cat_EstatusTicket.Nombre != "Planeado")
+                                                                {
+                                                                    @Html.DisplayName("disabled")
+                                                                    ;
+                                                                }
+                                                            }>
+                                                                <option value="0" selected>Seleccionar</option>
+                                                                @{
+
+                                                                    if (@item.ListaCuadrilla != null)
+                                                                    {
+                                                                        foreach (var itemCuadrilla in @item.ListaCuadrilla)
+                                                                        {
+                                                                            if (@item.CuadrillaUsuario != null)
+                                                                            {
+                                                                                if (@itemCuadrilla.Usuario.Id == @item.CuadrillaUsuario.Usuario.Id)
+                                                                                {
+                                                                                    <option value="@itemCuadrilla.Usuario.Id" selected>@itemCuadrilla.Persona.Nombre @itemCuadrilla.Persona.ApellidoPaterno @itemCuadrilla.Persona.ApellidoMaterno</option>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                <option value="@itemCuadrilla.Usuario.Id">@itemCuadrilla.Persona.Nombre @itemCuadrilla.Persona.ApellidoPaterno @itemCuadrilla.Persona.ApellidoMaterno</option>
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            if (@item.Ticket.Cat_EstatusTicket.Nombre == "Realizado")
+                                                            {
+                                                                <select class="form-control" id="Ticket_EstatusTicket@{@item.Ticket.Id}" onchange="CambioEstatusTicket(@item.Ticket.Id)">
+                                                                <option value="0" selected>Seleccionar</option>
+                                                                @{
+
+                                                                    if (ViewBag.CatEstatusTicket != null)
+                                                                    {
+                                                                        foreach (var itemEstatus in ViewBag.CatEstatusTicket)
+                                                                        {
+                                                                            if (@item.Ticket.Cat_EstatusTicket.Id == @itemEstatus.Id)
+                                                                            {
+                                                                                <option value="@itemEstatus.Id" selected>@itemEstatus.Nombre</option>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="@itemEstatus.Id">@itemEstatus.Nombre</option>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </select>
+                                                            }
+                                                            else
+                                                            {
+                                                                <select class="form-control" id="Ticket_EstatusTicket@{@item.Ticket.Id}" onchange="CambioEstatusTicket(@item.Ticket.Id)" disabled>
+                                                                <option value="0" selected>Seleccionar</option>
+                                                                @{
+
+                                                                    if (ViewBag.CatEstatusTicket != null)
+                                                                    {
+                                                                        foreach (var itemEstatus in ViewBag.CatEstatusTicket)
+                                                                        {
+                                                                            if (@item.Ticket.Cat_EstatusTicket.Id == @itemEstatus.Id)
+                                                                            {
+                                                                                <option value="@itemEstatus.Id" selected>@itemEstatus.Nombre</option>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="@itemEstatus.Id">@itemEstatus.Nombre</option>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </select>
+                                                            }
+                                                        }
+                                                        
+                                                        </td>
+                                                        <td>
+                                                        <select class="form-control" id="Ticket_Prioridad@{
+                                                    @item.Ticket.Id
+}" onchange="CambioPrioridad(@item.Ticket.Id)">
+                                                                <option value="0" selected>Seleccionar</option>
+                                                                @{
+
+                                                                    if (ViewBag.CatPrioridad != null)
+                                                                    {
+                                                                        foreach (var itemPrioridad in ViewBag.CatPrioridad)
+                                                                        {
+                                                                            if (@item.Ticket.Cat_Prioridad.Id == @itemPrioridad.Id)
+                                                                            {
+                                                                                <option value="@itemPrioridad.Id" selected>@itemPrioridad.Nombre</option>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="@itemPrioridad.Id">@itemPrioridad.Nombre</option>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <button onclick="ConsultarTicket(@item.Ticket.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mostrar ticket">
+                                                                <i class="icofont icofont-eye-alt"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button onclick="EditarTicket(@item.Ticket.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar ticket ">
+                                                                <i class="icofont icofont-edit"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Main content ends -->
+<script src="~/js/ticket/ticket/_OperacionSupervicionNoOrdentrabajo.js"></script>

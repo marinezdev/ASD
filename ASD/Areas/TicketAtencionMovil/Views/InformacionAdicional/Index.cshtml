@@ -1,0 +1,232 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    input[type="color"] {
+        border-radius: 2px;
+    }
+
+    .content-footer .btn {
+        margin: 3px;
+    } 
+</style>
+
+
+<!-- Modal carga orden de trabajo -->
+<div class="modal fade" id="ModalCargaArchivo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Carga de archivo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12" id="DivCargaArchivo">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal" id="BtnCargaArchivo">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Ticket: @ViewBag.Ticket.Folio.Folio </h4>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text text-center"> Información adicional  </h5>
+                </div>
+                <div class="card-block" >
+                    <div class="row">
+                        <div class="col-sm-12  text-center">
+                            <h5 class="card-header-text text-center"> Video recorrido </h5>
+                            <p>Video recorrido 20 segundos despues de atender el ticket</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivoVideo()">Capturar video</button>
+                            <input id="FileArchivoVideo" type="file" style="visibility:hidden" onchange="ValidaUploadFile3(@ViewBag.Ticket.Ticket.Id)">
+                        </div>
+                        <!-- Single images starts -->
+                        <div class="col-md-12">
+                            <div id="VideoRecorridoDespues">
+
+                            </div>
+                        </div>
+                        <!-- Single images ends -->
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-12  text-center">
+                            <h5 class="card-header-text text-center"> Orden de trabajo </h5>
+                            <p>Imagen fotográfica de la orden de trabajo física </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivo()">Capturar imagen</button>
+                            <input id="FileArchivoOrdenTrabajo" type="file" style="visibility:hidden" onchange="ValidaUploadFile(@ViewBag.Ticket.Ticket.Id)">
+                        </div>
+                        <!-- Single images starts -->
+                        <div class="col-md-12">
+                            <div id="imagenOrdenTrabajo">
+
+                            </div>
+                        </div>
+                        <!-- Single images ends -->
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12  text-center">
+                            <h5 class="card-header-text text-center"> Archivos adicionales  </h5>
+                            <p>Carga archivos adicionales, xls, pdf, zip, etcétera </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivoAdicional()">Capturar archivo</button>
+                            <input id="FileArchivo" type="file" style="visibility:hidden" onchange="ValidaUploadFileAdicional(@ViewBag.Ticket.Ticket.Id)">
+                        </div>
+                        <div class="col-md-12">
+                            <div id="ListArchivos">
+                                @if (ViewBag.Archivos != null)
+                                {
+                                    <div class='col-sm-12 table-responsive'>
+                                        <table class='table text-center'>
+                                            <thead>
+                                                <tr>
+                                                    <th class='text-center'>Archivo</th>
+                                                    <th class='text-center'></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in ViewBag.Archivos)
+                                                {
+                                                    <tr>
+                                                        <td>@item.NmOriginal</td>
+                                                        <td>
+                                                            <button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarArchivo(@item.Id, @ViewBag.Ticket.Ticket.Id)'>
+                                                                <i class='icofont icofont-trash'></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                }
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12  text-center">
+                            <h5 class="card-header-text text-center"> Firma electrónica   </h5>
+                            <p>Captura firma electrónica (quien atendió el ticket)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row container">
+                    <label for="example-color-input" class="col-xs-2 col-sm-1 col-form-label form-control-label">
+                        Color:
+                    </label>
+                    <div class="col-sm-10">
+                        <input type="color" id="colorPicker" name="favcolor" value="#000000">
+                    </div>
+                </div>
+
+                <div class="card-block" id="ContenedorFirma" style="display: flex;justify-content: center;align-items: center;">
+                    <div class="row">
+                        @{
+                            if (ViewBag.Info != null && ViewBag.Info.Firma != null)
+                            {
+                                <img src="data:@ViewBag.Info.Firma" alt="Imagen" style="width:100%" />
+                            }
+                            else
+                            {
+                                <canvas id="FirmaAtencion" class="z-depth-left-1"></canvas>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="content-footer col-12" style="display: flex;justify-content: center;align-items: center;">
+                        @{
+                            if (ViewBag.Info != null && ViewBag.Info.Firma != null)
+                            {
+                                <button onclick="EliminarFirma(@ViewBag.Info.Id)" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                    <i class="icofont icofont-brush"></i><span class="m-l-12"> Cambiar firma </span>
+                                </button>
+                            }
+                            else
+                            {
+                                <button onclick="atras()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                    <i class="icofont icofont-undo"></i><span class="m-l-12"> Deshacer </span>
+                                </button>
+
+                                <button onclick="LimpiarFirma()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                    <i class="icofont icofont-brush"></i><span class="m-l-12"> Limpiar </span>
+                                </button>
+                            }
+                        }
+
+                    </div>
+                   
+                </div>
+                <br />
+                <div class="card-footer">
+                    <div class="row">
+                        <button type="submit" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="Anterior(@ViewBag.Ticket.Ticket.Id)">
+                            <i class="icofont icofont-arrow-left"></i><span class="m-l-12"> Anterior </span>
+                        </button>
+
+                        <button type="button" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="saveSignature(@ViewBag.Ticket.Ticket.Id)">
+                            <span class="m-l-12"> Siguiente </span> <i class="icofont icofont-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            CargaVideoInicial(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+            CargaImagenesInicial(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+        }, 1000); // 2 segundos de retardo
+    });
+
+</script>
+<!-- Main content ends -->
+<script src="~/js/ticketatencion/movil/_informacionadicional.js"></script>

@@ -1,0 +1,1307 @@
+﻿@{
+    ViewData["Title"] = "Editar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    input[type="color"] {
+        border-radius: 2px;
+    }
+
+    .content-footer .btn {
+        margin: 3px;
+    }
+
+    .container {
+        max-width: 1534px;
+    }
+
+    .md-tabs .nav-item {
+        background-color: #fff;
+        width: calc(100% / 5);
+        text-align: center;
+    }
+
+    .img-fluid{
+        width:30%;
+    }
+    video{
+        width:20%;
+    }
+
+    .imgAVD{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Editar Ticket</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Edición de ticket</a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!------------>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Editar Ticket</h5>
+                    <p>Edita la información del ticket seleccionado</p>
+                </div>
+                <div class="card-block">
+                    @*TABS EN EL SISTEMA*@
+                    <ul class="nav nav-tabs md-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a id="1" class="nav-link active" data-toggle="tab" href="#Ticket" role="tab"><i class="icofont icofont-info-circle"></i> Información del ticket</a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a id="2" class="nav-link" data-toggle="tab" href="#Firmas" role="tab"><i class="icofont icofont-law-document"></i> Firmas </a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a id="3" class="nav-link" data-toggle="tab" href="#FAntes" role="tab"><i class="icofont icofont-image"></i> Fotos Antes</a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a id="4" class="nav-link" data-toggle="tab" href="#AvsD" role="tab"><i class="icofont icofont-image"></i> Fotos Despues</a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a id="5" class="nav-link" data-toggle="tab" href="#Videos" role="tab"><i class="icofont icofont-video-alt"></i> Videos</a>
+                            <div class="slide"></div>
+                        </li>
+                    </ul>
+                    @*CONTENIDO DEL TAB*@
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="Ticket" role="tabpanel">
+                            <div class="container-fluid">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-block">
+
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleSelect1" class="form-control-label"> Tipo de servicio </label>
+                                                        <select class="form-control js-example-basic-single" id="Ticket_TipoServicio" onchange="CargaTipoServicio();" disabled>
+                                                            <option value="0" selected>Seleccionar</option>
+                                                            @{
+                                                                if (ViewBag.Flujos != null)
+                                                                {
+                                                                    foreach (var item in ViewBag.Flujos)
+                                                                    {
+                                                                        <option value="@item.Id" @(item.Id == ViewBag.Ticket.Ticket.Flujo.Id ? "selected" : "")>@item.Nombre</option>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleSelect1" class="form-control-label">* Titulo (Asunto) </label>
+                                                        <input type="text" class="form-control" id="Ticket_Titulo" value="@ViewBag.Ticket.Ticket.Titulo" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleSelect1" class="form-control-label">* Prioridad </label>
+                                                        <select class="form-control js-example-basic-single" id="Ticket_Prioridad">
+                                                            <option value="0" selected>Seleccionar</option>
+                                                            @{
+                                                                if (ViewBag.CatPrioridad != null)
+                                                                {
+                                                                    foreach (var item in ViewBag.CatPrioridad)
+                                                                    {
+                                                                        <option value="@item.Id" @(item.Id == ViewBag.Ticket.Ticket.Cat_Prioridad.Id ? "selected" : "")>@item.Nombre</option>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 container">
+
+                                                    <button onclick="GuardarTicket()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                                        <i class="icofont icofont-save "></i><span class="m-l-12"> Guardar </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="Firmas" role="tabpanel">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="card-block" id="ContenedorFirma" style="display: flex;justify-content: center;align-items: center;">
+
+                                            <div class="row">
+                                                <h5 style="text-align:center">Firma de IDC</h5>
+                                                @{
+                                                    if (ViewBag.Info != null && ViewBag.Info.Firma != null)
+                                                    {
+                                                        <img src="data:@ViewBag.Info.Firma" alt="Imagen" style="width:100%" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <h6 style="margin-top: 50%;margin-bottom: 50%;">
+                                                            Documento sin firmar
+                                                        </h6>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="content-footer col-12" style="display: flex;justify-content: center;align-items: center;">
+                                                @{
+                                                    if (ViewBag.Info != null && ViewBag.Info.Firma != null)
+                                                    {
+                                                        <button onclick="InfoFirmaIDC(@ViewBag.Info.Id)" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home" data-toggle="modal" data-target="#ModalCambioFrimaIDC">
+                                                            <i class="icofont icofont-spinner-alt-5"></i><span class="m-l-12"> Actualizar firma </span>
+                                                        </button>
+                                                    }
+                                                }
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-6">
+                                        <div class="card-block" id="ContenedorFirmaC" style="display: flex;justify-content: center;align-items: center;">
+                                            <div class="row">
+                                                <h5 style="text-align:center">Firma del Cliente</h5>
+                                                @{
+                                                    if (ViewBag.InfoC != null && ViewBag.InfoC.Firma != null)
+                                                    {
+                                                        <img src="data:@ViewBag.InfoC.Firma" alt="Imagen" style="width:100%" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <h6 style="margin-top: 50%;margin-bottom: 50%;">
+                                                            Documento sin firmar
+                                                        </h6>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="content-footer col-12" style="display: flex;justify-content: center;align-items: center;">
+                                                @{
+                                                    if (ViewBag.InfoC != null && ViewBag.InfoC.Firma != null)
+                                                    {
+                                                        <button onclick="InfoFirmaC(@ViewBag.InfoC.Id)" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home" data-toggle="modal" data-target="#ModalCambioFirmaC">
+                                                            <i class="icofont icofont-spinner-alt-5"></i><span class="m-l-12"> Actualizar firma </span>
+                                                        </button>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="FAntes" role="tabpanel">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-header">
+                                            <h5 class="card-header-text text-center"> Fotos Antes del servicio   </h5>
+                                            <p>Las imágenes fotográficas son obligatorias por equipo, separadas por el numero de serie </p>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="row">
+                                                <div id="ImagenesEquipoImgAntes">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="AvsD" role="tabpanel">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-header">
+                                            <h5 class="card-header-text text-center"> Fotos después del servicio   </h5>
+                                            <p>Las imágenes fotográficas son obligatorias por equipo, separadas por el numero de serie </p>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="row">
+                                                <div id="ImagenesEquipoImg">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="Videos" role="tabpanel">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-header">
+                                            @* <h5 class="card-header-text">Prioridad</h5> *@
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="row">
+                                                <div class="col-sm-12  text-center">
+                                                    <h5 class="card-header-text text-center"> Video recorrido </h5>
+                                                    <p>Video recorrido 20 segundos despues de atender el ticket</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivoVideo()">Capturar video</button>
+                                                    <input id="FileArchivoVideo" type="file" style="visibility:hidden" onchange="ValidaUploadFile3(@ViewBag.Ticket.Ticket.Id)">
+                                                </div>
+                                                <!-- Single images starts -->
+                                                <div class="col-md-12">
+                                                    <div id="VideoRecorridoDespues">
+                                                    </div>
+                                                </div>
+                                                <!-- Single images ends -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal actualizar Firma IDC -->
+<div class="modal fade" id="ModalCambioFrimaIDC" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="FIDC">
+                <div class="modal-header">
+                    <h5 class="modal-title"> <strong><span>Actualizar Firma IDC</span></strong> </h5>
+                    <p></p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label">Esta firma sustituira la actual</label>
+                                <canvas id="FirmaAtencion" class="z-depth-left-1" width="570;"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" id="FFIDC">
+                    <button onclick="LimpiarFirma()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-brush"></i><span class="m-l-12"> Limpiar </span>
+                    </button>
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button id="UpdateIDC" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Actualizar </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal actualizar Firma Cliente -->
+<div class="modal fade" id="ModalCambioFirmaC" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="FIDC">
+                <div class="modal-header">
+                    <h5 class="modal-title"> <strong><span>Actualizar Firma del Cliente</span></strong> </h5>
+                    <p></p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label">Esta firma sustituira la actual.</label>
+                                <canvas id="FirmaAtencionC" class="z-depth-left-1" width="570;"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" id="FFIDC">
+                    <button onclick="LimpiarFirmaC()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-brush"></i><span class="m-l-12"> Limpiar </span>
+                    </button>
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button id="UpdateC" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Actualizar </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para cargar imagenes del despues -->
+<div class="modal fade" id="ModalCargaArchivo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Carga de archivo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12" id="DivCargaArchivo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal" id="BtnCargaArchivo">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            // Imagenes A vs D
+            CargaImagenesIniciales(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+
+            // VIDEO FINAL
+            CargaVideoInicial(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+            // Imagenes Antes
+            CargaRutinaInical(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+
+        }, 1000); // 2 segundos de retardo
+    });
+
+    function CargaEquipos() {
+        var IdSucursal = $("#Ticket_Sucursal option:selected").val();
+
+        const _modelo = {
+            Id: IdSucursal,
+        };
+
+        fetch("/Inventario/Equipo/Equipo_Seleccionar_IdSucursal", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+
+                $("#Ticket_Equipo").empty();
+
+                var option = $(document.createElement('option'));
+                option.text("SELECCIONAR");
+                option.val(0);
+
+                $("#Ticket_Equipo").append(option);
+
+                if (res.length > 0) {
+                    $(res).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.serie + " - " + this.cat_Modelo.nombre.toUpperCase());
+                        option.val(this.id);
+
+                        $("#Ticket_Equipo").append(option);
+                    });
+                }
+
+            });
+    }
+    /*********************PROCESOS ACTUALIZAR FIRMA IDC************************************** */
+    let signaturePad;
+    let signaturePadC;
+    $(document).ready(function () {
+        const canvas = $("#FirmaAtencion");
+        signaturePad = new SignaturePad(canvas[0]);
+        const canvas2 = $("#FirmaAtencionC");
+        signaturePadC = new SignaturePad(canvas2[0]);
+
+        var tabValue = obtenerValorParametro('tab');
+        if (tabValue !== null) {
+            $('#' + tabValue).trigger('click');
+        }
+    });
+    function InfoFirmaIDC(Id) {
+        $("#UpdateIDC").off("click").on("click", function () {
+            ActualizarFirmaIDC(Id);
+        });
+    }
+    function LimpiarFirma() {
+        signaturePad.clear();
+    }
+    function ActualizarFirmaIDC(Id) {
+        if (signaturePad.isEmpty()) {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "iconClass": "toast-error"
+            };
+
+            toastr.error("Por favor, proporcione una firma primero.", "Notificación");
+        }
+        else {
+            const InformacionAdicional = {
+                IdTicket: @ViewBag.Ticket.Ticket.Id,
+                Id: Id,
+                Firma: signaturePad.toDataURL()
+            };
+            var cont = obtenerValorParametro('cont');
+            fetch("/Administracion/FirmaElectronica/UpdateIDC_Firma", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(InformacionAdicional)
+            })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.id === 1) {
+
+                        swal({
+                            title: "Exito",
+                            text: "La nueva firma ha sido registrada",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/update.png",
+                            buttons: true,
+                            dangerMode: true,
+                        },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                    window.location.href = '/Ticket/Ticket/Editar?cont=' + cont + '&tab=2';
+                                }
+                            }
+                        )
+
+                    }
+                    else {
+                        swal({
+                            title: "Error",
+                            text: "No es posible realizar la operación seleccionada!",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then(willDelete => {
+                        });
+                    }
+                });
+        }
+    }
+    //// FIRMA DEL CLIENTE
+    function LimpiarFirmaC() {
+        signaturePadC.clear();
+    }
+    function InfoFirmaC(Id) {
+        $("#UpdateC").off("click").on("click", function () {
+            ActualizarFirmaC(Id);
+        });
+    }
+    function ActualizarFirmaC(Id) {
+        if (signaturePadC.isEmpty()) {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "iconClass": "toast-error"
+            };
+
+            toastr.error("Por favor, proporcione una firma primero.", "Notificación");
+        }
+        else {
+            const InformacionAdicional = {
+                IdTicket: @ViewBag.Ticket.Ticket.Id,
+                Firma: signaturePadC.toDataURL(),
+                Id: Id
+            };
+            var cont = obtenerValorParametro('cont');
+            fetch("/Administracion/FirmaElectronica/UpdateCliente_Firma", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(InformacionAdicional)
+            })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.id === 1) {
+
+                        swal({
+                            title: "Exito",
+                            text: "La nueva firma ha sido registrada",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/update.png",
+                            buttons: true,
+                            dangerMode: true,
+                        },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                    window.location.href = '/Ticket/Ticket/Editar?cont=' + cont + '&tab=2';
+                                }
+                            }
+                        );
+
+                    }
+                    else {
+                        swal({
+                            title: "Error",
+                            text: "No es posible realizar la operación seleccionada!",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                            .then(willDelete => {
+                            });
+                    }
+                });
+        }
+    }
+    function GuardarTicket() {
+
+        const Cat_Prioridad = {
+            Id: $("#Ticket_Prioridad option:selected").val(),
+        };
+
+        const _model = {
+            Id: @ViewBag.Ticket.Ticket.Id,
+            Cat_Prioridad: Cat_Prioridad,
+            Titulo: $("#Ticket_Titulo").val()
+        };
+
+         var cont = obtenerValorParametro('cont');
+        
+
+        fetch("/Ticket/Ticket/UpdateTicket", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_model)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.id == 1) {
+                    swal({
+                        title: "Actualizado!",
+                        text: "El registro ha sido Actualizado.",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/update.png",
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = '/Ticket/Ticket/Editar?cont=' + cont + '&tab=1';
+                            }
+                        });
+                } else {
+                    swal({
+                        title: "Registro no Actualizado",
+                        text: "No es posible realizar la operación seleccionada!",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                    });
+                }
+            });
+
+    }
+
+    
+    // Cargar imagenes antes vs despues
+    function CargaImagenesIniciales(_model) {
+        fetch("/Ticket/TicketEquipoImagen/GetTicketEquipoImagen_Seleccionar_IdTicketEquipo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_model)
+        })
+            .then(res => res.json())
+            .then(res => {
+
+                if (res != null) {
+                    var html = "";
+                    var labelEquipoImg = "";
+
+                    for (let i = 0; i < res.length; i++) {
+                        // console.log(res);
+
+                        if (res[i].ticketEquipoImagen != null) {
+
+                            for (let a = 0; a < res[i].ticketEquipoImagen.length; a++) {
+                                var imagen = "";
+                                var imagenvs = "";
+                                if (res[i].ticketEquipoImagen[a] != null) {
+
+                                    imagen += `
+                                        <div class="row">
+                                            <div class="col-sm-6 text-right">
+                                                </div>
+                                            <div class="col-sm-6 text-right">
+                                                <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivo(${res[i].ticketEquipoImagen[a].id})"> Capturar imagen</button>
+                                                <input id="FileArchivo${res[i].ticketEquipoImagen[a].id}" type="file" onchange="ValidaUploadFile(${res[i].ticketEquipoImagen[a].id}, ${res[i].id})" style="visibility:hidden">
+                                            </div>
+                                        </div>
+
+                                        `;
+
+                                    if (res[i].ticketEquipoImagen[a].imagenVS != null) {
+                                        imagenvs += `
+                                    <div id="image${res[i].ticketEquipoImagen[a].id}">
+                                        <a class="imgAVD" href='${res[i].ticketEquipoImagen[a].imagenVS}' data-lightbox='roadtrip'>
+                                            <img src='${res[i].ticketEquipoImagen[a].imagenVS}' class='img-fluid' alt='' />
+                                        </a>
+                                    </div>
+                                    `;
+                                    }
+
+                                    if (res[i].ticketEquipoImagen[a].imagen != null) {
+                                        imagen += `
+                                <div class='card'>
+                                    <div class='card-block'>
+                                        <div class='row'>
+                                            <div class='col-md-6 col-xs-6 text-center'>
+                                                <p>Foto antes</p>
+                                                    <a class="imgAVD" href='${res[i].ticketEquipoImagen[a].imagen}' data-lightbox='roadtrip'>
+                                                    <img src='${res[i].ticketEquipoImagen[a].imagen}' class='img-fluid' alt='' />
+                                                </a>
+                                            </div>
+                                            <div class='col-md-6 col-xs-6 text-center'>
+                                                <p>Foto Despues</p>
+                                                ${imagenvs}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                                    }
+                                }
+
+                                labelEquipoImg += `
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="m-b-10">Imagen: <strong> ${res[i].ticketEquipoImagen[a].cat_EquipoImagen.nombre} </strong></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                ${imagen}
+                            </div>
+                        </div>
+                        `;
+                            }
+
+
+                        }
+
+                        html += `
+                    <div class="col-sm-12">
+                        <div class="panel panel-primary" style="border-color: #2196F3;">
+                            <div class="panel-heading bg-primary">
+                                 ${res[i].equipo.serie}
+                            </div>
+                            <div class="panel-body" style="padding: 15px;">
+                                ${labelEquipoImg}
+                            </div>
+                            <div class="panel-footer txt-primary">
+                                 ${res[i].equipo.serie}
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    }
+                    $("#ImagenesEquipoImg").html(html);
+                }
+
+            });
+    }
+    // cargar video final
+    function CargaVideoInicial(_model) {
+
+        fetch("/Ticket/SucursalVideo/GetSucursalVideo_Seleccionar_IdTikcet", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_model)
+        })
+            .then(res => res.json())
+            .then(res => {
+
+                if (res != null) {
+                    const videoData = res.filter(item => item.cat_SucursalVideo);
+                    const videoMap = {
+                        "2": $("#VideoRecorridoDespues"),
+                    };
+
+                    for (const item of videoData) {
+                        const videoContainer = videoMap[item.cat_SucursalVideo.id];
+                        if (videoContainer) {
+                            videoContainer.html(`
+                    <div class="card">
+                        <div class="card-block text-center">
+                            <div class="row">
+                                <div class="col-sm-12 text-center">
+                                    <video width="100%" controls >
+                                        <source src="${item.nmArchivo}" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                        }
+                    }
+                }
+            });
+    }
+    // Cargar imagenes antes
+    function CargaRutinaInical(_model) {
+        fetch("/Ticket/TicketEquipoImagen/GetTicketEquipoImagen_Seleccionar_IdTicketEquipo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_model)
+        })
+            .then(res => res.json())
+            .then(res => {
+
+                if (res != null) {
+                    var html = "";
+                    var labelEquipoImg = "";
+
+                    for (let i = 0; i < res.length; i++) {
+                        console.log(res);
+
+                        if (res[i].ticketEquipoImagen != null) {
+
+                            for (let a = 0; a < res[i].ticketEquipoImagen.length; a++) {
+                                var imagen = "";
+                                if (res[i].ticketEquipoImagen[a] != null) {
+
+                                    imagen += `
+                                        <div class="col-sm-12 text-right">
+                                                <button type='button' class='btn btn-primary waves-effect waves-light' onclick="SubirArchivoAntes(${res[i].ticketEquipoImagen[a].id})"> Capturar imagen</button>
+                                                    <input id="FileArchivoAntes${res[i].ticketEquipoImagen[a].id}" type="file" onchange="ValidaUploadFileAntes(${res[i].ticketEquipoImagen[a].id}, ${res[i].id})" style="visibility:hidden">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div id="imagen${res[i].ticketEquipoImagen[a].id}"> 
+                                        `;
+
+                                    if (res[i].ticketEquipoImagen[a].imagen != null) {
+                                        imagen += `
+                                    <div class='card'>
+                                        <div class='card-block'>
+                                            <div class='row'>
+                                                <div class='col-md-12 col-xs-12 text-center'>
+                                                    <p>Foto antes</p>
+                                                        <a class="imgAVD" href='${res[i].ticketEquipoImagen[a].imagen}' data-lightbox='roadtrip'>
+                                                        <img src='${res[i].ticketEquipoImagen[a].imagen}' class='img-fluid' alt='' />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `;
+                                    }
+
+                                    imagen += `</div>
+                                        </div>
+                                    `;
+                                }
+
+                                labelEquipoImg += `
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="m-b-10">Imagen: <strong> ${res[i].ticketEquipoImagen[a].cat_EquipoImagen.nombre} </strong></label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                ${imagen}
+                            </div>
+                            `;
+                            }
+                        }
+
+                        html += `
+                    <div class="col-sm-12">
+                        <div class="panel panel-primary" style="border-color: #2196F3;">
+                            <div class="panel-heading bg-primary">
+                                 ${res[i].equipo.serie}
+                            </div>
+                            <div class="panel-body" style="padding: 15px;">
+                                ${labelEquipoImg}
+                            </div>
+                            <div class="panel-footer txt-primary">
+                                 ${res[i].equipo.serie}
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    }
+                    $("#ImagenesEquipoImgAntes").html(html);
+                }
+
+            });
+    }
+
+
+  // PROCESOS IMAGENES antes vs despues
+    function SubirArchivo(Id) {
+        $("#FileArchivo" + Id).click();
+    }
+    function ValidaUploadFile(Id, IdTicket) {
+
+        var fileInput = document.getElementById('FileArchivo' + Id);
+
+        if (fileInput.files.length > 0) {
+
+            for (i = 0; i < fileInput.files.length; i++) {
+                var Formato = "";
+                var Carga = false;
+                var ext = fileInput.files[i].name.split('.').pop();
+                Extencion = fileInput.files[i].name.split('.').pop();
+
+                // Convertimos en minúscula porque
+                // la extensión del archivo puede estar en mayúscula
+                ext = ext.toLowerCase();
+
+                if (ext == 'png' || ext == 'jpg' || ext == 'jpeg') {
+                    Carga = true;
+                } else {
+                    Carga = false;
+                    Formato = ext;
+                    /*break;*/
+                }
+
+                if (Carga) {
+                    var Div = "<div class='col-md-12 col-lg-12'>" +
+                        "<progress id='progressBar' style='width:100%; height: 30px;' value='0' max='100'></progress>" +
+                        "</div>";
+
+                    $("#DivCargaArchivo").html(Div);
+                    $("#ModalCargaArchivo").modal("show");
+
+                    UploadFile(Id, IdTicket);
+
+                } else {
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "showDuration": "500",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "iconClass": "toast-error"
+                    };
+
+                    toastr.error("Intentas cargar un formato no permitido: <strong>" + Formato + "</strong> Formato de archivo permitido: <strong>.png, .jpg, jpeg </strong>", "Notificacion");
+                }
+            }
+        }
+    }
+    function UploadFile(Id, IdTicket) {
+        var progressBar = document.getElementById('progressBar');
+        var formData = new FormData();
+        var fileInput = document.getElementById('FileArchivo' + Id);
+
+        formData.append('file', fileInput.files[0]);
+        formData.append('IdTicket', IdTicket);
+        formData.append('IdTicketEquipoImagen', Id);
+
+        fetch('/Ticket/TicketEquipoImagen/UpdateTicketEquipoImagen_Actualizar_ImagenVS', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                // Puedes necesitar configurar los encabezados según tu API
+            },
+            // Importante: Desactiva el caché para evitar problemas de lectura de FormData
+            cache: 'no-cache',
+        })
+            .then(response => {
+
+                var total = response.headers.get('Content-Length');
+                var reader = response.body.getReader();
+                var loaded = 0;
+
+                return reader.read().then(function process(result) {
+                    if (result.done) {
+
+                        $("#BtnCargaArchivo").click();
+
+                        // Carga completada
+                        console.log('Carga completada');
+                        //var Id = response.headers.get('Id');
+
+                        $('#image' + Id).html("");
+                        ////// id de la nueva imagen
+                        CargaImagen(Id);
+
+                        return;
+                    }
+
+                    loaded += result.value.length;
+
+                    progressBar.value = (loaded / total) * 100;
+
+                    // Continuar leyendo el siguiente fragmento del cuerpo de la respuesta
+                    return reader.read().then(process);
+                });
+            })
+            .then(data => {
+                /*console.log('Éxito:', data);*/
+            })
+            .catch(error => {
+                /* console.error('Error:', error);*/
+            });
+    }
+    function CargaImagen(Id) {
+
+        var protocol = window.location.protocol;
+        var host = window.location.host;
+
+        var image = new Image();
+        var src = protocol + "//" + host + "/Ticket/TicketEquipoImagen/ImageVSView?cont=" + Id;
+        image.src = src;
+
+        var html =
+            "<a href='" + src + "' data-lightbox='roadtrip'>" +
+            "<img src='" + src + "' class='img-fluid' alt='' />" +
+            "</a>";
+
+        $('#image' + Id).append(html);
+    }
+
+    // PROCEASAR IAMGENES ANTES
+    function SubirArchivoAntes(Id) {
+        $("#FileArchivoAntes" + Id).click();
+    }
+    function ValidaUploadFileAntes(Id, IdTicket) {
+        var fileInput = document.getElementById('FileArchivoAntes' + Id);
+
+        if (fileInput.files.length > 0) {
+
+            for (i = 0; i < fileInput.files.length; i++) {
+                var Formato = "";
+                var Carga = false;
+                var ext = fileInput.files[i].name.split('.').pop();
+                Extencion = fileInput.files[i].name.split('.').pop();
+
+                // Convertimos en minúscula porque
+                // la extensión del archivo puede estar en mayúscula
+                ext = ext.toLowerCase();
+
+                if (ext == 'png' || ext == 'jpg' || ext == 'jpeg') {
+                    Carga = true;
+                } else {
+                    Carga = false;
+                    Formato = ext;
+                    /*break;*/
+                }
+
+                if (Carga) {
+                    var Div = "<div class='col-md-12 col-lg-12'>" +
+                        "<progress id='progressBar' style='width:100%; height: 30px;' value='0' max='100'></progress>" +
+                        "</div>";
+
+                    $("#DivCargaArchivo").html(Div);
+                    $("#ModalCargaArchivo").modal("show");
+
+                    UploadFileAntes(Id, IdTicket);
+
+                } else {
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "showDuration": "500",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "iconClass": "toast-error"
+                    };
+
+                    toastr.error("Intentas cargar un formato no permitido: <strong>" + Formato + "</strong> Formato de archivo permitido: <strong>.png, .jpg, jpeg </strong>", "Notificacion");
+                }
+            }
+        }
+    }
+    function UploadFileAntes(Id, IdTicket) {
+        var progressBar = document.getElementById('progressBar');
+        var formData = new FormData();
+        var fileInput = document.getElementById('FileArchivoAntes' + Id);
+
+        formData.append('file', fileInput.files[0]);
+        formData.append('IdTicket', IdTicket);
+        formData.append('IdTicketEquipoImagen', Id);
+
+        fetch('/Ticket/TicketEquipoImagen/UpdateTicketEquipoImagen_Actualizar', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                // Puedes necesitar configurar los encabezados según tu API
+            },
+            // Importante: Desactiva el caché para evitar problemas de lectura de FormData
+            cache: 'no-cache',
+        })
+            .then(response => {
+
+                var total = response.headers.get('Content-Length');
+                var reader = response.body.getReader();
+                var loaded = 0;
+
+                return reader.read().then(function process(result) {
+                    if (result.done) {
+
+                        $("#BtnCargaArchivo").click();
+
+                        // Carga completada
+                        console.log('Carga completada');
+                        //var Id = response.headers.get('Id');
+
+                        $('#image' + Id).html("");
+                        //// id de la nueva imagen
+                        // CargaImagenAntes(Id); COMENTADO POR EL MOMENTO
+                        var cont = obtenerValorParametro('cont');
+
+                        window.location.href = '/Ticket/Ticket/Editar?cont=' + cont + '&tab=3';
+
+
+                        return;
+                    }
+
+                    loaded += result.value.length;
+
+                    progressBar.value = (loaded / total) * 100;
+
+                    // Continuar leyendo el siguiente fragmento del cuerpo de la respuesta
+                    return reader.read().then(process);
+                });
+            })
+            .then(data => {
+                /*console.log('Éxito:', data);*/
+            })
+            .catch(error => {
+                /* console.error('Error:', error);*/
+            });
+    }
+
+    // function CargaImagenAntes(Id) {
+
+    //     var protocol = window.location.protocol;
+    //     var host = window.location.host;
+
+    //     var image = new Image();
+    //     var src = protocol + "//" + host + "/Ticket/TicketEquipoImagen/ImageView?cont=" + Id;
+    //     image.src = src;
+
+
+    //     var html = "<div class='card'>" +
+    //         "<div class='card-block'>" +
+    //         "<div class='row'>" +
+    //         "<div class='col-xl-2 col-lg-3 col-sm-3 col-xs-12'>" +
+    //         "<a href='" + src + "' data-lightbox='roadtrip'>" +
+    //         "<img src='" + src + "' class='img-fluid' alt='' />" +
+    //         "</a>" +
+    //         "</div>" +
+    //         "</div>" +
+    //         "</div>" +
+    //         "</div>";
+
+    //     $('#image' + Id).append(html);
+    // }
+
+    //Proceso video
+    function SubirArchivoVideo() {
+        $("#FileArchivoVideo").click();
+    }
+    function ValidaUploadFile3(Id) {
+        var fileInput = document.getElementById('FileArchivoVideo');
+
+        if (fileInput.files.length > 0) {
+
+            for (i = 0; i < fileInput.files.length; i++) {
+                var Formato = "";
+                var Carga = false;
+                var ext = fileInput.files[i].name.split('.').pop();
+                Extencion = fileInput.files[i].name.split('.').pop();
+
+                // Convertimos en min�scula porque
+                // la extensi�n del archivo puede estar en may�scula
+                ext = ext.toLowerCase();
+
+                if (ext == 'mp4' || ext == 'mov' || ext == 'wmv' || ext == 'avi') {
+                    Carga = true;
+                } else {
+                    Carga = false;
+                    Formato = ext;
+                    /*break;*/
+                }
+
+                if (Carga) {
+                    var Div = "<div class='col-md-12 col-lg-12'>" +
+                        "<progress id='progressBar' style='width:100%; height: 30px;' value='0' max='100'></progress>" +
+                        "</div>";
+
+                    $("#DivCargaArchivo").html(Div);
+                    $("#ModalCargaArchivo").modal("show");
+
+                    UploadFile3(Id);
+
+                } else {
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "showDuration": "500",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "iconClass": "toast-error"
+                    };
+
+                    toastr.error("Intentas cargar un formato no permitido: <strong>" + Formato + "</strong> Formato de archivo permitido: <strong>.mp4, .mov, .wmv, .avi </strong>", "Notificacion");
+                }
+            }
+        }
+    }
+    function UploadFile3(Id) {
+
+        var progressBar = document.getElementById('progressBar');
+        var formData = new FormData();
+        var fileInput = document.getElementById('FileArchivoVideo');
+
+        formData.append('file', fileInput.files[0]);
+        formData.append('IdTicket', Id);
+        // Valor definido en la base de datos
+        formData.append('Idtipo', 2);
+
+        fetch('/Ticket/SucursalVideo/CreateSucursalVideo', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                // Puedes necesitar configurar los encabezados seg�n tu API
+            },
+            // Importante: Desactiva el cach� para evitar problemas de lectura de FormData
+            cache: 'no-cache',
+        })
+            .then(response => {
+
+                var total = response.headers.get('Content-Length');
+                var reader = response.body.getReader();
+                var loaded = 0;
+
+                return reader.read().then(function process(result) {
+                    if (result.done) {
+
+
+                        $("#BtnCargaArchivo").click();
+
+                        // Carga completada
+                        console.log('Carga completada');
+                        var Id = response.headers.get('Id');
+
+                        $('#VideoRecorridoDespues').html("");
+                        // id de la nueva imagen
+                        CargaVideo(Id);
+                        //console.log(Id);
+                        //console.log("id del ticket: " + Id)
+
+                        return;
+                    }
+
+                    loaded += result.value.length;
+
+                    progressBar.value = (loaded / total) * 100;
+
+                    // Continuar leyendo el siguiente fragmento del cuerpo de la respuesta
+                    return reader.read().then(process);
+                });
+            })
+            .then(data => {
+                /*console.log('�xito:', data);*/
+            })
+            .catch(error => {
+                /* console.error('Error:', error);*/
+            });
+    }
+    function CargaVideo(Id) {
+
+        var protocol = window.location.protocol;
+        var host = window.location.host;
+
+        var image = new Image();
+        var src = protocol + "//" + host + "/Ticket/SucursalVideo/VideoView?cont=" + Id;
+        image.src = src;
+
+        var html = "<div class='card'>" +
+            "<div class='card-block'>" +
+            "<div class='row'>" +
+            "<div class='col-sm-12 col-xs-12'>" +
+            "<video width='100%' controls >" +
+            "<source src='" + src + "' type='video/mp4'>" +
+            "</video>" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "</div>";
+
+        $('#VideoRecorridoDespues').append(html);
+    }
+
+    function obtenerValorParametro(nombreParametro) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(nombreParametro);
+    }
+</script>

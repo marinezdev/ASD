@@ -1,0 +1,114 @@
+﻿@model IEnumerable<ASD.Areas.Ticket.Models.Consulta.CTicketViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "MisTickets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    select.form-control:not([size]):not([multiple]) {
+        height: 17px;
+        width: 160px;
+    }
+
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+ 
+    div.container {
+        width: 80%;
+    }
+
+</style>
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Mis Tickets</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Proyecto </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Tickets </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>Mis tickets
+                    </h5>
+                    <p>Lista de tickets registrados por tu usuario.,  <code> selecciona el registro </code>  para mostrar mas detalles</p>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table stripe row-border order-column table-hover" id="mydatatable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Folio</th>
+                                        <th>Tipo de servicio</th>
+                                        <th>Sucursal </th>
+                                        <th>Creación </th>
+                                        <th>Fecha atención </th>
+                                        <th>Tiempo de solución </th>
+                                        <th>Status </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Tickets != null)
+                                        {
+                                            foreach (var item in ViewBag.Tickets)
+                                            {
+                                                <tr>
+                                                    <td>@item.Folio.Folio</td>
+                                                    <td>@item.Ticket.Flujo.Nombre</td>
+                                                    <td>@item.Ticket.Sucursal.Nombre</td>
+                                                    <td>@Convert.ToDateTime(@item.Ticket.FechaRegistro).ToString("yyyy-MM-dd")</td>
+                                                    <td>@Convert.ToDateTime(@item.FechaAtencion.FechaAtencion).ToString("yyyy-MM-dd")</td>
+                                                    <td>@item.TiempoAtencion</td>
+                                                    <td>@item.Ticket.Cat_EstatusTicket.Nombre</td>
+                                                    <td>
+                                                        <button onclick="ConsultarTicket(@item.Ticket.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mostrar ticket">
+                                                            <i class="icofont icofont-eye-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+<!-- Main content ends -->
+<script src="~/js/ticket/ticket/_MisTickets.js"></script>

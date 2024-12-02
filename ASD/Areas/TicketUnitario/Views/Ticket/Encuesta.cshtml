@@ -1,0 +1,418 @@
+@{
+    ViewData["Title"] = "Encuesta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    input[type="color"] {
+        border-radius: 2px;
+    }
+
+    .content-footer .btn {
+        margin: 3px;
+    }
+
+    .form-control {
+        width: 100% !important;
+    }
+
+    .form-control-label {
+        text-transform: none !important;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    .container-fluid {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    #contenido {
+        width: 100%;
+        max-width: 800px;
+    }
+</style>
+<div class="container-fluid">
+    <div id="contenido">
+        <div class="row">
+            <div class="col-sm-12 p-0">
+                <div class="main-header">
+                    <h4>Ticket: @ViewBag.Ticket.Folio.Folio </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- Tickets abiertos -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-header-text text-center">Cerrar Ticket </h5>
+                    </div>
+                    <div class="container">
+                        <div class="form-group">
+                            <label for="exampleSelect1" class="form-control-label">La unidad de negocio quedó en operación tras el mantenimiento?</label>
+                            <select class="form-control" id="Pregunta1">
+                                <option value="0" @(ViewBag.Info != null && ViewBag.Info.Pregunta1 == 0 ? "selected" : "")>Seleccionar</option>
+                                <option value="1" @(ViewBag.Info != null && ViewBag.Info.Pregunta1 == 1 ? "selected" : "")>Si</option>
+                                <option value="2" @(ViewBag.Info != null && ViewBag.Info.Pregunta1 == 2 ? "selected" : "")>No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleSelect1" class="form-control-label">Cómo evalúa el servicio de mantenimiento proporcionado?</label>
+                            <select class="form-control" id="Pregunta2">
+                                <option value="0" @(ViewBag.Info != null && ViewBag.Info.Pregunta2 == 0 ? "selected" : "")>Seleccionar</option>
+                                <option value="1" @(ViewBag.Info != null && ViewBag.Info.Pregunta2 == 1 ? "selected" : "")>Malo</option>
+                                <option value="2" @(ViewBag.Info != null && ViewBag.Info.Pregunta2 == 2 ? "selected" : "")>Bueno</option>
+                                <option value="3" @(ViewBag.Info != null && ViewBag.Info.Pregunta2 == 3 ? "selected" : "")>Excelente</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleSelect1" class="form-control-label">El aspecto y trato de los ingenieros de servicio fueron?</label>
+                            <select class="form-control" id="Pregunta3">
+                                <option value="0" @(ViewBag.Info != null && ViewBag.Info.Pregunta3 == 0 ? "selected" : "")>Seleccionar</option>
+                                <option value="1" @(ViewBag.Info != null && ViewBag.Info.Pregunta3 == 1 ? "selected" : "")>Malo</option>
+                                <option value="2" @(ViewBag.Info != null && ViewBag.Info.Pregunta3 == 2 ? "selected" : "")>Bueno</option>
+                                <option value="3" @(ViewBag.Info != null && ViewBag.Info.Pregunta3 == 3 ? "selected" : "")>Excelente</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="form-control-label">Recibido por:</label>
+                            <input type="text" class="form-control" id="Nombre" aria-describedby="emailHelp" placeholder="Nombre del receptor" value="@ViewBag.Info?.Nombre">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleTextarea" class="form-control-label">Observaciones</label>
+                            <textarea class="form-control" id="Observaciones" rows="4">@ViewBag.Info?.Observaciones</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="form-control-label">Firma Recibido por:</label>
+                        </div>
+
+                    </div>
+                    @*<div class="form-group row container">
+                        <label for="example-color-input" class="col-xs-2 col-sm-1 col-form-label form-control-label">
+                            Color:
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="color" id="colorPicker" name="favcolor" value="#000000">
+                        </div>
+                    </div>*@
+                    <div class="card-block" id="ContenedorFirma" style="display: flex;justify-content: center;align-items: center;">
+                        <div class="row">
+                            @{
+                                if (ViewBag.Info != null && ViewBag.Info.Firma != null)
+                                {
+                                        <img src="data:@ViewBag.Info.Firma" alt="Imagen" style="width:100%" />
+                                }
+                                else
+                                {
+                                        <canvas id="FirmaAtencion" class="z-depth-left-1"></canvas>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="content-footer col-12" style="display: flex;justify-content: center;align-items: center;">
+                            @{
+                                if (ViewBag.Info != null && ViewBag.Info.Firma != null)
+                                {
+                                        <button onclick="EliminarFirma()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                            <i class="icofont icofont-brush"></i><span class="m-l-12"> Cambiar firma </span>
+                                        </button>
+                                }
+                                else
+                                {
+                                        <button onclick="atras()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                            <i class="icofont icofont-undo"></i><span class="m-l-12"> Deshacer </span>
+                                        </button>
+
+                                        <button onclick="LimpiarFirma()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                            <i class="icofont icofont-brush"></i><span class="m-l-12"> Limpiar </span>
+                                        </button>
+                                }
+                            }
+                        </div>
+                    </div>
+
+
+                    <br />
+                    <div class="card-footer">
+                        <div class="row">
+                            <button type="submit" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="NoAtendido(@ViewBag.Ticket.Ticket.Id)">
+                                <i class="icofont icofont-ui-close"></i><span class="m-l-12"> Marcar como no Atendido </span>
+                            </button>
+
+                            <button type="button" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="saveSignature(@ViewBag.Ticket.Ticket.Id)">
+                                <span class="m-l-12"> Cerrar Ticket </span> <i class="icofont icofont-ui-check"></i>
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- Basic Table ends -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    $('#MenuOperacion').addClass("active");
+    let signaturePad;
+    $(document).ready(function () {
+        const canvas = $("#FirmaAtencion");
+        signaturePad = new SignaturePad(canvas[0]);
+        $(window).resize(obtenerDimensionesModal);
+        $("#colorPicker").on("input", function () {
+            const selectedColor = $(this).val();
+            signaturePad.penColor = selectedColor;
+        });
+        obtenerDimensionesModal()
+    });
+    function obtenerDimensionesModal() {
+        var canvas = $("#FirmaAtencion");
+        var Contenedor = $("#ContenedorFirma");
+
+        var Contenedor = Contenedor.width();
+        canvas.attr("width", Contenedor);
+        signaturePad.fromData(signaturePad.toData());
+    }
+    function LimpiarFirma() {
+        signaturePad.clear();
+    }
+    function atras() {
+        const data = signaturePad.toData();
+        if (data) {
+            data.pop();
+            signaturePad.fromData(data);
+        }
+    }
+    function Validar() {
+        var result = false;
+        $('#Pregunta1, #Pregunta2,#Pregunta3,#Nombre,Observaciones').css("border", "1px solid #ff0049");
+        if ($("#Pregunta1 option:selected").val() > 0) { $('#Pregunta1').css("border", "1px solid #cccccc"); }
+        if ($("#Pregunta2 option:selected").val() > 0) { $('#Pregunta2').css("border", "1px solid #cccccc"); }
+        if ($("#Pregunta3 option:selected").val() > 0) { $('#Pregunta3').css("border", "1px solid #cccccc"); }
+        if ($('#Nombre').val().length > 0) { $('#Nombre').css("border", "1px solid #cccccc"); }
+
+        result = (
+            $("#Pregunta1 option:selected").val() > 0 &&
+            $("#Pregunta2 option:selected").val() > 0 &&
+            $("#Pregunta3 option:selected").val() > 0 &&
+            $("#Nombre").val().length > 0
+        );
+        return result;
+    }
+    function saveSignature(Id) {
+        if (Validar()) {
+            try {
+                if (signaturePad.isEmpty()) {
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "iconClass": "toast-error"
+                    };
+
+                    toastr.error("Por favor, proporcione una firma primero.", "Notificacion");
+                }
+                else {
+                    const CierreCliente = {
+                        IdTicket: Id,
+                        Pregunta1: $("#Pregunta1 option:selected").val(),
+                        Pregunta2: $("#Pregunta2 option:selected").val(),
+                        Pregunta3: $("#Pregunta3 option:selected").val(),
+                        Nombre: $("#Nombre").val(),
+                        Firma: signaturePad.toDataURL(),
+                        Observaciones: $("#Observaciones").val()
+                    };
+                    fetch("/TicketAtencionMovil/CierreCliente/Create_CierreCliente", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        body: JSON.stringify(CierreCliente)
+                    })
+                        .then(response => response.json())
+                        .then(response => {
+                            if (response.id === 1) {
+                                //window.location.href = "/TicketUnitario/Ticket/MisTickets";
+                                CerrarTicket(Id);
+                            }
+                            else {
+                                swal({
+                                    title: "Error",
+                                    text: "No es posible realizar la operación seleccionada!",
+                                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                    buttons: true,
+                                    dangerMode: true,
+                                })
+                                    .then(willDelete => {
+                                    });
+                            }
+                        });
+                }
+            } catch {
+                const CierreCliente = {
+                    IdTicket: Id,
+                    Pregunta1: $("#Pregunta1 option:selected").val(),
+                    Pregunta2: $("#Pregunta2 option:selected").val(),
+                    Pregunta3: $("#Pregunta3 option:selected").val(),
+                    Nombre: $("#Nombre").val(),
+                    Observaciones: $("#Observaciones").val()
+                };
+                fetch("/TicketAtencionMovil/CierreCliente/Create_CierreCliente", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(CierreCliente)
+                })
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.id === 1) {
+                            //window.location.href = "/TicketUnitario/Ticket/MisTickets";
+                            CerrarTicket(Id);
+                        }
+                        else {
+                            swal({
+                                title: "Error",
+                                text: "No es posible realizar la operaci�n seleccionada!",
+                                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                buttons: true,
+                                dangerMode: true,
+                            })
+                                .then(willDelete => {
+                                });
+                        }
+                    });
+            }
+
+        }
+        else {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "iconClass": "toast-error"
+            };
+
+            toastr.error("Por favor, proporcione la información solicitada.", "Notificación");
+        }
+    }
+    function EliminarFirma() {
+        var CierreCliente = {
+            Clave: new URLSearchParams(window.location.search).get('cont'),
+        };
+
+        fetch("/TicketAtencionMovil/CierreCliente/Delete_CierreClienteFirma", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(CierreCliente)
+        })
+            .then(response => response.json())
+            .then(response => {
+                if (response.id === 1) {
+                    location.reload();
+                }
+                else {
+                    swal({
+                        title: "Error",
+                        text: "No es posible realizar la operaci�n seleccionada!",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then(willDelete => {
+                        });
+                }
+            });
+    }
+
+    function CerrarTicket(Id) {
+        const ticket = {
+            Id: Id,
+        };
+
+        fetch("/TicketUnitario/Ticket/Ticket_Procesar_Cierre", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(ticket)
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.id === 1) {
+                window.location.href = "/TicketUnitario/Ticket/MisTickets";
+            }
+            else {
+                swal({
+                    title: "Error",
+                    text: "No es posible realizar la operación seleccionada!",
+                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then(willDelete => {
+                    });
+            }
+        });
+    }
+    function NoAtendido(Id) {
+        swal({
+            title: "¿Estás seguro?",
+            text: "Esta acción no se puede deshacer. ¿Deseas continuar?",
+            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si,No atendido!",
+            closeOnConfirm: false
+        },
+        function () {
+            const ticket = {
+                Id: Id,
+            };
+
+            fetch("/TicketUnitario/Ticket/Ticket_Procesar_NoAtendido", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(ticket)
+            })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.id === 1) {
+                        window.location.href = "/TicketUnitario/Ticket/MisTickets";
+                    }
+                    else {
+                        swal({
+                            title: "Error",
+                            text: "No es posible realizar la operación seleccionada!",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                            .then(willDelete => {
+                            });
+                    }
+                });
+        });
+
+    }
+</script>

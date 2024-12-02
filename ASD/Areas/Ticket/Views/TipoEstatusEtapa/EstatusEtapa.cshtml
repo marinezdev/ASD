@@ -1,0 +1,176 @@
+﻿
+@{
+    ViewData["Title"] = "EstatusEtapa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!--Modal Nuevo Estatus-->
+<div class="modal fade" id="ModalTipoEstatusEtapa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoEstatus">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Tipo de estatus Etapa</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Estatus Etapa </label>
+                                <input type="text" class="form-control" placeholder="Estatus Etapa" id="Modal_NTEstatusEtapa" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-3 col-form-label form-control-label">Color del Estatus</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="Color_NEstatusEtapa">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="ti-close"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="RegistrarEEtapas()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="ti-save"></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+            <div class="col-sm-12 p-0">
+                <div class="main-header">
+                    <h4>Estatus Etapas</h4>
+                    <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                        <li class="breadcrumb-item">
+                            <a href="#">
+                                <i class="icofont icofont-home"></i>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Etapas </a>
+                        </li>
+
+                    </ol>
+                </div>
+            </div>
+    </div>
+    <!------------> 
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Estatus Etapa</h5>
+                </div> 
+                <div class="card-block">
+                    <form action="#" id="Estatus Etapa">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <br>
+                                <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-placement="top" data-target="#ModalTipoEstatusEtapa" data-original-title=".icofont-search-alt-2">
+                                    <i class="icofont icofont-plus"></i> <span class="m-l-10">Nuevo Tipo Estatus Etapa</span>
+                                </button>
+                                <br /><br />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 table-responsive">
+                            <table id="TEtapas" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Color</th> 
+                                        <th style="position: absolute; right: 5%; text-align:center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Nombre</td>
+                                        <td>
+                                            <i class="icofont icofont-ui-press"></i>
+
+                                            <span style="position: absolute; right: 5%; text-align:center">
+                                                <i class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" onclick="InfoStatus()" data-toggle="modal" data-target="#ModalEditarEstatusEtapa"></i>
+                                                <i class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light" onclick="eliminarEstatusEtapa(Id)"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#MenuTicket").addClass("active");
+        $("#TipoEstatusEtapa").addClass("active");
+
+        // $('#TEtapas').DataTable({
+        //     pageLength: 5,
+        //     lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todas']],
+        //     language: {
+        //         url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+        //     }
+        // }).on('init.dt', function () {
+        //     $('.dataTables_filter input').attr('placeholder', 'Buscar Tipos de Etapas');
+        // });
+
+        
+    });
+
+    function RegistrarEEtapas() {
+        const Cat_EstatusTicket = {
+            Nombre: $("#Modal_NTEstatusEtapa").val(),
+            Color: $("#Color_NEstatusEtapa").val()
+        };
+        fetch("/Ticket/Ticket/InsertStatusTicket", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Cat_EstatusTicket)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.id == 1) {
+                    swal({
+                        title: "Registrado!",
+                        text: "Tipo de Estatus Etapa Registrado",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                location.reload();
+                            }
+                        });
+                } else {
+                    swal({
+                        title: "Error",
+                        text: "No es posible realizar la operación seleccionada!",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                    });
+                }
+            });
+    }
+</script>
+
+

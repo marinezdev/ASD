@@ -1,0 +1,151 @@
+﻿@{
+    ViewData["Title"] = "AdministracionInventario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Administración de Inventario</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Proyecto </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Administración de Inventario</a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-user"></i>
+                        </strong>Administración de inventario
+                    </h5>
+                    <p>Lista de usuarios.,  <code> selecciona el registro </code>  para mostrar mas detalles</p>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table id="TListadoUsuarioE" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Equipos Asignados</th>
+                                        <th class="text-center">Detalles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Personas != null)
+                                        {
+                                            foreach (var item in ViewBag.Personas)
+                                            {
+                                                <tr>
+                                                    <td>@item.Persona.Nombre</td>
+                                                    <td>@item.Email.Email</td>
+                                                    <td>@item.Equipo.Total</td>
+                                                    <td class="text-center">
+                                                        <button onclick="ConsultarEquipos(@item.Usuario.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mostrar Equipos">
+                                                            <i class="ti-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+
+<script>
+    $('#TListadoUsuarioE').DataTable({
+        "order": [[2, "desc"]], // Ordena por la tercera columna (Equipos Asignados)
+        "columnDefs": [
+            { "orderable": true, "targets": 0 }, // Aquí puedes desactivar el ordenamiento para cualquier columna. En este caso es la primera (Nombre).
+        ]
+    });
+
+
+    function ConsultarEquipos(Id, Nombre) {
+
+        const MyUrl = {
+            UrlVariable: Id.toString(),
+        };
+
+        fetch("/Administracion/URL/URL_Cifrar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(MyUrl)
+        })
+            .then(res => res.json())
+            .then(res => {
+                window.location.href = '/Inventario/EquipoUsuario/AdministracionEquiposUsuario?cont=' + res.url;
+
+            });
+    } 
+
+    // function ConsultarEquipos(Id, Nombre) {
+    //     // Mostrar el nombre de la persona
+    //     document.getElementById('nombreUsuario').innerHTML = `<h4>Equipos asignados a: ${Nombre}</h4>`;
+
+    //     // Preparar la URL para obtener los equipos
+    //     const MyUrl = {
+    //         UrlVariable: Id.toString(),
+    //     };
+
+    //     fetch("/Administracion/URL/URL_Cifrar", {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/json; charset=utf-8" },
+    //         body: JSON.stringify(MyUrl)
+    //     })
+    //         .then(res => res.json())
+    //         .then(res => {
+    //             // Aquí suponemos que res.equipos contiene la lista de equipos
+    //             mostrarEquipos(res.equipos); // Llama a la función para mostrar los equipos
+    //         });
+    // }
+
+    // Función para mostrar los equipos
+    // function mostrarEquipos(equipos) {
+    //     const tablaEquipos = document.getElementById('tablaEquipos'); // Asegúrate de tener esta tabla en tu HTML
+    //     tablaEquipos.innerHTML = ''; // Limpiar la tabla antes de llenarla
+
+    //     equipos.forEach(equipo => {
+    //         const fila = document.createElement('tr');
+    //         fila.innerHTML = `
+    //             <td>${equipo.Nombre}</td>
+    //             <td>${equipo.Detalle}</td>
+    //             <td>${equipo.FechaAsig}</td>
+    //             <td>${equipo.OtroDato}</td>
+    //         `;
+    //         tablaEquipos.appendChild(fila);
+    //     });
+    // }
+
+</script>

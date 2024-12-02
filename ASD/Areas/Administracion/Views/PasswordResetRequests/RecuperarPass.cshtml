@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewData["Title"] = "RecuperarPass";
+    Layout = "~/Views/Shared/_LayoutPassword.cshtml";
+}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f2f2f2;
+    }
+
+    form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        position: relative; /* Establece el contexto de posición para la imagen */
+        overflow: hidden;
+    } 
+
+    h2, .enviar {
+        margin-bottom: 10px; 
+    }
+
+    input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .enviar {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .enviar:hover {
+            background-color: #0056b3;
+        }
+
+        .form-image {
+            position: absolute;
+            top: 6%;
+            right: -3%;
+            width: 109px; 
+        }
+
+        /* Agrega espacio entre los elementos */
+    h2, p, .input-group, .enviar {
+            margin-bottom: 10px;
+        }
+
+</style>
+<form>
+    <img class="form-image" src="/assets/images/recu.png" alt="Imagen">
+    <h2>Recuperación de Contraseña</h2>
+    <p>Por favor, introduce tu correo electrónico para recibir una clave de recuperación:</p>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="icofont icofont-email"></i></span>
+        <input id="Email" type="email" class="form-control" name="email" placeholder="Correo Electrónico" required>
+    </div>
+    <input class="enviar" type="button" onclick="EnviarClave()" value="Enviar Clave">
+</form>
+
+<script>
+    function EnviarClave() {
+        const Email = {
+            Email: $("#Email").val(),
+        };
+        const _model = {
+            Email: Email,
+        };
+
+        fetch("/Administracion/PasswordResetRequests/PasswordResetRequests_Insert", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_model)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.id == 2) {
+                    swal({
+                        title: "Correo erronéo",
+                        text: "El correo proporcionado no esta registrado en el sistema. !",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+
+                    });
+                } else if (res.id == 0) {
+                    swal({
+                        title: "Función no disponible temporalmente",
+                        text: "Por el momento no es posible realizar esta operación. !!",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+
+                    });
+                } else if (res.id > 0) {
+                    swal({
+                        title: "Exito.",
+                        text: "Hemos enviado un enlace a tu correo para restaurar tu contraseña",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+                        showCancelButton: false,
+                        confirmButtonColor: "#3070A9",
+                        confirmButtonText: "Aceptar",
+                        closeOnConfirm: true,
+                    },
+                        function (isConfirm) {
+                            window.location.reload();
+                        }
+                    );
+                }
+            });
+    }
+</script>

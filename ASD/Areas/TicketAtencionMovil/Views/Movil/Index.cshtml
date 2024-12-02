@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Modal  -->
+<div class="modal fade" id="ModalRecomendaciones" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Recomendaciones antes de atender un ticket en sitio: </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12" id="">
+                            <ol>
+                            <li><p><strong>Reúne la información necesaria.</strong> Antes de ir al sitio, asegúrate de tener toda la información que necesitas para resolver el problema. Esto incluye el número de ticket, la descripción del problema, los pasos para reproducir el problema, etc.</p></li>
+                            <li><P><strong>Prepárate para lo inesperado.</strong> Siempre es posible que algo inesperado suceda en el sitio. Por eso, es importante estar preparado para cualquier eventualidad. Lleva contigo las herramientas y el equipo necesario para resolver el problema, incluso si no estás seguro de que lo necesites.</P></li>
+                            <li><p><strong>Sé profesional.</strong> Actúa de manera profesional y respetuosa con el cliente.</p></li>
+                            </ol>
+                        </div>
+                        <div class="col-sm-12">
+                            <img src="~/icons/operacion/alert.png" width="20%" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal" id="">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Ticket : @ViewBag.TicketEtapa.Folio.Folio </h4>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text text-center">Recomendaciones antes de atender un ticket en sitio: </h5>
+                    <br /><br />
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" data-toggle="modal" data-target="#ModalRecomendaciones">
+                            <span class="m-l-12"> Mostrar</span>
+                        </button>
+                    </div>
+                    
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        
+                        <div class="col-sm-12">
+                            <p><strong>Titulo: </strong> @ViewBag.TicketEtapa.Ticket.Titulo</p>
+                            <p><strong>Estatus: </strong> @ViewBag.TicketEtapa.Cat_EstatusTicketEtapa.Nombre</p>
+                            <hr />
+                            <p><strong>Información del contacto </strong></p>
+                            <p><strong>Asignado a : </strong> @ViewBag.TicketEtapa.Persona.Nombre @ViewBag.TicketEtapa.Persona.ApellidoPaterno @ViewBag.TicketEtapa.Persona.ApellidoMaterno</p>
+                            <p><strong>Email:  </strong> @ViewBag.TicketEtapa.Email.Email</p>
+                            <p><strong>Teléfono: </strong> @{
+                                    if (@ViewBag.TicketEtapa.Telefono != null)
+                                    {
+                                        @ViewBag.TicketEtapa.Telefono.Telefono
+                                    }
+                                }</p>
+                        </div>
+                        <div class="col-sm-12 text-right">
+                            <img src="~/icons/operacion/update.png" width="20%" />
+                            <br /><br />
+                        </div>
+                        <div class="col-sm-12 text-center">
+                            @if (@ViewBag.Usuario.Id == @ViewBag.TicketEtapa.Usuario.Id)
+                            {
+                                <p style="color:#0C5C90"><strong>Al iniciar el ticket comenzara el tiempo de atención</strong></p>
+                                
+                                <button type="submit" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" onclick="Siguiente(@ViewBag.TicketEtapa.Ticket.Id)">
+                                    <span class="m-l-12"> Atender ticket </span>
+                                </button>
+                            }
+                            else
+                            {
+                                <p style="color:#900C3F">No puedes atender el ticket, porque se encuentra asignado a otro usuario</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+<!-- Main content ends -->
+<script src="~/js/ticketatencion/movil/_Movil.js"></script>

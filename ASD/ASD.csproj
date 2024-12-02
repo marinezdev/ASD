@@ -1,0 +1,153 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Dhasbord\Views\Shared\**" />
+    <Content Remove="Areas\Dhasbord\Views\Shared\**" />
+    <EmbeddedResource Remove="Areas\Dhasbord\Views\Shared\**" />
+    <None Remove="Areas\Dhasbord\Views\Shared\**" />
+    <Content Remove="wwwroot\Manual_Operador.pdf" />
+    <None Remove="Areas\WebApi\TicketAtencionMovil\Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Core" Version="1.36.0" />
+    <PackageReference Include="ClosedXML" Version="0.102.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.16.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Reportes\Controllers\" />
+    <Folder Include="Areas\Reportes\Models\" />
+    <Folder Include="Areas\Reportes\Views\" />
+    <Folder Include="Areas\TicketUnitario\Models\" />
+    <Folder Include="Areas\Ticket\Views\Cat_EstatusOrdenTrabajo\" />
+    <Folder Include="Areas\WebApi\Inventario\Models\" />
+    <Folder Include="Areas\TicketAtencionMovil\Models\" />
+    <Folder Include="Repository\Interface\TicketAtencionMovil\" />
+    <Folder Include="Repository\Services\TicketAtencionMovil\" />
+    <Folder Include="Areas\WebApi\TicketAtencionMovil\Models\" />
+    <Folder Include="wwwroot\assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Areas\TicketAtencionMovil\Models\" />
+    <None Remove="Repository\Interface\TicketAtencionMovil\" />
+    <None Remove="Repository\Services\TicketAtencionMovil\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\.DS_Store" />
+    <None Include="wwwroot\icons\.DS_Store" />
+    <None Include="wwwroot\js\Administracion\FirmaElectronica\FirmaElectronica.js" />
+    <None Include="wwwroot\js\Administracion\Login\_scriptLogin.js" />
+    <None Include="wwwroot\js\Administracion\Menu\_Menu.js" />
+    <None Include="wwwroot\js\Administracion\PasswordResetRequests\ActualizarPass.js" />
+    <None Include="wwwroot\js\Dhasbord\_.js" />
+    <None Include="wwwroot\js\Dhasbord\_Administracion.js" />
+    <None Include="wwwroot\js\Dhasbord\_Cliente.js" />
+    <None Include="wwwroot\js\Dhasbord\_Operador.js" />
+    <None Include="wwwroot\js\Dhasbord\_script.js" />
+    <None Include="wwwroot\js\Dhasbord\_Super.js" />
+    <None Include="wwwroot\js\Dhasbord\_SuperClienteNoOrdenTrabajo.js" />
+    <None Include="wwwroot\js\Dhasbord\_SuperNoOrdenTrabajo.js" />
+    <None Include="wwwroot\js\Dhasbord\_SuperVisor.js" />
+    <None Include="wwwroot\js\Empresa\CuadrillaZona\DetailCuadrilla.js" />
+    <None Include="wwwroot\js\Empresa\Sucursal\Index.js" />
+    <None Include="wwwroot\js\Operacion\Administracion\_main.js" />
+    <None Include="wwwroot\js\Persona\Editar.js" />
+    <None Include="wwwroot\js\Persona\Listado.js" />
+    <None Include="wwwroot\js\Persona\Nueva.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\TicketAtencion\Movil\_CheckList.js" />
+    <None Include="wwwroot\js\TicketAtencion\Movil\_Cierre.js" />
+    <None Include="wwwroot\js\TicketAtencion\Movil\_CierreCliente.js" />
+    <None Include="wwwroot\js\TicketAtencion\Movil\_FotoAntes.js" />
+    <None Include="wwwroot\js\TicketAtencion\Movil\_FotoDespues.js" />
+    <None Include="wwwroot\js\TicketAtencion\Movil\_Informacion.js" />
+    <None Include="wwwroot\js\TicketAtencion\Movil\_InformacionAdicional.js" />
+    <None Include="wwwroot\js\TicketAtencion\Movil\_Movil.js" />
+    <None Include="wwwroot\js\TicketAtencion\Movil\_UnidadNegocio.js" />
+    <None Include="wwwroot\js\TicketUnitario\Operacion\_Operacion.js" />
+    <None Include="wwwroot\js\TicketUnitario\Ticket\_CrearTicketUsuer.js" />
+    <None Include="wwwroot\js\TicketUnitario\Ticket\_Detalle.js" />
+    <None Include="wwwroot\js\TicketUnitario\Ticket\_MisTickets.js" />
+    <None Include="wwwroot\js\Ticket\CargaTickets\_script.js" />
+    <None Include="wwwroot\js\Ticket\Escalacion\_index.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\catalogos.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_AtendidosUsuario.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_Crear.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_CrearNoOrdenTrabajo.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_Detalle.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_MisTickets.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_Operacion.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_OperacionNoOrdenTrabajo.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_OperacionOrdenTrabajo.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_OperacionSupervicionNoOrdenTrabajo.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_OperacionUsuario.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_ReasignarTicket.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_TicketEstado.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_ValidadoCliente.js" />
+    <None Include="wwwroot\js\Ticket\Ticket\_ValidadoSupervisor.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\PDF\Manual_Operador.pdf" />
+    <None Include="wwwroot\PDF\Manual_SupervisorAsae.pdf" />
+    <None Include="wwwroot\PDF\Manual_SupervisorCliente.pdf" />
+  </ItemGroup>
+</Project>

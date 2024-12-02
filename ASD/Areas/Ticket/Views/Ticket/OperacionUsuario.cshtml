@@ -1,0 +1,224 @@
+﻿
+@{
+    ViewData["Title"] = "OperacionUsuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    select.form-control:not([size]):not([multiple]) {
+        height: 17px;
+        width: 120px;
+    }
+
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+ 
+    div.container {
+        width: 80%;
+    }
+
+    .ColorHeader {
+        padding: 20px;
+        background-color: transparent;
+        color: #ffffff;
+        border-bottom: none;
+        background: linear-gradient(to top, #39444e, #495865);
+        color: #ffffff;
+    }
+
+    .ColorHeaderInfor {
+        padding: 13px;
+        font-size: 10px;
+        background-color: transparent;
+        color: #ffffff;
+        border-bottom: none;
+        background: linear-gradient(to top, #34457d, #4375a3);
+        color: #ffffff;
+    }
+
+</style>
+
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Tickets en operación  </h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Proyecto </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Operación </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>
+                        Ticket asignados
+                    </h5>
+                    <p>Lista de tickets asignados,  <code> selecciona el registro </code>  para mostrar mas detalles</p>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        @{
+                            if (ViewBag.Tickets != null)
+                            {
+                                foreach (var item in ViewBag.Tickets)
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="card" style="box-shadow: 0px 0px 25px rgb(0 0 0 / 25%); ">
+                                            <div class="card-header ColorHeaderInfor">
+                                                <h5 class="card-header-text" style="color: #ffffff; font-size: 12px;">
+                                                    <strong>
+                                                        <i class="ti-clipboard"></i>
+                                                    </strong>@item.Folio.Folio
+                                                </h5>
+                                            </div>
+                                            <div class="card-block" style="font-size: 12px;">
+                                                <div class="row">
+                                                    <div class="col-sm-8">
+                                                        <p>Sucursal</p>
+                                                        <storng>@item.Ticket.Sucursal.Nombre</storng>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <p>Creación</p>
+                                                        <storng>@Convert.ToDateTime(@item.Ticket.FechaRegistro).ToString("yyyy-MM-dd")</storng>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <p>Tipo de servicio</p>
+                                                        <strong>@item.Ticket.Flujo.Nombre</strong>
+                                                    </div>
+                                                    <div class="col-sm-12 text-right">
+                                                        <p>Fecha atención</p>
+                                                        <strong>@Convert.ToDateTime(@item.FechaAtencion.FechaAtencion).ToString("yyyy-MM-dd")</strong>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p>Tiempo de atención</p>
+                                                        <strong>@item.TiempoAtencion</strong>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-4 col-xs-4 text-center">
+                                                        <button onclick="ConsultarTicket(@item.Ticket.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mostrar ticket">
+                                                            <i class="icofont icofont-eye-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-4 col-xs-4 text-center">
+                                                        <div class="label-main"><label class="label label-md" style="background-color: @item.Ticket.Cat_EstatusTicket.Color" data-toggle="tooltip" data-placement="top" title="" data-original-title="Estatus ticket">@item.Ticket.Cat_EstatusTicket.Nombre</label></div>
+                                                    </div>
+                                                    <div class="col-sm-4 col-xs-4 text-center">
+                                                        <div class="label-main"><label class="label label-md" style="background-color: @item.Ticket.Cat_Prioridad.Color" data-toggle="tooltip" data-placement="top" title="" data-original-title="Prioridad">@item.Ticket.Cat_Prioridad.Nombre</label></div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-right">
+                                                        <button onclick="AtenderTicket(@item.Ticket.Id)" type="button" class="btn btn-default waves-effect waves-light col-sm-12" data-toggle="tooltip" data-placement="top" title="" data-original-title="Atender ticket" style="width:100%">
+                                                            <strong>
+                                                                <i class="ti-wallet"></i>
+                                                            </strong>  Atender
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="card-block" style="display:none">
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table stripe row-border order-column table-hover" id="mydatatable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color: #ffffff;">Folio</th>
+                                        <th class="text-center">Tipo de servicio</th>
+                                        <th>Sucursal </th>
+                                        <th>Creación </th>
+                                        <th class="text-center">Fecha atención </th>
+                                        <th class="text-center">Tiempo de atención  </th>
+                                        <th>Status </th>
+                                        <th>Prioridad </th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Tickets != null)
+                                        {
+                                            foreach (var item in ViewBag.Tickets)
+                                            {
+                                                <tr>
+                                                    <!-- <td>1-2024</td> -->
+                                                    <td style="background-color: #ffffff;">@item.Folio.Folio</td>
+                                                    <td>@item.Ticket.Flujo.Nombre</td>
+                                                    <td>@item.Ticket.Sucursal.Nombre</td>
+                                                    <td>@Convert.ToDateTime(@item.Ticket.FechaRegistro).ToString("yyyy-MM-dd")</td>
+                                                    <td>
+                                                        @Convert.ToDateTime(@item.FechaAtencion.FechaAtencion).ToString("yyyy-MM-dd")
+                                                    </td>
+                                                    <td>@item.TiempoAtencion</td>
+                                                    <td>
+                                                        <div class="label-main"><label class="label label-md" style="background-color: @item.Ticket.Cat_EstatusTicket.Color">@item.Ticket.Cat_EstatusTicket.Nombre</label></div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="label-main"><label class="label label-md" style="background-color: @item.Ticket.Cat_Prioridad.Color">@item.Ticket.Cat_Prioridad.Nombre</label></div>
+                                                    </td>
+                                                    <td>
+                                                        <button onclick="ConsultarTicket(@item.Ticket.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mostrar ticket">
+                                                            <i class="icofont icofont-eye-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button onclick="AtenderTicket(@item.Ticket.Id)" type="button" class="btn btn-default waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Atender ticket">
+                                                             Atender
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content ends -->
+<script src="~/js/ticket/ticket/_OperacionUsuario.js"></script>

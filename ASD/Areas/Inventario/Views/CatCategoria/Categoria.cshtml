@@ -1,0 +1,447 @@
+﻿
+@{
+    ViewData["Title"] = "Categoria";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Modal Nueva Categoria-->
+<div class="modal fade" id="ModalCategoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="NuevaCategoria">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nueva Categoria </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre de Categoria</label>
+                                <input type="text" class="form-control" placeholder="Categoria" id="Modal_Categoria_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="NuevoEquipo()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+
+<!-- Modal Editar Categoria-->
+<div class="modal fade" id="ModalCategoriaEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar Categoria</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre De Categoria </label>
+                                <input type="text" class="form-control" placeholder="Categoria" id="Modal_Categoria_NombreEditar" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button id="Editar" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Actualizar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Categorías</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Categorías</a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+
+<!------------> 
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-notepad"></i>
+                        </strong>
+                        Categorías
+                    </h5>
+                <p>Catálogo de Categorías Disponibles según el Tipo de Equipo</p>
+            </div> 
+            <div class="card-block">
+                <form onsubmit="return false;" action="#" id="categoria">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="exampleSelect1" class="form-control-label" style="margin-left: 3%;">Tipo de Equipo</label>
+                        <select class="form-control " id="selectTEquipo" style="margin-left: 10px;" onchange="CargarCategoria()">
+                            <option value="0">Seleccionar</option>
+                            @{
+                                if (ViewBag.CatTipoEquipo != null)
+                                {
+                                    foreach (var item in ViewBag.CatTipoEquipo)
+                                    {
+                                            <option value="@item.Id">@item.Nombre</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-md-9 text-right" style="margin-top: 2%;">
+                    <button id="AgregarCat" type="button" class="btn btn-success waves-effect waves-light" data-toggle="modal" data-placement="top" data-original-title=".icofont-search-alt-2">
+                        <i class="icofont icofont-plus"></i> <span class="m-l-10">Nueva Categoría</span>
+                    </button>
+                </div> 
+
+                <div class="col-sm-12 table-responsive">
+                    <table id="TCategoria" class="table">
+                        <thead>
+                            <tr>
+                                <th>Categorías</th>
+                                <th>Fecha de registro</th>
+                                <th style="text-align:center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="Contenido">
+                                       
+                        </tbody>
+                    </table>
+                </div> 
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#MenuCatalogo").addClass("active");
+        $("#MenuInventarioCategoria").addClass("active");
+
+        $('#TCategoria').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        }).on('init.dt', function () {
+
+            $('.dataTables_filter input').attr('placeholder', 'Categoria');
+        });
+
+
+        $("#AgregarCat").on("click", function () {
+            if (Validar()) {
+                $("#ModalCategoria").modal("show");
+            } else {
+                toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "iconClass": "toast-error" // Puedes usar diferentes clases de iconos de FontAwesome
+                };
+
+                toastr.error("Selecciona un tipo de equipo para agregar una categoria", "Notificación");
+
+            }
+
+        });
+
+    });
+
+    function Validar() {
+        var result = false;
+        $('#selectTEquipo').css("border", "1px solid #ff0049");
+        if ($("#selectTEquipo option:selected").val() > 0) { $('#selectTEquipo').css("border", "1px solid #cccccc"); }
+        result = (
+            $("#selectTEquipo option:selected").val() > 0
+        );
+        return result;
+    }
+
+
+    function CargarCategoria() {
+        var IdTipoEquipo = $("#selectTEquipo option:selected").val();
+
+        const _modelo = {
+            Id: IdTipoEquipo,
+        };
+
+        fetch("/Inventario/CatCategoria/GetCat_Categoria_Seleccionar_IdTipoEquipo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                tabla(res);
+            });
+    }
+
+    function tabla(datos) {
+        var table = $('#TCategoria').DataTable();
+        table.destroy();
+        Contenido.innerHTML = "";
+
+
+        for (let valor of datos) {
+
+            let fechaRegistro = new Date(valor.fechaRegistro);
+            let formattedFechaRegistro = fechaRegistro.toISOString().split('T')[0];
+
+            Contenido.innerHTML += `
+
+                <tr>
+                    <td>${valor.nombre}</td>
+                    <td>${formattedFechaRegistro}</td>
+                    <td>
+                        <span style="position: absolute; right: 9%; text-align:center">
+                            <i onclick="Info('${valor.id}','${valor.nombre}')"class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" data-toggle="modal" data-target="#ModalCategoriaEditar"></i>
+                            <i onclick="eliminar(${valor.id})" class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light"></i>
+                        </span>
+                    </td>
+                </tr>
+            `
+        }
+        $('#TCategoria').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        }).on('init.dt', function () {
+
+            $('.dataTables_filter input').attr('placeholder', 'Categoria');
+        });
+
+    }
+    
+    function eliminar(Ids) {
+        swal({
+            title: "Eliminar",
+            text: "Eliminar registro?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, Eliminar!",
+            cancelButtonText: "No, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+
+                    const cat_Categoria = {
+                        Id: Ids
+                    };
+
+                    fetch("/Inventario/CatCategoria/Delete_Categoria", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        body: JSON.stringify(cat_Categoria)
+                    })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.id > 0) {
+                                swal({
+                                    title: "Eliminado!",
+                                    text: "El registro ha sido eliminado.",
+                                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/delete.png",
+                                },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            CargarCategoria();
+                                        }
+                                    });
+
+                            } else {
+                                swal({
+                                    title: "Registro no eliminado",
+                                    text: "No es posible realizar la operacion selecionada!",
+                                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                    buttons: true,
+                                    dangerMode: true,
+                                }).then((willDelete) => {
+
+                                });
+                            }
+                        });
+
+                }
+            });
+    }
+    function Info(Id, nombre) {
+        $("#Modal_Categoria_NombreEditar").val(nombre);
+        $("#Editar").off("click").on("click", function () {
+            EditarStatus(Id);
+        });
+    }
+    function EditarStatus(Id) {
+        const cat_Categoria = {
+            Id: Id,
+            Nombre: $("#Modal_Categoria_NombreEditar").val()
+        };
+        fetch("/Inventario/CatCategoria/Update_Categoria", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(cat_Categoria)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.id == 1) {
+                    swal({
+                        title: "Actualizado!",
+                        text: "El registro ha sido Actualizado.",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/update.png",
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                $('#ModalCategoriaEditar').modal('hide');
+                                CargarCategoria();
+                            }
+                        });
+                } else {
+                    swal({
+                        title: "Registro no Actualizado",
+                        text: "No es posible realizar la operación seleccionada!",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                    });
+                }
+            });
+
+    }
+
+
+    ////////////////////////////////
+    //////// NUEVA CATEGORIA ///////
+    ////////////////////////////////
+
+    function NuevoEquipo() {
+        if (ValidateFormNuevaCategoria()) {
+
+            const Cat_TipoEquipo = {
+                Id: $("#selectTEquipo option:selected").val(),
+            }
+
+            const _model = {
+                Cat_TipoEquipo: Cat_TipoEquipo,
+                Nombre: $("#Modal_Categoria_Nombre").val(),
+            };
+
+            fetch("/Inventario/CatCategoria/CreateCat_TipoEquipo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(_model)
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.id == -1) {
+                        swal({
+                            title: "Categoria no registrada",
+                            text: "La categoria que intentas agregar ya se encuentra registrada. !",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+
+                        });
+                    } else if (res.id == 0) {
+                        swal({
+                            title: "Categoria no registrada",
+                            text: "No es posible registrar la categoria. !",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+
+                        });
+                    } else if (res.id > 0) {
+                        NewIdCategoria = res.id;
+                        swal({
+                            title: "Nueva categoria registrada.",
+                            text: $("#Modal_Categoria_Nombre").val(),
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+
+                            showCancelButton: false,
+                            confirmButtonColor: "#3070A9",
+                            confirmButtonText: "Aceptar",
+                            closeOnConfirm: false,
+                        },
+                            function (isConfirm) {
+                                swal.close();
+                                $('#ModalCategoria').modal('hide');
+                                $("#Modal_Categoria_Nombre").val("")
+
+                                CargarCategoria();
+                            }
+                        );
+                    }
+                });
+        }
+    }
+
+    function ValidateFormNuevaCategoria() {
+        var result = false;
+
+        $('#Modal_Categoria_Nombre').css("border", "1px solid red");
+
+        if ($('#Modal_Categoria_Nombre').val().length > 0) {
+            $('#Modal_Categoria_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_Categoria_Nombre').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+    }
+</script>

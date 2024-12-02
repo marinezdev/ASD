@@ -1,0 +1,673 @@
+﻿
+@{
+    ViewData["Title"] = "Catalogos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Modal Nueva Empresa Atencion -->
+<div class="modal fade" id="ModalEmpresaA" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="EmpresaAtencion">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nueva Empresa Atención </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre de la Empresa Atención </label>
+                                <input type="text" class="form-control" placeholder="Empresa Atencion" id="Modal_EmpresaAtencion_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="NuevaEmpresaAtencion()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo Estatus Fecha -->
+<div class="modal fade" id="ModalEstatusFecha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="EstatusFecha">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Estatus Fecha </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre del Estatus Fecha </label>
+                                <input type="text" class="form-control" placeholder="Estatus Fecha" id="Modal_EstatusFecha_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-3 col-form-label form-control-label">Color del Estatus</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="colorNEstatusFecha">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="NuevoEstatusFecha()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo Estatus Orden de Trabajo -->
+<div class="modal fade" id="ModalEstatusOrdenTrabajo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="EstatusOrdenTrabajo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Estatus Orden de Trabajo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre del Estatus Orden de Trabajo </label>
+                                <input type="text" class="form-control" placeholder="Estatus Orden Trabajo" id="Modal_EstatusOrdenTrabajo_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-3 col-form-label form-control-label">Color del Estatus</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="colorNOrdenTrabajo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="NuevoEstatusOrdenTrabajo()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva Prioridad -->
+<div class="modal fade" id="ModalPrioridad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="Prioridad">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nueva Prioridad </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre de la Prioridad</label>
+                                <input type="text" class="form-control" placeholder="Prioridad" id="Modal_Prioridad_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-4 col-form-label form-control-label">Color de la Prioridad</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="colorNPrioridad">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="NuevaPrioridad()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Editar Empresa Atención -->
+<div class="modal fade" id="ModalEditarEmpresaAt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar Empresa Atención </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre de la Empresa Atención </label>
+                                <input type="text" class="form-control" placeholder="Empresa Atención" id="Modal_EmpresaAtención_NombreEditar" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button id="EditarEmpresaAtencion" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Actualizar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Estatus Fecha de Atención-->
+<div class="modal fade" id="ModalEditarEFechaAtencion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar Estatus Fecha </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre del Estatus Fecha </label>
+                                <input type="text" class="form-control" placeholder="Estatus Fecha" id="Modal_EstatusFecha_NombreEditar" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-3 col-form-label form-control-label">Color del Estatus</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="colorFechaAtencion">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button id="EditarFechaAtencion" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Actualizar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Estatus Orden de Trabajo-->
+<div class="modal fade" id="ModalEditarEOrdenTrabajo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar Estatus Orden de Trabajo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre del Estatus Orden de Trabajo </label>
+                                <input type="text" class="form-control" placeholder="Estatus Orden Trabajo" id="Modal_EstatusOrdenTrabajo_NombreEditar" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-3 col-form-label form-control-label">Color del Estatus</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="colorOrdenTrabajo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button id="EditarOrdenTrabajo" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Actualizar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Prioridad-->
+<div class="modal fade" id="ModalEditarPrioridad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar Prioridad </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre de la Prioridad</label>
+                                <input type="text" class="form-control" placeholder="Prioridad" id="Modal_Prioridad_NombreEditar" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="example-color-input" class="col-xs-4 col-form-label form-control-label">Color de la Prioridad</label>
+                        <div class="col-sm-4">
+                            <input type="color" class="" name="favcolor" id="colorPrioridad">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button id="EditarPrioridad" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Actualizar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Catálogos ticket</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Catálogos Tickets</a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!------------>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Catálogos Ticket</h5>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6">
+
+                        </div>
+                    </div>
+                    @*TABS EN EL SISTEMA*@
+                    <ul class="nav nav-tabs md-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a id="1" onclick="EmpresaAtencion()" class="nav-link active" data-toggle="tab" href="#E_Atencion" role="tab"><i class="icofont icofont-building-alt"></i> Empresa Atención</a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a id="2" onclick="EstatusFecha()" class="nav-link" data-toggle="tab" href="#Es_Fatencion" role="tab"><i class="icofont icofont-architecture-alt"></i> Estatus fecha de atención</a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a id="3" onclick="EstatusOrden()" class="nav-link" data-toggle="tab" href="#EO_trabajo" role="tab"><i class="icofont icofont-list"></i> Estatus orden de trabajo</a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a id="4" onclick="Prioridad()" class="nav-link" data-toggle="tab" href="#E_Prioridad" role="tab"><i class="icofont icofont-education"></i> Prioridad</a>
+                            <div class="slide"></div>
+                        </li>
+                    </ul>
+                    @*CONTENIDO DEL TAB*@
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="E_Atencion" role="tabpanel">
+                            <div class="container-fluid">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-header">
+                                            <h5 class="card-header-text">Empresa Atención</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <form onsubmit="return false;" action="#" id="EmpresaAtención">
+
+                                                <div class="row">
+                                                    <div class="col-xl-6 col-lg-6">
+                                                        <br>
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-placement="top" data-target="#ModalEmpresaA" data-original-title=".icofont-search-alt-2">
+                                                            <i class="icofont icofont-plus"></i> <span class="m-l-10">Nueva Empresa Atención</span>
+                                                        </button>
+                                                        <br /><br />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 table-responsive">
+                                                    <table class="table" id="TEmpresaAtencion">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Estatus</th>
+                                                                <th style="text-align:center">Operaciones</th>
+                                                                @*<th style="text-align:center">Total Ticket</th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="BEmpresaAtencion">
+                                                            @{
+                                                                if (ViewBag.AsignacionEmpresa != null)
+                                                                {
+                                                                    foreach (var item in ViewBag.AsignacionEmpresa)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                @item.Nombre
+                                                                            </td>
+                                                                            <td style="border-right: 2px solid #eceeef; padding-right: 10px; position: relative; text-align:center;">
+                                                                                <i class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" onclick="InfoEmpresaAtencion('@item.Id', '@item.Nombre')" data-toggle="modal" data-target="#ModalEditarEmpresaAt"></i>
+                                                                                <i class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light" onclick="eliminarEmpresaAtencion(@item.Id)"></i>
+                                                                            </td>
+                                                                            @*<td style="display: flex; justify-content: center; align-items: center; position: relative;">
+                                                                                33
+                                                                                <span onclick="Consultar(@item.Id)" style="position: absolute; right: 5%;">
+                                                                                    <i class="icofont icofont-eye-alt btn btn-inverse-success waves-effect waves-light"></i>
+                                                                                </span>
+                                                                            </td>*@
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="Es_Fatencion" role="tabpanel">
+                            <div class="container-fluid">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-header">
+                                            <h5 class="card-header-text">Estatus fecha Atención</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <form onsubmit="return false;" action="#" id="EstatusFechaAtención">
+
+                                                <div class="row">
+                                                    <div class="col-xl-6 col-lg-6">
+                                                        <br>
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-placement="top" data-target="#ModalEstatusFecha" data-original-title=".icofont-search-alt-2">
+                                                            <i class="icofont icofont-plus"></i> <span class="m-l-10">Nuevo Estatus fecha Atención</span>
+                                                        </button>
+                                                        <br /><br />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 table-responsive">
+                                                    <table class="table" id="TEstatusFechaAtencion">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Estatus</th>
+                                                                <th style="border-right: 2px solid #eceeef; padding-right: 10px;">Color</th>
+                                                                <th style="text-align:center">Operaciones</th>
+                                                                @*<th style="text-align:center">Total Ticket</th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="BEstatusFechaAtencion">
+                                                            @{
+                                                                if (ViewBag.EstatusFechaAtencion != null)
+                                                                {
+                                                                    foreach (var item in ViewBag.EstatusFechaAtencion)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                @item.Nombre
+                                                                            </td>
+                                                                            <td style="border-right: 2px solid #eceeef; padding-right: 10px; position: relative;">
+                                                                                <i class="icofont icofont-square" style="color:@item.Color;font-size: 176%;"></i>
+                                                                            </td>
+                                                                            <td style="text-align:center">
+                                                                                <i class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" onclick="InfoFechaAtencion('@item.Id', '@item.Nombre', '@item.Color')" data-toggle="modal" data-target="#ModalEditarEFechaAtencion"></i>
+                                                                                <i class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light" onclick="eliminarFechaAtencion(@item.Id)"></i>
+                                                                            </td>
+                                                                            @*<td style="display: flex; justify-content: center; align-items: center; position: relative;">
+                                                                                15
+                                                                                <span onclick="Consultar(@item.Id)" style="position: absolute; right: 5%;">
+                                                                                    <i class="icofont icofont-eye-alt btn btn-inverse-success waves-effect waves-light"></i>
+                                                                                </span>
+                                                                            </td>*@
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="EO_trabajo" role="tabpanel">
+                            <div class="container-fluid">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-header">
+                                            <h5 class="card-header-text">Estatus orden de trabajo</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <form onsubmit="return false;" action="#" id="EstatusOrdenTrabajo">
+
+                                                <div class="row">
+                                                    <div class="col-xl-6 col-lg-6">
+                                                        <br>
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-placement="top" data-target="#ModalEstatusOrdenTrabajo" data-original-title=".icofont-search-alt-2">
+                                                            <i class="icofont icofont-plus"></i> <span class="m-l-10">Nuevo Estatus orden de trabajo</span>
+                                                        </button>
+                                                        <br /><br />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 table-responsive">
+                                                    <table class="table" id="TEstatusOrdenTrabajo">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Estatus</th>
+                                                                <th style="border-right: 2px solid #eceeef; padding-right: 10px;">Color</th>
+                                                                <th style="text-align:center">Operaciones</th>
+                                                                @*<th style="text-align:center">Total Ticket</th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="BEstatusOrdenTrabajo">
+                                                            @{
+                                                                if (ViewBag.OrdenTrabajo != null)
+                                                                {
+                                                                    foreach (var item in ViewBag.OrdenTrabajo)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                @item.Nombre
+                                                                            </td>
+                                                                            <td style="border-right: 2px solid #eceeef; padding-right: 10px; position: relative;">
+                                                                                <i class="icofont icofont-square" style="color:@item.Color;font-size: 176%;"></i>
+                                                                            </td>
+                                                                            <td style="text-align:center">
+                                                                                <i class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" onclick="InfoOrdenTrabajo('@item.Id', '@item.Nombre', '@item.Color')" data-toggle="modal" data-target="#ModalEditarEOrdenTrabajo"></i>
+                                                                                <i class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light" onclick="eliminarOrdenTrabajo(@item.Id)"></i>
+                                                                            </td>
+                                                                            @*<td style="display: flex; justify-content: center; align-items: center; position: relative;">
+                                                                                15
+                                                                                <span onclick="Consultar(@item.Id)" style="position: absolute; right: 5%;">
+                                                                                    <i class="icofont icofont-eye-alt btn btn-inverse-success waves-effect waves-light"></i>
+                                                                                </span>
+                                                                            </td>*@
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                        <div class="tab-pane" id="E_Prioridad" role="tabpanel">
+                            <div class="container-fluid">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-header">
+                                            <h5 class="card-header-text">Prioridad</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <form action="#" id="Prioridad">
+
+                                                <div class="row">
+                                                    <div class="col-xl-6 col-lg-6">
+                                                        <br>
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-placement="top" data-target="#ModalPrioridad" data-original-title=".icofont-search-alt-2">
+                                                            <i class="icofont icofont-plus"></i> <span class="m-l-10">Nueva Prioridad</span>
+                                                        </button>
+                                                        <br /><br />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 table-responsive">
+                                                    <table class="table" id="TPrioridad">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Estatus</th>
+                                                                <th style="border-right: 2px solid #eceeef; padding-right: 10px;">Color</th>
+                                                                <th style="text-align:center">Operaciones</th>
+                                                                @*<th style="text-align:center">Total Ticket</th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="BPrioridad">
+                                                            @{
+                                                                if (ViewBag.Prioridad != null)
+                                                                {
+                                                                    foreach (var item in ViewBag.Prioridad)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                @item.Nombre
+                                                                            </td>
+                                                                            <td style="border-right: 2px solid #eceeef; padding-right: 10px; position: relative;">
+                                                                                <i class="icofont icofont-square" style="color:@item.Color;font-size: 176%;"></i>
+                                                                            </td>
+                                                                            <td style="text-align:center">
+                                                                                <i class="ti-pencil-alt btn btn-inverse-primary waves-effect waves-light" style="margin-right: 10px;" onclick="InfoPrioridad('@item.Id', '@item.Nombre', '@item.Color')" data-toggle="modal" data-target="#ModalEditarPrioridad"></i>
+                                                                                <i class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light" onclick="eliminarPrioridad(@item.Id)"></i>
+                                                                            </td>
+                                                                            @*<td style="display: flex; justify-content: center; align-items: center; position: relative;">
+                                                                                15
+                                                                                <span onclick="Consultar(@item.Id)" style="position: absolute; right: 5%;">
+                                                                                    <i class="icofont icofont-eye-alt btn btn-inverse-success waves-effect waves-light"></i>
+                                                                                </span>
+                                                                            </td>*@
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="~/js/Ticket/Ticket/Catalogos.js"></script>
+

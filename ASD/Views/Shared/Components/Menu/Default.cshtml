@@ -1,0 +1,329 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+<aside class="main-sidebar hidden-print ">
+    <section class="sidebar" id="sidebar-scroll">
+
+        <!-- Sidebar Menu-->
+        <ul class="sidebar-menu">
+
+
+            @* ADMINISTRADOR *@
+            @if (User.IsInRole("Administrador"))
+            {
+                <li class="nav-level">--- Navegación</li>
+                <li class="treeview" id="MenuDashboard">
+                    <a class="waves-effect waves-dark" href="@Url.Action("Index", "Administracion", new { area = "Dhasbord" })">
+                        <i class="icon-speedometer"></i><span> Dashboard</span>
+                    </a>
+                </li>
+
+                @*<li class="nav-level">--- Operación </li>
+            <li class="treeview">
+                <a class="waves-effect waves-dark" href="#!"><i class="icon-briefcase"></i><span> Carga preventivos </span><i class="icon-arrow-down"></i></a>
+                <ul class="treeview-menu">
+                    <li><a class="waves-effect waves-dark" href="/Ticket/CargaTickets/"><i class="icon-arrow-right"></i> Carga archivo </a></li>
+                </ul>
+            </li> *@
+
+                <li class="nav-level">--- Atención  </li>
+                <li class="treeview" id="MenuOperacion">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-tick-mark"></i><span>Atender Tickets </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+
+                        <li id="MenuOperacionTickets"><a class="waves-effect waves-dark" href="@Url.Action("Index", "Operacion", new { area = "TicketUnitario" })"><i class="icon-arrow-right"></i> Operación </a></li>
+                        <li id="MenuOperacionValidadoSupervisor"><a class="waves-effect waves-dark" href="@Url.Action("ValidadoSupervisor", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Tickets validados  </a></li>
+                        <li id="MenuReportes"><a class="waves-effect waves-dark" href="@Url.Action("Reportes", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Reporte tickets </a></li>
+                        @*<li id="MenuOperacionReasignar"><a class="waves-effect waves-dark" href="@Url.Action("ReasignarTickets", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Reasignar Ticket  </a></li>
+                        <li id="MenuOperacionFecha"><a class="waves-effect waves-dark" href="@Url.Action("Index", "TicketFechaAtencion", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Calendario de Mantenimiento</a></li>
+                        <li id="MenuOperacionEscalacion"><a class="waves-effect waves-dark" href="@Url.Action("Index", "Escalacion", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Escalacion </a></li>*@
+                    </ul>
+                </li>
+
+                <li class="nav-level">--- Levantamiento  </li>
+                <li class="treeview" id="MenuTicket2">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-ticket"></i><span>Registrar Tickets </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="MenuTicketNuevoTicket"><a class="waves-effect waves-dark" href="@Url.Action("CrearTicketUsuer", "Ticket", new { area = "TicketUnitario" })"><i class="icon-arrow-right"></i> Nuevo ticket </a></li>
+                        <li id="MenuTicketMisTickets"><a class="waves-effect waves-dark" href="@Url.Action("MisTickets", "Ticket", new { area = "TicketUnitario" })"><i class="icon-arrow-right"></i> Mis tickets </a></li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-level">---Gestión de Catálogos</li>
+                <li id="MenuTicket" class="treeview">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-gears"></i><span> Ticket</span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        @*<li id="EmpresaAtencion"><a class="waves-effect waves-dark" href="@Url.Action("Catalogos", "Ticket", new { area = "Ticket" })?tab=1"><i class="icon-arrow-right"></i> Empresa atención </a></li>*@
+                        <li id="EstatusT"><a class="waves-effect waves-dark" href="@Url.Action("Estatus", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Estatus ticket</a> </li>
+                        @*<li id="EstatusF"><a class="waves-effect waves-dark" href="@Url.Action("Catalogos", "Ticket", new { area = "Ticket" })?tab=2"><i class="icon-arrow-right"></i> Estatus fecha de atención </a></li>*@
+                        @*<li id="EstatusO"><a class="waves-effect waves-dark" href="@Url.Action("Catalogos", "Ticket", new { area = "Ticket" })?tab=3"><i class="icon-arrow-right"></i> Estatus orden de trabajo </a></li>*@
+                        <li id="Prioridad"><a class="waves-effect waves-dark" href="@Url.Action("Catalogos", "Ticket", new { area = "Ticket" })?tab=4"><i class="icon-arrow-right"></i> Prioridad </a></li>
+                        @*<li id="TipoEstatusE"><a class="waves-effect waves-dark" href="@Url.Action("TipoEstatusEtapa", "Cat_EstatusTicketEtapa", new { area = "Operacion" })"><i class="icon-arrow-right"></i> Tipo de Estatus Etapa </a></li>*@
+
+                    </ul>
+                </li>
+
+                <li id="MenuEmpresa" class="treeview">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-building-alt"></i><span> Empresa </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="ListaSucursal"><a class="waves-effect waves-dark" href="@Url.Action("Index", "Sucursal", new { area = "Empresa" })"><i class="icon-arrow-right"></i> Sucursales </a></li>
+                    </ul>
+                </li>
+
+                <li id="MenuCuadrilla" class="treeview">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-file-spreadsheet"></i><span> Zonas de Atención </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="ListaCuadrilla"><a class="waves-effect waves-dark" href="@Url.Action("ListCuadrilla", "Cuadrilla", new { area = "Empresa" })"><i class="icon-arrow-right"></i> Zonas </a></li>
+                    </ul>
+                </li>
+
+
+                @*<li id="MenuTipoEmail" class="treeview">
+                <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-ui-settings"></i><span> General </span><i class="icon-arrow-down"></i></a>
+                <ul class="treeview-menu">
+                    <li id="MenuPersonaTipoEmail"><a class="waves-effect waves-dark" href="@Url.Action("TipoEmail", "TipoEmail", new { area = "Persona" })"><i class="icon-arrow-right"></i> Tipo email</a></li>
+                    <li id="MenuPermisos"><a class="waves-effect waves-dark" href="@Url.Action("Index", "Menu", new { area = "Administracion" })"><i class="icon-arrow-right"></i> Permisos Menú </a></li>
+                </ul>
+                </li>*@
+
+                <li class="nav-level">--- Gestión de Usuarios</li>
+                <li id="MenuUsuario" class="treeview">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-users"></i><span> Usuario </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="ListaUsuario"><a class="waves-effect waves-dark" href="@Url.Action("Listado", "Persona", new { area = "Persona" })"><i class="icon-arrow-right"></i> Usuarios </a></li>
+                        <li id="NuevoUsuario"><a class="waves-effect waves-dark" href="@Url.Action("Nueva", "Persona", new { area = "Persona" })"><i class="icon-arrow-right"></i> Nuevo Usuario </a></li>
+                        <li id="MenuUsuarioOperacion"><a class="waves-effect waves-dark" href="@Url.Action("Index", "Administracion", new { area = "Operacion" })"><i class="icon-arrow-right"></i> Operación flujo </a></li>
+                        <li id="MenuTicketMisTickets"><a class="waves-effect waves-dark" href="@Url.Action("AdministracionInventario", "EquipoUsuario", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Administración de Inventario </a></li>
+                    </ul>
+                </li>
+
+            }
+
+            @if (User.IsInRole("Operador"))
+            {
+                <li class="nav-level">---Perfil</li>
+                <li class="treeview">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-user-male"></i><span style="font-size:13px"> @User.Identity.Name.ToString()</span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li onclick="CerrarSesion()"><a class="waves-effect waves-dark"><i class="icon-logout"></i>Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+            }
+
+            @if (User.IsInRole("Levantamiento de ticket"))
+            {
+                <li class="nav-level">--- Navegación</li>
+                <li class="treeview" id="MenuDashboard">
+                    <a class="waves-effect waves-dark" href="@Url.Action("Index", "Cliente", new { area = "Dhasbord" })">
+                        <i class="icon-speedometer"></i><span> Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-level">--- Levantamiento </li>
+                <li class="treeview" id="MenuTicket2">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icon-briefcase"></i><span> Registrar Tickets </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="MenuTicketNuevoTicket"><a class="waves-effect waves-dark" href="@Url.Action("CrearTicketUsuer", "Ticket", new { area = "TicketUnitario" })"><i class="icon-arrow-right"></i> Nuevo ticket </a></li>
+                        <li id="MenuTicketMisTickets"><a class="waves-effect waves-dark" href="@Url.Action("MisTickets", "Ticket", new { area = "TicketUnitario" })"><i class="icon-arrow-right"></i> Mis tickets </a></li>
+                    </ul>
+                </li>
+            }
+
+            @if (User.IsInRole("Supervisor"))
+            {
+                <li class="nav-level">--- Navegación</li>
+                <li class="treeview" id="MenuDashboard">
+                    <a class="waves-effect waves-dark" href="@Url.Action("Index", "Supervisor", new { area = "Dhasbord" })">
+                        <i class="icon-speedometer"></i><span> Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-level">--- Atención  </li>
+                <li class="treeview" id="MenuOperacion">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-tick-mark"></i><span>Atender Tickets </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+
+                        <li id="MenuOperacionTickets"><a class="waves-effect waves-dark" href="@Url.Action("Index", "Operacion", new { area = "TicketUnitario" })"><i class="icon-arrow-right"></i> Operación </a></li>
+                        <li id="MenuOperacionValidadoSupervisor"><a class="waves-effect waves-dark" href="@Url.Action("ValidadoSupervisor", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Tickets validados  </a></li>
+                        <li id="MenuOperacionReasignar"><a class="waves-effect waves-dark" href="@Url.Action("ReasignarTickets", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Reasignar Ticket  </a></li>
+                        <li id="MenuOperacionFecha"><a class="waves-effect waves-dark" href="@Url.Action("Index", "TicketFechaAtencion", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Calendario de Mantenimiento</a></li>
+
+                        <li id="MenuOperacionEscalacion"><a class="waves-effect waves-dark" href="@Url.Action("Index", "Escalacion", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Escalacion </a></li>
+                    </ul>
+                </li>
+                <li class="nav-level">--- Levantamiento  </li>
+                <li class="treeview" id="MenuTicket2">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-ticket"></i><span>Registrar Tickets </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="MenuTicketNuevoTicket"><a class="waves-effect waves-dark" href="@Url.Action("CrearTicketUsuer", "Ticket", new { area = "TicketUnitario" })"><i class="icon-arrow-right"></i> Nuevo ticket </a></li>
+                        <li id="MenuTicketMisTickets"><a class="waves-effect waves-dark" href="@Url.Action("MisTickets", "Ticket", new { area = "TicketUnitario" })"><i class="icon-arrow-right"></i> Mis tickets </a></li>
+                    </ul>
+                </li>
+
+            }
+
+            @if (User.IsInRole("Supervisor de operación Cliente No Orden Trabajo"))
+            {
+                <li class="nav-level">--- Navegación</li>
+                <li class="treeview" id="MenuDashboard">
+                    <a class="waves-effect waves-dark" href="@Url.Action("Index", "Home", new { area = "Dhasbord" })">
+                        <i class="icon-speedometer"></i><span> Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-level">--- Operación </li>
+                <li class="treeview" id="MenuOperacion">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icon-briefcase"></i><span> Tickets </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+
+                        <li id="MenuOperacionTickets"><a class="waves-effect waves-dark" href="@Url.Action("OperacionNoOrdenTrabajo", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Operación </a></li>
+                        <li id="MenuOperacionValidadoCliente"><a class="waves-effect waves-dark" href="@Url.Action("ValidadoCliente", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Tickets validados  </a></li>
+
+                        <li id="MenuOperacionNuevoTicket"><a class="waves-effect waves-dark" href="@Url.Action("CrearNoOrdenTrabajo", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Nuevo ticket </a></li>
+                        <li id="MenuOperacionMisTickets"><a class="waves-effect waves-dark" href="@Url.Action("MisTickets", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Mis tickets </a></li>
+                        <li id="MenuOperacionFecha"><a class="waves-effect waves-dark" href="@Url.Action("Index", "TicketFechaAtencion", new { area = "Ticket" })"><i class="icon-arrow-right"></i>Calendario de Mantenimiento</a></li>
+                    </ul>
+                </li>
+                <li class="nav-level">--- Inventario </li>
+                <li id="MenuEquipo" class="treeview">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-ticket"></i><span> Equipos</span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="MenuInventarioEquipo"><a class="waves-effect waves-dark" href="@Url.Action("EquipoLista", "Equipo", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Lista de equipos </a></li>
+                    </ul>
+                </li>
+
+                <li id="MenuCatalogo" class="treeview">
+                    <a class="waves-effect waves-dark" href="#!"><i class="ti-user"></i><span> Catálogos </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="MenuInventarioTipoEquipo"><a class="waves-effect waves-dark" href="@Url.Action("TipoEquipo", "CatTipoEquipo", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Tipo de equipo </a></li>
+                        <li id="MenuInventarioCategoria"><a class="waves-effect waves-dark" href="@Url.Action("Categoria", "CatCategoria", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Categoría </a></li>
+                        <li id="MenuInventarioModelo"><a class="waves-effect waves-dark" href="@Url.Action("Modelo", "CatModelo", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Modelo </a></li>
+                    </ul>
+                </li>
+            }
+
+            @if (User.IsInRole("Supervisor de operación Asae No Orden Trabajo"))
+            {
+                <li class="nav-level">--- Navegación</li>
+                <li class="treeview" id="MenuDashboard">
+                    <a class="waves-effect waves-dark" href="@Url.Action("Index", "SuperProveedor", new { area = "Dhasbord" })">
+                        <i class="icon-speedometer"></i><span> Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-level">--- Operación </li>
+                <li class="treeview" id="MenuOperacion">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icon-briefcase"></i><span> Tickets </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+
+                        <li id="MenuOperacionTickets"><a class="waves-effect waves-dark" href="@Url.Action("OperacionSupervicionNoOrdenTrabajo", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Operación </a></li>
+                        <li id="MenuOperacionValidadoSupervisor"><a class="waves-effect waves-dark" href="@Url.Action("ValidadoSupervisor", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Tickets validados  </a></li>
+                        <li id="MenuOperacionReasignar"><a class="waves-effect waves-dark" href="@Url.Action("ReasignarTickets", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Reasignar IDC  </a></li>
+
+                        <li id="MenuOperacionNuevoTicket"><a class="waves-effect waves-dark" href="@Url.Action("Crear", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Nuevo ticket </a></li>
+                        <li id="MenuOperacionMisTickets"><a class="waves-effect waves-dark" href="@Url.Action("MisTickets", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Mis tickets </a></li>
+                        <li id="MenuOperacionFecha"><a class="waves-effect waves-dark" href="@Url.Action("Index", "TicketFechaAtencion", new { area = "Ticket" })"><i class="icon-arrow-right"></i>Calendario de Mantenimiento</a></li>
+                        <li id="MenuOperacionEscalacion"><a class="waves-effect waves-dark" href="@Url.Action("Index", "Escalacion", new { area = "Ticket" })"><i class="icon-arrow-right"></i>Escalacion </a></li>
+
+                    </ul>
+                </li>
+                <li class="nav-level">--- Inventario </li>
+
+                <li id="MenuEquipo" class="treeview">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-ticket"></i><span> Equipos</span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="MenuInventarioEquipo"><a class="waves-effect waves-dark" href="@Url.Action("EquipoLista", "Equipo", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Lista de equipos </a></li>
+                    </ul>
+                </li>
+
+                <li id="MenuCatalogo" class="treeview">
+                    <a class="waves-effect waves-dark" href="#!"><i class="ti-user"></i><span> Catálogos </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        <li id="MenuInventarioTipoEquipo"><a class="waves-effect waves-dark" href="@Url.Action("TipoEquipo", "CatTipoEquipo", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Tipo de equipo </a></li>
+                        <li id="MenuInventarioCategoria"><a class="waves-effect waves-dark" href="@Url.Action("Categoria", "CatCategoria", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Categoría </a></li>
+                        <li id="MenuInventarioModelo"><a class="waves-effect waves-dark" href="@Url.Action("Modelo", "CatModelo", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Modelo </a></li>
+                    </ul>
+                </li>
+            }
+
+            @if (User.IsInRole("Operador") || User.IsInRole("Supervisor de operación Asae") || User.IsInRole("Supervisor de operación Cliente") || User.IsInRole("Supervisor de reportes"))
+            {
+                <li class="nav-level">--- Navegación</li>
+                <li class="treeview" id="MenuDashboard">
+                    @if (User.IsInRole("Operador"))
+                    {
+                        <a class="waves-effect waves-dark" href="@Url.Action("Index", "Operador", new { area = "Dhasbord" })">
+                            <i class="icon-speedometer"></i><span> Dashboard</span>
+                        </a>
+                    }
+                    @if (User.IsInRole("Supervisor de operación Asae"))
+                    {
+                        <a class="waves-effect waves-dark" href="@Url.Action("Index", "SuperProveedor", new { area = "Dhasbord" })">
+                            <i class="icon-speedometer"></i><span> Dashboard</span>
+                        </a>
+                    }
+                    @if (User.IsInRole("Supervisor de operación Cliente"))
+                    {
+                        <a class="waves-effect waves-dark" href="@Url.Action("Index", "Home", new { area = "Dhasbord" })">
+                            <i class="icon-speedometer"></i><span> Dashboard</span>
+                        </a>
+                    }
+                </li>
+                <li class="nav-level">--- Operación </li>
+                <li class="treeview" id="MenuOperacion">
+                    <a class="waves-effect waves-dark" href="#!"><i class="icon-briefcase"></i><span> Tickets </span><i class="icon-arrow-down"></i></a>
+                    <ul class="treeview-menu">
+                        @if (User.IsInRole("Operador"))
+                        {
+                            <li id="MenuOperacionTicketsUsuario"><a class="waves-effect waves-dark" href="@Url.Action("OperacionUsuario", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Operación </a></li>
+                        }
+                        @if (User.IsInRole("Supervisor de operación Asae"))
+                        {
+                            <li id="MenuOperacionTickets"><a class="waves-effect waves-dark" href="@Url.Action("Operacion", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Operación </a></li>
+                            <li id="MenuOperacionValidadoSupervisor"><a class="waves-effect waves-dark" href="@Url.Action("ValidadoSupervisor", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Tickets validados  </a></li>
+                            <li id="MenuOperacionReasignar"><a class="waves-effect waves-dark" href="@Url.Action("ReasignarTickets", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Reasignar IDC  </a></li>
+                        }
+                        @if (User.IsInRole("Supervisor de operación Cliente"))
+                        {
+                            <li id="MenuOperacionTickets"><a class="waves-effect waves-dark" href="@Url.Action("OperacionOrdenTrabajo", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Operación </a></li>
+                            <li id="MenuOperacionValidadoCliente"><a class="waves-effect waves-dark" href="@Url.Action("ValidadoCliente", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Tickets validados  </a></li>
+                        }
+                        @if (User.IsInRole("Operador"))
+                        {
+                            <li id="MenuOperacionAtendidosUsuario"><a class="waves-effect waves-dark" href="@Url.Action("AtendidosUsuario", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Atendidos </a></li>
+                        }
+                        <li id="MenuOperacionNuevoTicket"><a class="waves-effect waves-dark" href="@Url.Action("Crear", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Nuevo ticket </a></li>
+                        <li id="MenuOperacionMisTickets"><a class="waves-effect waves-dark" href="@Url.Action("MisTickets", "Ticket", new { area = "Ticket" })"><i class="icon-arrow-right"></i> Mis tickets </a></li>
+                        <li id="MenuOperacionFecha"><a class="waves-effect waves-dark" href="@Url.Action("Index", "TicketFechaAtencion", new { area = "Ticket" })"><i class="icon-arrow-right"></i>Calendario de Mantenimiento</a></li>
+                        @if (User.IsInRole("Supervisor de operación Cliente") || User.IsInRole("Supervisor de operación Asae"))
+                        {
+                            <li id="MenuOperacionEscalacion"><a class="waves-effect waves-dark" href="@Url.Action("Index", "Escalacion", new { area = "Ticket" })"><i class="icon-arrow-right"></i>Escalación </a></li>
+                        }
+                    </ul>
+                </li>
+                @if (User.IsInRole("Supervisor de operación Asae") || User.IsInRole("Supervisor de operación Cliente") || User.IsInRole("Supervisor de reportes"))
+                {
+                    <li class="nav-level">--- Inventario </li>
+
+                    <li id="MenuEquipo" class="treeview">
+                        <a class="waves-effect waves-dark" href="#!"><i class="icofont icofont-ticket"></i><span> Equipos</span><i class="icon-arrow-down"></i></a>
+                        <ul class="treeview-menu">
+                            <li id="MenuInventarioEquipo"><a class="waves-effect waves-dark" href="@Url.Action("EquipoLista", "Equipo", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Lista de equipos </a></li>
+                        </ul>
+                    </li>
+
+                    <li id="MenuCatalogo" class="treeview">
+                        <a class="waves-effect waves-dark" href="#!"><i class="ti-user"></i><span> Catálogos </span><i class="icon-arrow-down"></i></a>
+                        <ul class="treeview-menu">
+                            <li id="MenuInventarioTipoEquipo"><a class="waves-effect waves-dark" href="@Url.Action("TipoEquipo", "CatTipoEquipo", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Tipo de equipo </a></li>
+                            <li id="MenuInventarioCategoria"><a class="waves-effect waves-dark" href="@Url.Action("Categoria", "CatCategoria", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Categoría </a></li>
+                            <li id="MenuInventarioModelo"><a class="waves-effect waves-dark" href="@Url.Action("Modelo", "CatModelo", new { area = "Inventario" })"><i class="icon-arrow-right"></i> Modelo </a></li>
+                        </ul>
+                    </li>
+
+
+                }
+            }
+        </ul>
+    </section>
+</aside>
+
+
+ 
+

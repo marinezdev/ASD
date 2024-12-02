@@ -1,0 +1,844 @@
+﻿
+@{
+    ViewData["Title"] = "CrearNoOrdenTrabajo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .select2-container .select2-selection--single {
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        height: 34px;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: 4px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #55595c;
+        line-height: 33px;
+        border-radius: 0.25rem;
+    }
+
+    .btnsearch {
+        margin-right: 0;
+        margin-top: 10px;
+    }
+
+    @@media (min-width: 544px){
+        .modal-dialog {
+            max-width: 450px;
+            margin: 30px auto;
+        }
+    }
+    
+
+</style>
+
+
+<!-- Modal Nuevo Estdo -->
+<div class="modal fade" id="ModalEstado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoEstado">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo estado</h5>
+                  @*  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre estado </label>
+                                <input type="text" class="form-control" placeholder="Estado" id="Modal_NEstado" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva poblacion -->
+<div class="modal fade" id="ModalPoblacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaPoblacion">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nueva población </h5>
+                    @*  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>*@
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre población </label>
+                                <input type="text" class="form-control" placeholder="Estado" id="Modal_NPoblacion" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo codigo postal -->
+<div class="modal fade" id="ModalCP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoCP">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nuevo código postal </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Código postal  </label>
+                                <input type="text" class="form-control" placeholder="Codigo postal" id="Modal_NCP" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva Colonia -->
+<div class="modal fade" id="ModalColonia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaColonia">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nueva colonia </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Colonia </label>
+                                <input type="text" class="form-control" placeholder="Colonia" id="Modal_NColonia" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva rutina de solucion -->
+<div class="modal fade" id="ModalRutinaSolucion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaRutina">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nueva regla de rutina </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Rutina </label>
+                                <input type="text" class="form-control" placeholder="Nueva rutina" id="Modal_NRutina_Nombre" />
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NRutina_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6 text-right">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                <i class="icofont icofont-save "></i><span class="m-l-12"> Agregar </span>
+                            </button>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <p> Lista de ruitna del equipo </p>
+                            <hr />
+                        </div>
+                        <div class="col-xl-12 col-lg-6" id="TabRutinaEquipo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar  </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva imagen equipo -->
+<div class="modal fade" id="ModalImagenEquipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaImagen">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nueva imagen fotográfica </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Título de la imagen  </label>
+                                <input type="text" class="form-control" placeholder="titulo de la imagen" id="Modal_NImagen_Nombre" />
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NImagen_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6 text-right">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                <i class="icofont icofont-save "></i><span class="m-l-12"> Agregar </span>
+                            </button>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <p> Lista de imágenes solicitadas para el equipo </p>
+                            <hr />
+                        </div>
+                        <div class="col-xl-12 col-lg-6" id="TabImagenEquipo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar  </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo tipo equipo -->
+<div class="modal fade" id="ModalTipoEquipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoTipoEquipo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo tipo equipo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Tipo Equipo </label>
+                                <input type="text" class="form-control" placeholder="Tipo equipo" id="Modal_TipoEquipo_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva categoria -->
+<div class="modal fade" id="ModalCategoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaCategoria">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nueva Categoría  </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre categoría </label>
+                                <input type="text" class="form-control" placeholder="Categoria" id="Modal_Categoria_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo modelo-->
+<div class="modal fade" id="ModalModelo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo modelo de equipo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre modelo </label>
+                                <input type="text" class="form-control" placeholder="Nombre modelo" id="Modal_Modelo_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Nuevo ticket</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Ticket </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">  </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-8">
+            <!-- Nuevo ticket -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>Nuevo ticket
+                    </h5>
+                    <p>Completa los campos marcados <code> * </code> </p>
+                </div>
+                <div class="card-block">
+                    <form action="#" id="NuevoTicket">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label"> Tipo de servicio </label>
+                                    <select class="form-control js-example-basic-single" id="Ticket_TipoServicio" onchange="CargaTipoServicio();">
+                                        <option value="0" selected>Seleccionar</option>
+                                        @{
+                                            if (ViewBag.Flujos != null)
+                                            {
+                                                foreach (var item in ViewBag.Flujos)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="DivTicket_TipoServicioCorrectivo" style="display:none">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label"> Tipo de servicio Correctivo </label>
+                                    <select class="form-control" id="Ticket_TipoServicioCorrectivo" onchange="CargaTipoServicioTitulo();">
+                                        <option value="0" selected>Seleccionar</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label" id="Ticket_TipoServicioCantidad_Label">* Unidad medida servicio correctivo </label>
+                                    <input type="text" class="form-control" id="Ticket_TipoServicioCantidad" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Titulo (Asunto) </label>
+                                    <input type="text" class="form-control" id="Ticket_Titulo" />
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Prioridad </label>
+                                    <select class="form-control js-example-basic-single" id="Ticket_Prioridad">
+                                        <option value="0" selected>Seleccionar</option>
+                                        @{
+                                            if (ViewBag.CatPrioridad != null)
+                                            {
+                                                foreach (var item in ViewBag.CatPrioridad)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Fecha programada </label>
+                                    <input class="form-control" type="date" value="" id="Ticket_FechaProgramada">
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <p>Completa los campos marcados <code> * </code>, agrega equipos al ticket para poder continuar   </p>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Sucursal </label>
+                                <div class="input-group">
+                                    <select id='Ticket_Sucursal' class="form-select js-example-basic-single" aria-label="Ticket_Sucursal" style="width:90%" onchange="CargaEquipos();">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                        @{
+                                            if (ViewBag.Sucursal != null)
+                                            {
+                                                foreach (var item in ViewBag.Sucursal)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarFormularioNuevaSucursal()" data-toggle="tooltip" data-placement="top" title="" data-original-title="Nueva sucursal">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Equipo </label>
+                                <div class="input-group">
+                                    <select id='Ticket_Equipo' class="form-select js-example-basic-single " aria-label="Ticket_Equipo" style="width:90%">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                    
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarFormularioNuevoEquipo()" data-toggle="tooltip" data-placement="top" title="" data-original-title="Nuevo equipo">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-6">
+                                <br>
+                                <button type="button" class="btn btn-primary waves-effect waves-light" onclick="AgregarTicketEquipo()" data-toggle="tooltip" data-placement="top" title="" data-original-title="Agregar">
+                                    <i class="icofont icofont-archive"></i> <span class="m-l-10">Agregar equipo al ticket</span>
+                                </button>
+                                <br /><br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 table-responsive" id="TabTicketEquipos">
+                                <table class="table text-center">
+                                    <thead>
+                                        <tr>
+                                        <tr>
+                                            <th class="text-center">Sucursal</th>
+                                            <th class="text-center">Equipo</th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">Detalle del ticket </label>
+                                    <textarea class="form-control max-textarea" rows="4" id="Ticket_Detalle"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                    <i class="icofont icofont-save "></i><span class="m-l-10"> Registrar ticket </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card" Id="FormNuevaSucursal" style="display:none;">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-clipboard"></i>
+                        </strong>Nueva sucursal
+                    </h5>
+                    <p>Completa los campos marcados <code> * </code> </p>
+                </div>
+                <div class="card-block">
+                    <form action="#" id="NuevaSucursal">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <p> Dirección de la sucursal </p>
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Estado </label>
+                                <div class="input-group">
+                                    <select id='NSucursal_Estado' class="form-select js-example-basic-single" style="width:80%" onchange="CargaPoblacion();">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                        @{
+                                            if (ViewBag.CatEstados != null)
+                                            {
+                                                foreach (var item in ViewBag.CatEstados)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#ModalEstado">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Población </label>
+                                <div class="input-group">
+                                    <select id='NSucursal_Poblacion' class="form-select js-example-basic-single" style="width:80%" onchange="CargaCP();">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarModalPoblacion()">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* CP </label>
+                                <div class="input-group">
+                                    <select id='NSucursal_CP' class="form-select js-example-basic-single" style="width:80%" onchange="CargaColonia();">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarModalCP()">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Colonia </label>
+                                <div class="input-group">
+                                    <select id='NSucursal_Colonia' class="form-select js-example-basic-single" style="width:80%">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarModalColonia()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <br />
+                                <p> Información  de la sucursal </p>
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Tipo Sucursal </label>
+                                <div class="input-group">
+                                    <select id='NSucursal_TipoSucursal' class="form-select js-example-basic-single" style="width:100%">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                        @{
+                                            if (ViewBag.CatTipoSucursal != null)
+                                            {
+                                                foreach (var item in ViewBag.CatTipoSucursal)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Nombre sucursal </label>
+                                    <input type="text" class="form-control" placeholder="Nombre sucursal" id="NSucursal_NombreSucursal" />
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Dirección  </label>
+                                    <input type="text" class="form-control" placeholder="Dirección " id="NSucursal_Direccion" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home">
+                                <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                            </button>
+                            <button type="button" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" onclick="CancelarNuevaSucursal()">
+                                <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card" Id="FormNuevoEquipo" style="display:none;">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-harddrive"></i>
+                        </strong>
+                        Nuevo equipo </h5>
+                    <p> Completa los campos marcados <code> * </code> </p>
+                </div>
+                <form action="#" id="NuevoEquipo">
+                <div class="card-block">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <p> Administración del equipo </p>
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Tipo Equipo </label>
+                                <div class="input-group">
+                                    <select id='NEquipo_TipoEquipo' class="form-select js-example-basic-single" style="width:80%" onchange="CargaCategorias();">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                        @{
+                                            if (ViewBag.CatTipoEquipo != null)
+                                            {
+                                                foreach (var item in ViewBag.CatTipoEquipo)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#ModalTipoEquipo">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Categoría </label>
+                                <div class="input-group">
+                                    <select id='NEquipo_Categoria' class="form-select js-example-basic-single" style="width:80%" onchange="CargaModelos();">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarModalCategoria()">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Modelo </label>
+                                <div class="input-group">
+                                    <select id='NEquipo_Modelo' class="form-select js-example-basic-single" style="width:80%">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarModalModelo()">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Estatus equipo </label>
+                                <div class="input-group">
+                                    <select id='NEquipo_EstatusEquipo' class="form-select js-example-basic-single" style="width:100%">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                        @{
+                                            if (ViewBag.CatEstatusEquipo != null)
+                                            {
+                                                foreach (var item in ViewBag.CatEstatusEquipo)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Numero de serie  </label>
+                                    <input type="text" class="form-control" id="NEquipo_NumeroSerie" />
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Fecha de apertura  </label>
+                                    <input class="form-control" type="date" value="" id="NEquipo_FechaApartura">
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Fecha de adquisición  </label>
+                                    <input class="form-control" type="date" value="" id="NEquipo_FechaAdquisicion">
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Fecha caducidad </label>
+                                    <input class="form-control" type="date" value="" id="NEquipo_FechaCaducidad">
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Fecha garantía </label>
+                                    <input class="form-control" type="date" value="" id="NEquipo_FechaGarantia">
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="row">
+                                    <div class="col-sm-12 table-responsive">
+                                        <table class="table text-center">
+                                            <thead>
+                                                <tr>
+                                                <tr>
+                                                    <th class="text-center">Rutina de la solución</th>
+                                                    <th class="text-center">Imágenes obligatorias</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span id="NumRutina"> 0 </span> &nbsp;
+                                                        <button class="btn btn-primary" type="button" onclick="MostrarModalRutina()">+</button>
+                                                    </td>
+                                                    <td>
+                                                        <span id="NumImagenes"> 0 </span> &nbsp;
+                                                        <button class="btn btn-primary" type="button" onclick="MostrarModalImagen()">+</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">Observaciones  </label>
+                                    <textarea class="form-control max-textarea" rows="4" id="NEquipo_Observaciones"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home">
+                            <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                        </button>
+                        <button type="button" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" onclick="CancelarNuevoEquipo()">
+                            <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/js/ticket/ticket/_CrearNoOrdentrabajo.js"></script>
+

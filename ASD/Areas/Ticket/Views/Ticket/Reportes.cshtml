@@ -1,0 +1,1216 @@
+@{
+    ViewData["Title"] = "Reportes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.0/js/dataTables.buttons.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
+<style>
+    #container2 {
+        position: relative;
+        height: 400px;
+        width: 100%;
+    }
+
+    .custom-copy-btn {
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .custom-csv-btn {
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .custom-excel-btn {
+        background-color: #ffc107;
+        color: black;
+        border-radius: 5px;
+    }
+
+    .custom-pdf-btn {
+        background-color: #dc3545;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .custom-print-btn {
+        background-color: #6c757d;
+        color: white;
+        border-radius: 5px;
+    }
+</style>
+
+
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Reportes de tickets</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Reportes</a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!------------>
+
+    <div class="row">
+        <div class="col-xl-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 id="TFC" class="card-header-text"> </h5>
+                    <p>Filtra los gráficos seleccionando un año, para actualizar los datos mostrados. </p>
+                    <br />
+               
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <select class="form-control" id="yearSelector" onchange="updateChart0(),updateChart(),updateChart2(),updateChart3(),Tsinatender(),TicketFechaCorte()">
+                                <option value="0">Seleccionar año</option>
+                                @{
+
+                                    if (ViewBag.Year != null)
+                                    {
+                                        foreach (var itemOp in ViewBag.Year)
+                                        {
+                                            <option value="@itemOp.Anio" selected>@itemOp.Anio</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-xl-6 col-md-6">
+                    <div class="card">
+                        @*<div class="card-header">
+                        <h5 class="card-header-text">Tickets Anuales</h5>
+                        <p>Descripción</p>
+                    </div>*@
+
+                        <div class="card-block">
+                            <div class="col-md-12">
+                                <div id="container" style="width: 100%; height: 400px;"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-md-6">
+                    <div class="card">
+                        <!--<div class="card-header">
+                    <h5 class="card-header-text">-->
+                        @*itulos*@
+                        <!--</h5>
+                    <p>Descripción</p>
+                </div>-->
+
+                        <div class="card-block">
+
+                            <div class="col-md-12">
+                                <div id="container2" style="width: 100%; height: 400px;">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-6 col-md-6">
+                    <div class="card">
+                        @*<div class="card-header">
+                        <h5 class="card-header-text">Tickets Anuales</h5>
+                        <p>Descripción</p>
+                    </div>*@
+
+                        <div class="card-block">
+                            <div class="col-md-12">
+                                <div id="container3" style="width: 100%; height: 400px;"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-md-6">
+                    <div class="card">
+                        <!--<div class="card-header">
+                    <h5 class="card-header-text">-->
+                        @*itulos*@
+                        <!--</h5>
+                    <p>Descripción</p>
+                </div>-->
+
+                        <div class="card-block">
+
+                            <div class="col-md-12">
+                                <div id="container4" style="width: 100%; height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xl-12 col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-header-text">Tickets <span id="anioT"></span> sin finalizar</h5>
+                            <p></p>
+                        </div>
+
+                        <div class="card-block">
+                            <div class="table-container">
+                                <table id="ticketsTable" class="display" style="width:100%">
+                                    <thead>
+                                        <!-- Los encabezados se generarán dinámicamente aquí -->
+                                    </thead>
+                                    <tbody>
+                                        <!-- Las filas se generarán dinámicamente aquí -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade custom-modal" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="#">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        Tickets no atendidos
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="col-sm-12 table-responsive">
+                                <table id="TTickets" class="table" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Folio</th>
+                                            <th>Solicitante</th>
+                                            <th>Descripción</th>
+                                            <th>Tiempo de Atención</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ContenidoTTickets">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="cerrarModal()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade custom-modal" id="ModalStatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="#">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        Tickets Por estatus
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="col-sm-12 table-responsive">
+                                <table id="TStatus" class="table" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Folio</th>
+                                            <th>Descripción</th>
+                                            <th>Fecha de Registro</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ContenidoTStatus">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="cerrarModalStatus()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal TAnual-->
+<div class="modal fade custom-modal" id="ModalTTAnual" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="#">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        Tickets Anuales
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="col-sm-12 table-responsive">
+                                <table id="TTAnual" class="table" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Folio</th>
+                                            <th>Descripción</th>
+                                            <th>Estatus</th>
+                                            <th>Solicitante</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ContenidoTAnual">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="cerrarModalTTAnual()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal TServicioAnual-->
+<div class="modal fade custom-modal" id="ModalTSAnual" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="#">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        Tickets por servicio
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="col-sm-12 table-responsive">
+                                <table id="TTSAnual" class="table" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Folio</th>
+                                            <th>Descripción</th>
+                                            <th>Solicitante</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ContenidoTTSAnual">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="cerrarModalTSAnual()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal TFinalizados-->
+<div class="modal fade custom-modal" id="TFin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="#">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        Tickets Finalizados
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="col-sm-12 table-responsive">
+                                <table id="TTFin" class="table" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Folio</th>
+                                            <th>Descripción</th>
+                                            <th>Solicitante</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ContenidoTTFin">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="cerrarModalTFin()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('#MenuReportes').addClass("active");
+    $('#MenuOperacion').addClass("active");
+    $(document).ready(function () {
+        updateChart();
+        updateChart0();
+        updateChart2();
+        updateChart3();
+        Tsinatender();
+        TicketFechaCorte();
+    });
+    function TicketFechaCorte() {
+
+        const Model = {
+            Anio: $('#yearSelector').val(),
+        };
+
+        fetch("/Ticket/Ticket/TicketFechaCorte", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Model)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const fecha = new Date(data.fechaRegistro || "");
+                const fechaFormateada = `${fecha.getDate().toString().padStart(2, '0')}/${(fecha.getMonth() + 1).toString().padStart(2, '0')}/${fecha.getFullYear()}`;
+                const mensaje = `Reporte Tickets con fecha a corte: <span style="color: red;">${fechaFormateada}</span>`;
+                $('#TFC').html(mensaje);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                $('#TFC').text("Ocurrió un error al obtener la fecha a corte.");
+            });
+    }
+    //GRAFICA 1  OKOOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOK
+    var ticketsData = @Html.Raw(Json.Serialize(ViewBag.TicketsData));
+    const datosPorAnio = {};
+    ticketsData.forEach(item => {
+        const { anio, mes, total } = item;
+        if (!datosPorAnio[anio]) {
+            datosPorAnio[anio] = {}; // Usa un objeto para evitar inicializar con ceros
+        }
+        datosPorAnio[anio][mes - 1] = total; // Asigna directamente al mes correspondiente
+    });
+    const seriesData = Object.keys(datosPorAnio).map(anio => {
+        const data = Array(12).fill(null); // Llena inicialmente con null
+        Object.keys(datosPorAnio[anio]).forEach(mes => {
+            data[mes] = datosPorAnio[anio][mes];
+        });
+
+        return {
+            name: anio.toString(),
+            data: data,
+            dataLabels: {
+                enabled: true,
+                format: '{y}',
+                formatter: function () {
+                    return this.y !== null ? this.y : '';
+                }
+            }
+        };
+    });
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Tickets por Año'
+        },
+        xAxis: {
+            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Número de Tickets'
+            },
+            allowDecimals: false
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0,
+                events: {
+                    click: function (event) {
+                        // Obtener el mes y el año
+                        const mesNumero = event.point.x + 1; // x is the zero-based index
+                        const año = event.point.series.name;
+                        MostrarPorMesAnio(mesNumero, año);
+                    }
+                }
+            }
+        },
+        series: seriesData
+    });
+    function updateChart0() {
+        var selectedYear = $('#yearSelector').val();
+        var chart = $('#container').highcharts(); // Obtiene la gráfica
+
+        if (selectedYear === "0") {
+            // Si no se selecciona ningún año, muestra todas las series
+            chart.series.forEach(function (serie) {
+                serie.show();
+            });
+        } else {
+            // Itera sobre las series y muestra solo la del año seleccionado
+            chart.series.forEach(function (serie) {
+                if (serie.name === selectedYear) {
+                    serie.show();  // Muestra la serie si coincide con el año seleccionado
+                } else {
+                    serie.hide();  // Oculta las series que no coinciden
+                }
+            });
+        }
+    }
+    function MostrarPorMesAnio(M, Y) {
+        const Model = {
+            Anio: Y,
+            Mes: M
+        };
+        fetch("/Ticket/Ticket/GetTicketAnioMonth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Model)
+        })
+        .then(res => res.json())
+        .then(res => {
+            PintarTicketsAnual(res);
+            $('#ModalTTAnual').modal('show');
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    function PintarTicketsAnual(datos) {
+        var table = $('#TTAnual').DataTable();
+        table.destroy();
+        $('#TTAnual colgroup').remove();
+
+        ContenidoTAnual.innerHTML = "";
+        for (let valor of datos) {
+            ContenidoTAnual.innerHTML += `
+                <tr>
+                    <td>${valor.flujo}</td>
+                    <td>${valor.titulo}</td>
+                    <td>${valor.estatus}</td>
+                    <td>${valor.personaNombre}</td>
+                </tr>
+                `;
+        }
+        var dataTable = $('#TTAnual').DataTable({
+            paging: false,
+            ordering: true,
+            info: true,
+            searching: false
+        });
+
+        // Forzar el ajuste de las columnas
+        dataTable.columns.adjust().draw();
+
+        // Aplicar estilos a las cabeceras
+        $('#TTAnual th').eq(0).css('width', '20%');
+        $('#TTAnual th').eq(1).css('width', '40%');
+        $('#TTAnual th').eq(2).css('width', '20%');
+        $('#TTAnual th').eq(3).css('width', '20%');
+    }
+
+    //GRAFICA 2 OKOOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOK
+    let chart;
+    function updateChart() {
+        const Model = {
+            Anio: $('#yearSelector').val(),
+        };
+
+        fetch("/Ticket/Ticket/ObtenerTotalTicketsPorEstatusAnio", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Model)
+        })
+            .then(res => res.json())
+            .then(res => {
+                const seriesData = res.map(item => ({
+                    name: item.estatus,
+                    y: item.total,
+                    id: item.id  // Include the id in the data point
+                }));
+
+                const totalTickets = seriesData.reduce((sum, item) => sum + item.y, 0);
+
+                chart.series[0].setData(seriesData);
+
+                chart.setTitle({
+                    text: `Distribución de Tickets por Estatus<br><br> Universo: <span style="color: red; font-weight: bold;"> ${totalTickets} </span> Tickets`
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    $(document).ready(function () {
+        // Initialize the chart without the dynamic title
+        chart = Highcharts.chart('container2', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Distribución de Tickets por Estatus'
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}: {point.y}', // Show the number of tickets
+                        distance: 20, // Adjust to position the label inside the pie slice
+                        style: {
+                            color: 'black', // Change color to make it more readable if necessary
+                            textOutline: 'none'
+                        }
+                    },
+                    tooltip: {
+                        pointFormat: '{point.name}: {point.y} tickets ({point.percentage:.1f}%)'
+                    },
+                    // Add the event listener here
+                    point: {
+                        events: {
+                            click: function () {
+                                MostrarEstatus(this.options.id);
+                            }
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Tickets',
+                colorByPoint: true,
+                data: []
+            }]
+        });
+    });
+    function MostrarEstatus(Id) {
+        const Model = {
+            Anio: $('#yearSelector').val(),
+            IdFlujo: Id
+        };
+        fetch("/Ticket/Ticket/GetTicketEstatusAnio", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Model)
+        })
+        .then(res => res.json())
+        .then(res => {
+             PintarTicketsEstatus(res);
+            $('#ModalStatus').modal('show');
+        })
+        .catch(error => console.error('Error:', error));
+
+    }
+    function PintarTicketsEstatus(datos) {
+        var table = $('#TStatus').DataTable();
+        table.destroy();
+        $('#TStatus colgroup').remove();
+
+        ContenidoTStatus.innerHTML = "";
+        for (let valor of datos) {
+            ContenidoTStatus.innerHTML += `
+            <tr>
+                <td>${valor.flujo}</td>
+                <td>${valor.titulo}</td>
+                <td>${valor.fechaRegistro}</td>
+            </tr>
+            `;
+        }
+        var dataTable = $('#TStatus').DataTable({
+            paging: false,
+            ordering: true,
+            info: true,
+            searching: false
+        });
+
+        // Forzar el ajuste de las columnas
+        dataTable.columns.adjust().draw();
+
+        // Aplicar estilos a las cabeceras
+        $('#TStatus th').eq(0).css('width', '30%');
+        $('#TStatus th').eq(1).css('width', '50%');
+        $('#TStatus th').eq(2).css('width', '20%');
+    }
+    //GRAFICA 3
+    function updateChart2() {
+        const Model = {
+            Anio: $('#yearSelector').val(),
+        };
+
+        fetch("/Ticket/Ticket/ObtenerTotalTicketsPorFlujoAnio", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Model)
+        })
+            .then(response => response.json())
+            .then(data => {
+
+                const categories = []; // Almacenará los nombres de los flujos
+                const seriesData = {}; // Almacenará los datos para cada flujo
+                const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+                // Recolectamos y organizamos los datos
+                data.forEach(item => {
+                    const flujo = item.flujo;
+                    const monthIndex = item.mes - 1; // Índice del mes (0 basado)
+
+                    // Si el flujo no está en categorías, lo agregamos
+                    if (!categories.includes(flujo)) {
+                        categories.push(flujo);
+                    }
+
+                    // Inicializar la estructura para el flujo si no existe
+                    if (!seriesData[flujo]) {
+                        seriesData[flujo] = new Array(12).fill(0); // Inicializamos con 12 meses en 0
+                    }
+
+                    // Asignamos el total de tickets al mes correcto para el flujo
+                    seriesData[flujo][monthIndex] = {
+                        y: item.total,
+                        monthId: item.mes, // Agregamos el id del mes
+                        areaId: item.id // Agregamos el id del área
+                    };
+                });
+
+                // Filtrar y crear la serie con solo los meses que tienen datos
+                const series = monthNames.map((month, index) => {
+                    const dataForMonth = categories.map(flujo => seriesData[flujo][index]);
+                    if (dataForMonth.some(value => value.y > 0)) {
+                        return {
+                            name: month,
+                            data: dataForMonth
+                        };
+                    }
+                    return null; // Si no hay datos para el mes, no lo incluimos
+                }).filter(seriesItem => seriesItem !== null); // Filtramos los meses sin datos
+
+                // Actualizar el gráfico con los nuevos datos
+                Highcharts.chart('container3', {
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: `Tickets por servicio y mes en ${Model.Anio}`
+                    },
+                    xAxis: {
+                        categories: categories // Los nombres de los flujos
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: '' // Título vacío para ocultarlo
+                        },
+                        allowDecimals: false, // Asegura que solo se muestren números enteros en el eje Y
+                        endOnTick: false,
+                        labels: {
+                            enabled: false // Oculta los números del eje Y
+                        }
+                    },
+                    legend: {
+                        reversed: false
+                    },
+                    plotOptions: {
+                        series: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: true, // Habilita las etiquetas de datos
+                                formatter: function () {
+                                    // Muestra el valor solo si no es 0
+                                    return this.y === 0 ? '' : this.y;
+                                },
+                                color: 'black', // Cambia el color del texto si es necesario
+                                style: {
+                                    textOutline: 'white' // Elimina el contorno del texto
+                                }
+                            },
+                            events: {
+                                click: function (event) {
+                                    ObtenerTicketsPorServicio(event.point.options.monthId, event.point.options.areaId);
+                                }
+                            }
+                        }
+                    },
+                    series: series
+                });
+
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
+    }
+    function ObtenerTicketsPorServicio(Mes, IdFlujo) {
+        const Model = {
+            Anio: $('#yearSelector').val(),
+            Mes: Mes,
+            IdFlujo: IdFlujo
+        };
+        fetch("/Ticket/Ticket/ObtenerTicketXservicio", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Model)
+        })
+            .then(response => response.json())
+            .then(data => {
+                PintarTicketXservicio(data);
+            })
+            .catch(error => {
+                var table = $('#TTSAnual').DataTable();
+                table.destroy();
+                Contenido.innerHTML = "";
+            });
+
+        $('#ModalTSAnual').modal('show');
+    }
+    function PintarTicketXservicio(datos) {
+        var table = $('#TTSAnual').DataTable();
+        table.destroy();
+        $('#TTSAnual colgroup').remove();
+
+        ContenidoTTSAnual.innerHTML = "";
+        for (let valor of datos) {
+            ContenidoTTSAnual.innerHTML += `
+        <tr>
+            <td>${valor.flujo}</td>
+            <td>${valor.titulo}</td>
+            <td>${valor.personaNombre}</td>
+        </tr>
+        `;
+        }
+        var dataTable = $('#TTSAnual').DataTable({
+            paging: false,
+            ordering: true,
+            info: true,
+            searching: false
+        });
+
+        // Forzar el ajuste de las columnas
+        dataTable.columns.adjust().draw();
+
+        // Aplicar estilos a las cabeceras
+        $('#TTickets th').eq(0).css('width', '10%');
+        $('#TTickets th').eq(1).css('width', '10%');
+        $('#TTickets th').eq(2).css('width', '40%');
+        $('#TTickets th').eq(3).css('width', '40%');
+    }
+
+    //GRAFICA 4
+
+    let existingChart;
+    function initializeExistingChart() {
+        existingChart = Highcharts.chart('container4', {
+            chart: {
+                type: 'column',
+                events: {
+                    click: function (event) {
+                        // No se necesita evento de clic en el gráfico completo
+                    }
+                }
+            },
+            title: {
+                text: 'Cantidad de Tickets Finalizados Por responsable de servicio.'
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.point.name + '</b><br/>' +
+                        'Tickets Atendidos: ' + this.point.y;
+                }
+            },
+            xAxis: {
+                categories: [], // Inicialmente vacío
+                title: {
+                    text: 'Áreas y Personas'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Tickets Atendidos'
+                },
+                allowDecimals: false,
+                endOnTick: false
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                        useHTML: true, // Permitir HTML para cambiar el estilo dinámicamente
+                        formatter: function () {
+                            let fontSize = this.y === 1 ? '9px' : '12px';
+                            return '<span style="font-size:' + fontSize + '; font-weight: bold; color: white;">' + this.point.name + '</span>';
+                        },
+                        inside: true,
+                        rotation: -90,
+                        align: 'center',
+                        verticalAlign: 'middle',
+                        crop: false,
+                        overflow: 'none'
+                    },
+                    colorByPoint: true,
+                    events: {
+                        click: function (event) {
+                            ObtenerTicketsFinalizados(event.point.options.flujoId, event.point.options.usuarioId);
+                        }
+                    }
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            series: [{
+                name: 'Tickets Atendidos',
+                data: []
+            }]
+        });
+    }
+    function updateChart3() {
+        const year = $('#yearSelector').val();
+        const model = { Anio: year };
+
+        fetch("/Ticket/Ticket/ObtenerTicketsAtendidos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(model)
+        })
+            .then(res => res.json())
+            .then(data => {
+                const categories = data.map(item => item.flujo);
+                const seriesData = data.map(item => ({
+                    name: item.personaNombre,
+                    y: item.total,
+                    flujoId: item.id, // Incluimos el id del flujo
+                    usuarioId: item.idUsuario // Incluimos el id del usuario
+                }));
+
+                if (existingChart) {
+                    existingChart.xAxis[0].setCategories(categories, true);
+                    existingChart.series[0].setData(seriesData, true);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    function ObtenerTicketsFinalizados(IdFlujo, IdUsuario) {
+
+        const Model = {
+            Anio: $('#yearSelector').val(),
+            IdUsuario: IdUsuario,
+            IdFlujo: IdFlujo
+        };
+
+        fetch("/Ticket/Ticket/ObtenerTicketFinalizado", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Model)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            PintarTicketsFinalizado(data);
+        })
+        .catch(error => {
+            var table = $('#TTFin').DataTable();
+            table.destroy();
+            Contenido.innerHTML = "";
+        });
+            $('#TFin').modal('show');
+    }
+    document.addEventListener('DOMContentLoaded', initializeExistingChart);
+    function PintarTicketsFinalizado(datos) {
+        var table = $('#TTFin').DataTable();
+        table.destroy();
+        $('#TTFin colgroup').remove();
+
+        ContenidoTTFin.innerHTML = "";
+        for (let valor of datos) {
+            ContenidoTTFin.innerHTML += `
+        <tr>
+            <td>${valor.flujo}</td>
+            <td>${valor.titulo}</td>
+            <td>${valor.personaNombre}</td>
+        </tr>
+        `;
+        }
+        var dataTable = $('#TTFin').DataTable({
+            paging: false,
+            ordering: true,
+            info: true,
+            searching: false
+        });
+
+        // Forzar el ajuste de las columnas
+        dataTable.columns.adjust().draw();
+
+        // Aplicar estilos a las cabeceras
+        $('#TTFin th').eq(0).css('width', '10%');
+        $('#TTFin th').eq(1).css('width', '10%');
+        $('#TTFin th').eq(2).css('width', '40%');
+        $('#TTFin th').eq(3).css('width', '40%');
+    }
+
+    //Tabla Tickets sin atender OKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOK
+    function Tsinatender() {
+        const Model = {
+            Anio: $('#yearSelector').val(),
+        };
+        $('#anioT').text(Model.Anio);
+
+        fetch("/Ticket/Ticket/ObtenerResumenFaltante", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Model)
+        })
+            .then(res => res.json())
+            .then(data => {
+                // Destruir DataTable si ya está inicializada
+                if ($.fn.DataTable.isDataTable('#ticketsTable')) {
+                    $('#ticketsTable').DataTable().clear().destroy();
+                    $('#ticketsTable colgroup').remove();
+                }
+
+                $('#ticketsTable thead').empty();
+                $('#ticketsTable tbody').empty();
+
+                // Obtener los encabezados de las personas de manera dinámica
+                let headers = new Set();
+                data.forEach(item => {
+                    headers.add(item.personaNombre);
+                });
+
+                // Crear los encabezados de la tabla
+                let theadHtml = '<tr><th>Flujo</th>';
+                headers.forEach(header => {
+                    theadHtml += `<th style="text-align: center;">${header}</th>`;
+                });
+                theadHtml += '<th style="text-align: center;">Total General</th></tr>';
+                $('#ticketsTable thead').append(theadHtml);
+
+                // Inicializar un objeto para almacenar los totales por columna
+                let columnTotals = {};
+                headers.forEach(header => {
+                    columnTotals[header] = 0;
+                });
+                let totalGeneral = 0;
+
+                // Crear las filas de la tabla
+                data.forEach(item => {
+                    let rowHtml = `<tr><td>${item.flujo}</td>`;
+                    headers.forEach(header => {
+                        // Acceder al valor de la persona de forma dinámica y centrar el contenido
+                        if (item.personaNombre === header) {
+                            const total = item.total || 0;
+                            rowHtml += `<td style="text-align: center;cursor: pointer;" data-idflujo="${item.idFlujo}" data-idusuario="${item.idUsuario}">${total}</td>`;
+                            columnTotals[header] += total;  // Sumar al total de la columna
+                        } else {
+                            rowHtml += `<td style="text-align: center;"></td>`;
+                        }
+                    });
+                    rowHtml += `<td style="text-align: center;">${item.totalGeneral}</td></tr>`;
+                    $('#ticketsTable tbody').append(rowHtml);
+
+                    // Sumar al total general
+                    totalGeneral += item.totalGeneral;
+                });
+
+                // Crear la fila de totales
+                let totalRowHtml = '<tr><td><strong>Total</strong></td>';
+                headers.forEach(header => {
+                    totalRowHtml += `<td style="text-align: center;"><strong>${columnTotals[header]}</strong></td>`;
+                });
+                totalRowHtml += `<td style="text-align: center;"><strong>${totalGeneral}</strong></td></tr>`;
+
+                // Agregar la fila de totales al cuerpo de la tabla
+                $('#ticketsTable tbody').append(totalRowHtml);
+
+                // Inicializar DataTables nuevamente
+                const table = $('#ticketsTable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            text: 'Copiar',
+                            className: 'custom-copy-btn'
+                        },
+                        {
+                            extend: 'csv',
+                            text: 'Exportar CSV',
+                            className: 'custom-csv-btn'
+                        },
+                        {
+                            extend: 'excel',
+                            text: 'Exportar Excel',
+                            className: 'custom-excel-btn'
+                        },
+                        {
+                            extend: 'pdf',
+                            text: 'Generar PDF',
+                            className: 'custom-pdf-btn'
+                        },
+                        {
+                            extend: 'print',
+                            text: 'Imprimir',
+                            className: 'custom-print-btn'
+                        }
+                    ],
+                    paging: false,
+                    ordering: true,
+                    info: true,
+                    searching: false
+                });
+
+                table.columns.adjust().draw();
+
+                // Agregar el manejador de eventos para las celdas con datos
+                $('#ticketsTable tbody').on('click', 'td[data-idflujo]', function () {
+                    const idFlujo = $(this).data('idflujo');
+                    const idUsuario = $(this).data('idusuario');
+                    obtenerInfo(idFlujo, idUsuario);
+                });
+
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    function obtenerInfo(idFlujo, idUsuario) {
+        const Model = {
+            Anio: $('#yearSelector').val(),
+            IdUsuario: idUsuario,
+            IdFlujo: idFlujo
+        }
+
+        fetch("/Ticket/Ticket/ObtenerTicketIdflujoUser", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(Model)
+        })
+        .then(response => response.json())
+        .then(data => {
+            PintarTicketsTiempo(data);
+        })
+        .catch(error => {
+            var table = $('#TTickets').DataTable();
+            table.destroy();
+            Contenido.innerHTML = "";
+        });
+
+        $('#infoModal').modal('show');
+    }
+    function PintarTicketsTiempo(datos) {
+        var table = $('#TTickets').DataTable();
+        table.destroy();
+        $('#TTickets colgroup').remove();
+
+        ContenidoTTickets.innerHTML = "";
+        for (let valor of datos) {
+            ContenidoTTickets.innerHTML += `
+        <tr>
+            <td>${valor.flujo}</td>
+            <td>${valor.personaNombre}</td>
+            <td>${valor.titulo}</td>
+            <td>${valor.tiempoAtencion}</td>
+        </tr>
+        `;
+        }
+        var dataTable = $('#TTickets').DataTable({
+            paging: false,
+            ordering: true,
+            info: true,
+            searching: false
+        });
+
+        // Forzar el ajuste de las columnas
+        dataTable.columns.adjust().draw();
+
+        // Aplicar estilos a las cabeceras
+        $('#TTickets th').eq(0).css('width', '10%');
+        $('#TTickets th').eq(1).css('width', '10%');
+        $('#TTickets th').eq(2).css('width', '40%');
+        $('#TTickets th').eq(3).css('width', '40%');
+    }
+    function cerrarModal() {
+        $('#infoModal').modal('hide');
+    }
+    function cerrarModalStatus() {
+        $('#ModalStatus').modal('hide');
+    }
+    function cerrarModalTTAnual() {
+        $('#ModalTTAnual').modal('hide');
+    }
+    function cerrarModalTSAnual() {
+        $('#ModalTSAnual').modal('hide');
+    }
+    function cerrarModalTFin() {
+        $('#TFin').modal('hide');
+    }
+
+
+</script>
+

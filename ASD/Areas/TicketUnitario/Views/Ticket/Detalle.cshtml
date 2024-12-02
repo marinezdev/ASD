@@ -1,0 +1,771 @@
+﻿
+@{
+    ViewData["Title"] = "Detalle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/css/ticket/detalle/style.css" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="~/css/ticket/detalle/demo.css" rel="stylesheet" />
+
+
+<style>
+    a:focus, a:hover {
+        color: #2196F3;
+        text-decoration: underline;
+    }
+
+    select.form-control:not([size]):not([multiple]) {
+        height: 17px;
+        width: 160px;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+
+    div.container {
+        width: 80%;
+    }
+
+    #dtfc-fixed-left {
+        background-color: #000000;
+    }
+
+    .card {
+        margin-bottom: 30px;
+        border: none;
+        box-shadow: 0px 0px 7px rgb(0 0 0 / 13%);
+    }
+
+    /*.card-header {
+            padding: 20px;
+            background-color: transparent;
+            color: #ffffff;
+            border-bottom: none;
+            background: linear-gradient(to top, #34457d, #43abd9);
+            color: #ffffff;
+        }*/
+
+    .ColorHeader {
+        padding: 20px;
+        background-color: transparent;
+        color: #ffffff;
+        border-bottom: none;
+        background: linear-gradient(to top, #34457d, #4375a3);
+        color: #ffffff;
+    }
+
+    .ColorHeaderInfor {
+        padding: 20px;
+        background-color: transparent;
+        color: #ffffff;
+        border-bottom: none;
+        background: linear-gradient(to top, #39444e, #495865);
+        color: #ffffff;
+    }
+
+    .card-header-text {
+        margin-bottom: 0;
+        font-size: 1rem;
+        text-transform: initial;
+        font-weight: bold;
+        display: inline-block;
+        vertical-align: middle;
+        color: rgb(99 98 98);
+    }
+
+    .step.step-active .circle {
+        background: linear-gradient(to top, #34457d, #008eff)
+    }
+
+    .step.step-active {
+        color: #005ba3;
+    }
+
+    .bg-default {
+        background-color: #39444e !important;
+    }
+
+    .panel-footer {
+        padding: 10px 15px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background-color: #c3c3c3;
+        border-top: 1px solid #eee;
+    }
+
+    .circle {
+        background: gray;
+        background: linear-gradient(to top, #39444e, #495865);
+        position: relative;
+        width: 1.5em;
+        height: 1.5em;
+        line-height: 1.5em;
+        border-radius: 100%;
+        color: #fff;
+        text-align: center;
+        box-shadow: 0 0 0 3px #fff;
+    }
+
+    .alert {
+        padding: 20px;
+        background-color: #2196F3; /* Blue background */
+        color: white; /* White text color */
+        margin-bottom: 15px; /* Space below the alert */
+        border-radius: 5px; /* Rounded corners */
+        position: relative; /* Positioning for close button */
+    }
+
+        .alert a {
+            color: #FFD700; /* Gold text color for link */
+            text-decoration: underline; /* Underline the link */
+        }
+
+    .closebtn {
+        position: absolute; /* Position close button to the right */
+        top: 10px;
+        right: 20px;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+        .closebtn:hover {
+            color: black;
+        }
+</style>
+
+
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Folio : @ViewBag.Ticket.Folio.Folio </h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Ticket </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">  @ViewBag.Ticket.Folio.Folio </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-7">
+            <!-- Nuevo ticket -->
+            <div class="card">
+                <div class="card-header ColorHeader">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-folder"></i>
+                        </strong> Información del ticket
+                    </h5>
+                </div>
+                @{
+                    if (ViewBag.Ticket.Ticket.Cat_EstatusTicket.Nombre == "Atendido")
+                    {
+                        <div class="alert">
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <strong>Atención:</strong> Este ticket ya fue marcado como atendido. Da click en <a href="/TicketUnitario/Ticket/Encuesta?cont=@ViewBag.Data">cerrar ticket</a> para finalizarlo.
+                        </div>
+                    }
+                    else if (ViewBag.Ticket.Ticket.Cat_EstatusTicket.Nombre == "Realizado")
+                    {
+                        <div class="alert">
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <strong>Atención:</strong> Este ticket ya fue marcado como Realizado, si el problema persiste. Da click en <span onclick="NoAtendido(@ViewBag.Ticket.Ticket.Id)" style="cursor: pointer; color: blue; text-decoration: underline;">No atendido</span>.
+                        </div>
+
+                    }
+                }
+
+                <div class="card-block">
+                    <dl class="dl-horizontal row">
+                        <dt class="col-sm-4"> Titulo (Asunto)  </dt>
+                        <dd class="col-sm-8"> @ViewBag.Ticket.Ticket.Titulo </dd>
+
+                        <dt class="col-sm-4"> Tipo de servicio</dt>
+                        <dd class="col-sm-8"> @ViewBag.Ticket.Ticket.Flujo.Nombre </dd>
+
+                        <dt class="col-sm-4"> Folio </dt>
+                        <dd class="col-sm-8"> @ViewBag.Ticket.Folio.Folio </dd>
+
+                        <dt class="col-sm-4"> Prioridad</dt>
+                        <dd class="col-sm-8"> @ViewBag.Ticket.Ticket.Cat_Prioridad.Nombre </dd>
+
+                        <dt class="col-sm-4 text-truncate">Detalle Del Ticket</dt>
+                        <dd class="col-sm-8"> @ViewBag.Ticket.Ticket.Detalle </dd>
+                    </dl>
+                    <div class="row">
+                        <div class="col-xl-12 text-right">
+                            <img src="~/icons/operacion/10729101.png" width="10%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @{
+                if (ViewBag.Equipos != null)
+                {
+                    <div class="card">
+                        <div class="card-header ColorHeaderInfor">
+                            <h5 class="card-header-text" style="color: #ffffff">
+                                <strong>
+                                    <i class="ti-clipboard"></i>
+                                </strong>
+                                Información del equipo
+                            </h5>
+                            <p style="color: #ffffff">Lista de equipos atendidos en el ticket: </p>
+                        </div>
+                        <div class="card-block">
+                            @{
+                                if (ViewBag.Equipos != null)
+                                {
+                                    foreach (var item in ViewBag.Equipos)
+                                    {
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading bg-default txt-white">
+                                                        @item.Equipo.Serie
+                                                    </div>
+                                                    <div class="panel-body" style="padding: 10px 15px; border: 1px solid #c5c5c5;">
+                                                        <div class="row">
+                                                            <div class="col-xl-12">
+                                                                <p>Tipo de equipo: <strong>@item.Cat_TipoEquipo.Nombre</strong></p>
+                                                                <p>Categoría : <strong>@item.Cat_Categoria.Nombre</strong></p>
+                                                                <p>Modelo : <strong>@item.Cat_Modelo.Nombre</strong></p>
+                                                                <p>Numero de serie : <strong>@item.Equipo.Serie</strong></p>
+                                                                <p>Observaciones : <strong>@item.Equipo.Observaciones</strong></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel-footer">
+                                                        <strong>@item.Cat_EstatusEquipo.Nombre</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                
+                }
+            }
+            
+
+            <div class="card">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-clipboard"></i>
+                        </strong>
+                        Información de sucursal
+                    </h5>
+
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <dl class="dl-horizontal ">
+                                <dt class="col-sm-3"> Sucursal   </dt>
+                                <dd class="col-sm-9"> @ViewBag.Ticket.Ticket.Sucursal.Nombre </dd>
+
+                                <dt class="col-sm-3"> Domicilio  </dt>
+                                <dd class="col-sm-9"> @ViewBag.Ticket.Ticket.Sucursal.Direccion </dd>
+
+                                <dt class="col-sm-3"> Dirección </dt>
+                                <dd class="col-sm-9">
+                                    @ViewBag.Ticket.Ticket.Sucursal.Cat_Colonia.Cat_CP.Cat_Poblacion.Cat_Estado.Nombre ,
+                                    @ViewBag.Ticket.Ticket.Sucursal.Cat_Colonia.Cat_CP.Cat_Poblacion.Nombre ,
+                                    @ViewBag.Ticket.Ticket.Sucursal.Cat_Colonia.Cat_CP.Nombre ,
+                                    @ViewBag.Ticket.Ticket.Sucursal.Cat_Colonia.Nombre
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+
+                    <div id="accordion" role="tablist" aria-multiselectable="true" style="display:none">
+
+                        <div class="accordion-panel">
+                            <div class=" accordion-heading" role="tab" id="headingImg4">
+                                <h3 class="card-title accordion-title">
+                                    <a class="accordion-msg" data-toggle="collapse" data-parent="#accordion" href="#collapseImg4" aria-expanded="false" aria-controls="collapseImg4">
+                                        Imágenes fotográficas
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapseImg4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingImg4">
+                                <div class="accordion-content accordion-desc">
+                                    <div class="row">
+                                        <!-- Single images starts -->
+                                        <div class="col-md-6 text-center">
+                                            <p>Imagen fechada tienda / sucursal</p>
+                                            <div id="image1">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6  text-center">
+                                            <p>Imagen mostrador tienda / sucursal</p>
+                                            <div id="image2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" accordion-heading" role="tab" id="_5">
+                                <h3 class="card-title accordion-title">
+                                    <a class="accordion-msg" data-toggle="collapse" data-parent="#accordion" href="#RecorridoVideo_5" aria-expanded="false" aria-controls="RecorridoVideo_5">
+                                        Video recorrido
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="RecorridoVideo_5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingImg_5">
+                                <div class="accordion-content accordion-desc">
+                                    <div class="row">
+                                        <!-- Single images starts -->
+                                        <div class="col-md-12">
+                                            <div id="VideoRecorridoAntes">
+                                            </div>
+                                        </div>
+                                        <!-- Single images ends -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-5">
+            <div class="card">
+                <div class="card-header ColorHeader">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-alarm-clock"></i>
+                        </strong>
+                        Línea de tiempo
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="rt-container">
+                                <div class="col-rt-12">
+                                    <div class="Scriptcontent">
+                                        @{
+                                            if (ViewBag.Etapas != null)
+                                            {
+                                                foreach (var item in ViewBag.Etapas)
+                                                {
+                                                    if (@item.Cat_EstatusTicketEtapa != null)
+                                                    {
+                                                        <div class="step step-active">
+                                                            @if (@item.Cat_EstatusTicketEtapa.Nombre == "Procesado")
+                                                            {
+                                                                <div>
+                                                                    <div class="circle"><i class="fa fa-check"></i></div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div>
+                                                                    <div class="circle">@item.Etapa.Etapa</div>
+                                                                </div>
+                                                            }
+
+                                                            <div>
+                                                                <div class="title">@item.Etapa.Nombre</div>
+                                                                @if (@item.Cat_EstatusTicketEtapa.Nombre == "Procesado")
+                                                                {
+                                                                    <div class="caption">Estatus: @item.Cat_EstatusTicketEtapa.Nombre, Fecha termino: @item.FechaTermino </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="caption">Estatus: @item.Cat_EstatusTicketEtapa.Nombre, Fecha registro: @item.FechaRegistro </div>
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="step">
+                                                            <div>
+                                                                <div class="circle">@item.Etapa.Etapa</div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="title">@item.Etapa.Nombre</div>
+                                                                <div class="caption">Etapa pendiente. </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                }
+                                            }
+
+                                        }
+
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header ColorHeader">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-alarm-clock"></i>
+                        </strong>Tiempo de atención
+                    </h5>
+                </div>
+                <div class="card-block">
+                    <div id="PorcentajeTiempoAtencion" style="min-width: 250px; height: 300px; margin: 0 auto"></div>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <table class="table stripe row-border order-column table-hover" id="mydatatable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color: #ffffff;">Etapa</th>
+                                        <th> Fecha registro </th>
+                                        <th>Fecha inicio</th>
+                                        <th>Fecha termino  </th>
+                                        <th class="text-center">Atendió </th>
+                                        <th class="text-center">Tiempo de atención  </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.TicketEtapa != null)
+                                        {
+                                            foreach (var item in ViewBag.TicketEtapa)
+                                            {
+                                                <tr>
+                                                    <td style="background-color: #ffffff;">@item.Etapa.Nombre </td>
+                                                    <td>@item.TicketEtapa.FechaRegistro </td>
+                                                    <td>@item.TicketEtapa.FechaInicio </td>
+                                                    <td>
+                                                        @{
+                                                            @if (Convert.ToDateTime(@item.TicketEtapa.FechaTermino).ToString("dd/MM/yy hh:mm:ss tt") == "01/01/01 12:00:00 a. m.")
+                                                            {
+                                                                <p>En proceso </p>
+                                                            }
+                                                            else{
+                                                                @item.TicketEtapa.FechaTermino
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>@item.Persona.Nombre  @item.Persona.ApellidoPaterno @item.Persona.ApellidoMaterno</td>
+                                                    <td>@item.TiempoAtencion</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card" style="display:none">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-check-box"></i>
+                        </strong>
+                        CheckList de actividades
+                    </h5>
+                </div>
+                <div class="card-block accordion-block">
+                    <div id="accordion" role="tablist" aria-multiselectable="true">
+                        <div id="CheckEquipoRutina">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="display:none">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-camera"></i>
+                        </strong>
+                        Lista de imágenes antes vs después
+                    </h5>
+                </div>
+                <div class="card-block accordion-block">
+                    <div id="accordion" role="tablist" aria-multiselectable="true">
+                        <div id="ImagenesEquipoImg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-briefcase"></i>
+                        </strong>
+                        Información agregada
+                    </h5>
+                </div>
+                <div class="card-block accordion-block">
+                    <div id="accordion" role="tablist" aria-multiselectable="true">
+
+                        <div class="accordion-panel">
+                            <div class=" accordion-heading" role="tab" id="headingImg" style="display:none">
+                                <h3 class="card-title accordion-title">
+                                    <a class="accordion-msg" data-toggle="collapse" data-parent="#accordion" href="#collapseImg" aria-expanded="false" aria-controls="collapseImg">
+                                        Orden de trabajo
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapseImg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingImg">
+                                <div class="accordion-content accordion-desc">
+                                    <div class="row">
+                                        <!-- Single images starts -->
+                                        <div class="col-md-12">
+                                            <div id="imagenOrdenTrabajo">
+                                            </div>
+                                        </div>
+                                        <!-- Single images ends -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" accordion-heading" role="tab" id="headingVideoDespues" style="display:none">
+                                <h3 class="card-title accordion-title">
+                                    <a class="accordion-msg" data-toggle="collapse" data-parent="#accordion" href="#collapseVideoDespues" aria-expanded="false" aria-controls="collapseVideoDespues">
+                                        Video recorrido
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapseVideoDespues" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingVideoDespues">
+                                <div class="accordion-content accordion-desc">
+                                    <div>
+                                        <!-- Single images starts -->
+                                        <div class="col-md-12">
+                                            <div id="VideoRecorridoDespues">
+                                            </div>
+                                        </div>
+                                        <!-- Single images ends -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" accordion-heading" role="tab" id="headingArchivosAdicionales">
+                                <h3 class="card-title accordion-title">
+                                    <a class="accordion-msg" data-toggle="collapse" data-parent="#accordion" href="#collapseArchivosAdicionales" aria-expanded="false" aria-controls="collapseArchivosAdicionales">
+                                        Archivos adicionales
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapseArchivosAdicionales" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingArchivosAdicionales">
+                                <div class="accordion-content accordion-desc">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="ListArchivos">
+                                                @if (ViewBag.Archivos != null)
+                                                {
+                                                    <div class='col-sm-12 table-responsive'>
+                                                        <table class='table text-center'>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class='text-center'>Archivo</th>
+                                                                    <th class='text-center'></th>
+                                                                </tr >
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var item in ViewBag.Archivos)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@item.NmOriginal</td>
+                                                                        <td>
+                                                                            @if (item.Extencion.Equals("pdf", StringComparison.OrdinalIgnoreCase))
+                                                                            {
+                                                                                <!-- Mostrar botón para visualizar PDF -->
+                                                                                <button type='button' class='btn btn-primary waves-effect waves-light' onclick="Visualizar(@Html.Raw(@item.Id), @Html.Raw(@ViewBag.Ticket.Ticket.Id))">
+                                                                                    <i class='icofont icofont-file-pdf'></i> Visualizar
+                                                                                </button>
+                                                                            }
+                                                                            else if (item.Extencion.Equals("png", StringComparison.OrdinalIgnoreCase) ||
+                                                                            item.Extencion.Equals("jpg", StringComparison.OrdinalIgnoreCase) ||
+                                                                            item.Extencion.Equals("jpeg", StringComparison.OrdinalIgnoreCase))
+                                                                            {
+                                                                                <!-- Mostrar botón para visualizar imagen -->
+                                                                                <button type='button' class='btn btn-primary waves-effect waves-light' onclick="VisualizarImagen(@Html.Raw(@item.Id), @Html.Raw(@ViewBag.Ticket.Ticket.Id))">
+                                                                                    <i class='icofont icofont-image'></i> Visualizar 
+                                                                                </button>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <!-- Mostrar botón para descargar otros tipos de archivo -->
+                                                                                <button type='button' class='btn btn-primary waves-effect waves-light' onclick="Descargar(@Html.Raw(@item.Id), @Html.Raw(@ViewBag.Ticket.Ticket.Id))">
+                                                                                    <i class='icofont icofont-cloud-download'></i> Descargar
+                                                                                </button>
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+
+                        <strong>
+                            <i class="ti-agenda"></i>
+                        </strong>
+                        Bitácora de movimiento
+                    </h5>
+                    @*<p>Completa los campos marcados <code> * </code> </p>*@
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12" id="">
+                            <div class="demo-inline-spacing mt-3">
+                                <div class="list-group">
+                                    @{
+                                        if (ViewBag.Bitacora != null)
+                                        {
+                                            foreach (var item in ViewBag.Bitacora)
+                                            {
+                                                <a href="javascript:void(0);" class="list-group-item list-group-item-action flex-column align-items-start">
+                                                    <div class="">
+                                                        <div class="row">
+                                                            <div class="col-md-8" id="">
+                                                                <h6>@item.Cat_Operacion.Nombre</h6>
+                                                            </div>
+                                                            <div class="col-md-4 text-center" id="">
+                                                                <small class="text-muted text-center">@Convert.ToDateTime(item.Bitacora.FechaRegistro).ToString("dd-MM-yyyy")</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <p class="mb-1">
+                                                        <strong>@item.Persona.Nombre @item.Persona.ApellidoPaterno @item.Persona.ApellidoMaterno</strong>  @Html.Raw(item.Bitacora.Nota)
+                                                    </p>
+                                                    <small class="text-muted">@Convert.ToDateTime(item.Bitacora.FechaRegistro)</small>
+                                                </a>
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="ModalViewOrdenTrabajo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <iframe id="pdfFrame" src="your_pdf_url" style="width: 100%; height: 600px;"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal" id="">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="ModalViewImagen" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Vista de Imagen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="imageFrame" src="" alt="Imagen de archivo adicional" style="width: 100%; height: auto;" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal" id="">
+                    <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main content ends -->
+<script src="~/js/ticketUnitario/ticket/_Detalle.js"></script>
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            CargaRutina(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+            CargaVideo(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+            CargaImagenes(@Html.Raw(Json.Serialize(ViewBag.Ticket.Ticket)));
+            CargaGrafica1(@Html.Raw(Json.Serialize(ViewBag.TiempoAtencion)));
+        }, 2000); // 2 segundos de retardo
+    });
+
+</script>
+

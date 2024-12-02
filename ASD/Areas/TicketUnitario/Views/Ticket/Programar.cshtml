@@ -1,0 +1,933 @@
+﻿
+@{
+    ViewData["Title"] = "Programar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .ColorHeaderInfor {
+        padding: 20px;
+        background-color: transparent;
+        color: #ffffff;
+        border-bottom: none;
+        background: linear-gradient(to top, #39444e, #495865);
+        color: #ffffff;
+    }
+    .select-error {
+        border: 2px solid red;
+    }
+</style>
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Programar ticket</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Ticket </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Programar </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-7">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong><i class="ti-ticket"></i></strong> @ViewBag.Ticket.Ticket.Titulo
+                    </h5>
+                    <p>Completa los campos obligatorios, <code>*</code> para asignar un IDC al ticket.</p>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <!--ZONA de Atencion -->
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <P class="form-text text-muted">Seleccione la zona para atender la incidencia.</P>
+
+                                        <div class="d-flex align-items-center">
+                                            <select class="form-control" id="Ticket_Cuadrilla" onchange="CambioCuadrillaTicket()">
+                                                <option value="0" selected>Seleccionar</option>
+                                                @{
+                                                    if (ViewBag.Cuadrillas != null)
+                                                    {
+                                                        foreach (var itemCuadrilla in ViewBag.Cuadrillas)
+                                                        {
+                                                            <option value="@itemCuadrilla.Id">@itemCuadrilla.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Usuario Atencion -->
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <p class="form-text text-muted">Seleccione al IDC que atendera el Ticket</p>
+
+                                        <div class="d-flex align-items-center">
+                                            <select class="form-control" id="Ticket_UsuarioAtencion">
+                                                <option value="0" selected>Seleccionar</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="exampleFormControlTextarea1" class="form-label">Observaciones </label>
+                                    <textarea class="form-control" id="Ticket_Descripcion" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+
+
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-lg-6 checklist">
+                            <label class="check-item">
+                                <input type="checkbox" checked disabled id="Modal_NAsignacion_Notificar">
+                                <span class="checkmark"></span>
+                                Notificar a IDC
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4" style="justify-content: flex-end;">
+                        <button onclick="Cancelar()" type="button" class="btn btn-default waves-effect waves-light" style="margin-left: 10px;">
+                            <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                        </button>
+                        @{
+                            if (ViewBag.equipo != null)
+                            {
+                                <button onclick="AsignarRutinasIMG()" class="btn btn-primary waves-effect waves-light" style="margin-left: 10px;">
+                                    <i class="icofont icofont-save"></i><span class="m-l-12"> Asignar </span>
+                                </button>
+                            }
+                            else
+                            {
+                                <button onclick="AsignarCuadrilla(@ViewBag.Ticket.Ticket.Id)" class="btn btn-primary waves-effect waves-light" style="margin-left: 10px;">
+                                    <i class="icofont icofont-save"></i><span class="m-l-12"> Asignar </span>
+                                </button>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-5">
+            <div class="card">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong><i style="font-size: 25px" class="icofont icofont-architecture-alt"></i></strong> Actividades Requeridas por equipo
+                    </h5>
+                </div>
+                <br />
+                <div class="card-block accordion-block">
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-md-12">
+
+                            @{if (ViewBag.equipo != null)
+                                {
+
+                                    <div class="col-xl-12 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-sm-12 table-responsive">
+                                                <table class="table text-center">
+                                                    <thead>
+                                                        <tr>
+                                                        <tr>
+                                                            <th class="text-center">Rutina de la solución</th>
+                                                            <th class="text-center">Imágenes obligatorias</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <span id="NumRutina"> 0 </span> &nbsp;
+                                                                <button class="btn btn-primary" type="button" onclick="MostrarModalRutina()">+</button>
+                                                            </td>
+                                                            <td>
+                                                                <span id="NumImagenes"> 0 </span> &nbsp;
+                                                                <button class="btn btn-primary" type="button" onclick="MostrarModalImagen()">+</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-12 text-center">
+                                        <i style="font-size:300%" class="icofont icofont-repair"></i>
+                                        <p>No se asigno un equipo</p>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva rutina de solucion -->
+<div class="modal fade" id="ModalRutinaSolucion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaRutina">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nueva regla de rutina </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Rutina </label>
+                                <input type="text" class="form-control" placeholder="Nueva rutina" id="Modal_NRutina_Nombre" />
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NRutina_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6 text-right">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                <i class="icofont icofont-save "></i><span class="m-l-12"> Agregar </span>
+                            </button>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <p> Lista de ruitna del equipo </p>
+                            <hr />
+                        </div>
+                        <div class="col-xl-12 col-lg-6" id="TabRutinaEquipo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar  </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva imagen equipo -->
+<div class="modal fade" id="ModalImagenEquipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaImagen">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nueva imagen fotográfica </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Título de la imagen  </label>
+                                <input type="text" class="form-control" placeholder="titulo de la imagen" id="Modal_NImagen_Nombre" />
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NImagen_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6 text-right">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                <i class="icofont icofont-save "></i><span class="m-l-12"> Agregar </span>
+                            </button>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <p> Lista de imágenes solicitadas para el equipo </p>
+                            <hr />
+                        </div>
+                        <div class="col-xl-12 col-lg-6" id="TabImagenEquipo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar  </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    function CambioCuadrillaTicket() {
+
+        const _modelo = {
+            Id: $("#Ticket_Cuadrilla option:selected").val(),
+        };
+
+        fetch("/Empresa/CuadrillaUsuario/GetCuadrillaUsuario_Seleccionar_IdCuadrilla", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#Ticket_UsuarioAtencion").empty();
+
+                var option = $(document.createElement('option'));
+                option.text("Seleccionar");
+                option.val(0);
+
+                $("#Ticket_UsuarioAtencion").append(option);
+
+                if (res === null) {
+
+                } else if (res.length > 0) {
+
+                    $(res).each(function () {
+                        var option = $(document.createElement('option'));
+
+                        option.text(this.persona.nombre.toUpperCase() + " " + this.persona.apellidoPaterno.toUpperCase() + " " + this.persona.apellidoMaterno.toUpperCase());
+                        option.val(this.usuario.id);
+
+                        $("#Ticket_UsuarioAtencion").append(option);
+                    });
+                }
+
+            });
+    }
+    function Cancelar() {
+        window.location.href = "/TicketUnitario/Operacion";
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// NUEVA REGLA  /////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    $(document).ready(function () {
+        $("#NuevaRutina").on("submit", function (event) {
+
+            // Prevenir el envío del formulario por defecto
+            event.preventDefault();
+
+            if (ValidateFormNuevaRutina()) {
+
+                const _modelo = {
+                    Nombre: $('#Modal_NRutina_Nombre').val(),
+                    Observaciones: $('#Modal_NRutina_Observaciones').val(),
+                };
+
+                fetch("/Inventario/CatEquipoRutina/AddListEquipoRutina", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(_modelo)
+                })
+                    .then(res => res.json())
+                    .then(res => {
+
+                        var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                            "<table class='table text-center'>" +
+                            "<thead>" +
+                            "<tr>" +
+                            "<tr>" +
+                            "<th class='text-center'>Rutina de la solucion</th>" +
+                            "<th class='text-center'></th>" +
+                            "</tr>" +
+                            "</thead>" +
+                            "<tbody>";
+
+
+                        var TableFooter = "</tbody>" +
+                            "</table>" +
+                            "</div>";
+
+                        var Tabla = "";
+                        if (res === null) {
+                            $("#NumRutina").html("0");
+                            Tabla = "<tr>" +
+                                "<td>" +
+                                "</td>" +
+                                "<td>" +
+                                "</td>" +
+                                "</tr>";
+                        } else if (res.length > 0) {
+                            $("#NumRutina").html(res.length);
+                            $(res).each(function () {
+                                Tabla += "<tr>" +
+                                    "<td>" +
+                                    this.nombre.toUpperCase() +
+                                    "</td>" +
+                                    "<td>" +
+                                    "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarRutinaEquipol(" + this.id + ")'>" +
+                                    "<i class='icofont icofont-trash'></i>" +
+                                    "</button>" +
+                                    "</td>" +
+                                    "</tr>";
+                            });
+                        }
+
+                        $("#TabRutinaEquipo").html(TableHeader + Tabla + TableFooter);
+
+                        $("#Modal_NRutina_Nombre").val("");
+                        $("#Modal_NRutina_Observaciones").val("");
+
+                    });
+            }
+        });
+
+
+
+    });
+    function EliminarRutinaEquipol(Id) {
+
+        const _modelo = {
+            Id: Id,
+        };
+
+        fetch("/Inventario/CatEquipoRutina/DeleteListEquipoRutina", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#NumRutina").html("0");
+                var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                    "<table class='table text-center'>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<tr>" +
+                    "<th class='text-center'>Rutina de la solucion</th>" +
+                    "<th class='text-center'></th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
+
+
+                var TableFooter = "</tbody>" +
+                    "</table>" +
+                    "</div>";
+
+                var Tabla = "";
+                if (res === null) {
+                    $("#NumRutina").html("0");
+                    Tabla = "<tr>" +
+                        "<td>" +
+                        "</td>" +
+                        "<td>" +
+                        "</td>" +
+                        "</tr>";
+                } else if (res.length > 0) {
+                    $(res).each(function () {
+                        $("#NumRutina").html(res.length);
+                        Tabla += "<tr>" +
+                            "<td>" +
+                            this.nombre.toUpperCase() +
+                            "</td>" +
+                            "<td>" +
+                            "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarRutinaEquipol(" + this.id + ")'>" +
+                            "<i class='icofont icofont-trash'></i>" +
+                            "</button>" +
+                            "</td>" +
+                            "</tr>";
+                    });
+                }
+
+                $("#TabRutinaEquipo").html(TableHeader + Tabla + TableFooter);
+            });
+    }
+    function ValidateFormNuevaRutina() {
+        var result = false;
+
+        $('#Modal_NRutina_Nombre').css("border", "1px solid red");
+
+        if ($('#Modal_NRutina_Nombre').val().length > 0) {
+            $('#Modal_NRutina_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_NRutina_Nombre').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+    }
+    function MostrarModalRutina() {
+        $("#ModalRutinaSolucion").modal("show");
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// NUEVA IMAGEN /////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    $(document).ready(function () {
+        $("#NuevaImagen").on("submit", function (event) {
+
+            // Prevenir el envío del formulario por defecto
+            event.preventDefault();
+
+            if (ValidateFormNuevaImagen()) {
+
+                const _modelo = {
+                    Nombre: $('#Modal_NImagen_Nombre').val(),
+                    Observaciones: $('#Modal_NImagen_Observaciones').val(),
+                };
+
+                fetch("/Inventario/CatEquipoImagen/AddListEquipoImagen", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(_modelo)
+                })
+                    .then(res => res.json())
+                    .then(res => {
+
+                        var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                            "<table class='table text-center'>" +
+                            "<thead>" +
+                            "<tr>" +
+                            "<tr>" +
+                            "<th class='text-center'>Imágenes solicitadas para el equipo</th>" +
+                            "<th class='text-center'></th>" +
+                            "</tr>" +
+                            "</thead>" +
+                            "<tbody>";
+
+
+                        var TableFooter = "</tbody>" +
+                            "</table>" +
+                            "</div>";
+
+                        var Tabla = "";
+                        if (res === null) {
+                            $("#NumImagenes").html("0");
+                            Tabla = "<tr>" +
+                                "<td>" +
+                                "</td>" +
+                                "<td>" +
+                                "</td>" +
+                                "</tr>";
+                        } else if (res.length > 0) {
+                            $("#NumImagenes").html(res.length);
+                            $(res).each(function () {
+                                Tabla += "<tr>" +
+                                    "<td>" +
+                                    this.nombre.toUpperCase() +
+                                    "</td>" +
+                                    "<td>" +
+                                    "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarImagenEquipo(" + this.id + ")'>" +
+                                    "<i class='icofont icofont-trash'></i>" +
+                                    "</button>" +
+                                    "</td>" +
+                                    "</tr>";
+                            });
+                        }
+
+                        $("#TabImagenEquipo").html(TableHeader + Tabla + TableFooter);
+
+                        $("#Modal_NImagen_Nombre").val("");
+                        $("#Modal_NImagen_Observaciones").val("");
+
+                    });
+            }
+        });
+    });
+    function EliminarImagenEquipo(Id) {
+        const _modelo = {
+            Id: Id,
+        };
+
+        fetch("/Inventario/CatEquipoImagen/DeleteListEquipoImagen", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#NumImagenes").html("0");
+                var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                    "<table class='table text-center'>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<tr>" +
+                    "<th class='text-center'>Rutina de la solucion</th>" +
+                    "<th class='text-center'></th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
+
+
+                var TableFooter = "</tbody>" +
+                    "</table>" +
+                    "</div>";
+
+                var Tabla = "";
+                if (res === null) {
+                    $("#NumImagenes").html("0");
+                    Tabla = "<tr>" +
+                        "<td>" +
+                        "</td>" +
+                        "<td>" +
+                        "</td>" +
+                        "</tr>";
+                } else if (res.length > 0) {
+                    $(res).each(function () {
+                        $("#NumImagenes").html(res.length);
+                        Tabla += "<tr>" +
+                            "<td>" +
+                            this.nombre.toUpperCase() +
+                            "</td>" +
+                            "<td>" +
+                            "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarImagenEquipo(" + this.id + ")'>" +
+                            "<i class='icofont icofont-trash'></i>" +
+                            "</button>" +
+                            "</td>" +
+                            "</tr>";
+                    });
+                }
+
+                $("#TabImagenEquipo").html(TableHeader + Tabla + TableFooter);
+            });
+    }
+    function MostrarModalImagen() {
+        $("#ModalImagenEquipo").modal("show");
+    }
+    function ValidateFormNuevaImagen() {
+        var result = false;
+
+        $('#Modal_NImagen_Nombre').css("border", "1px solid red");
+
+        if ($('#Modal_NImagen_Nombre').val().length > 0) {
+            $('#Modal_NImagen_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_NImagen_Nombre').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+    }
+    function ConsultarRutinaEquipo(Id) {
+        const _Cat_TipoEquipo = {
+            Id: Id,
+        }
+
+        fetch("/Inventario/CatTipoEquipoRutina/GetCat_TipoEquipoRutina_Seleccionar_IdTipoEquipo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_Cat_TipoEquipo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#NumRutina").html("0");
+                var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                    "<table class='table text-center'>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<tr>" +
+                    "<th class='text-center'>Rutina de la solucion</th>" +
+                    "<th class='text-center'></th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
+
+
+                var TableFooter = "</tbody>" +
+                    "</table>" +
+                    "</div>";
+
+                var Tabla = "";
+                if (res === null) {
+                    $("#NumRutina").html("0");
+                    Tabla = "<tr>" +
+                        "<td>" +
+                        "</td>" +
+                        "<td>" +
+                        "</td>" +
+                        "</tr>";
+                } else if (res.length > 0) {
+                    $(res).each(function () {
+                        $("#NumRutina").html(res.length);
+                        Tabla += "<tr>" +
+                            "<td>" +
+                            this.nombre.toUpperCase() +
+                            "</td>" +
+                            "<td>" +
+                            "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarRutinaEquipol(" + this.id + ")'>" +
+                            "<i class='icofont icofont-trash'></i>" +
+                            "</button>" +
+                            "</td>" +
+                            "</tr>";
+                    });
+                }
+
+                $("#TabRutinaEquipo").html(TableHeader + Tabla + TableFooter);
+            });
+    }
+    function ConsultarImagenEquipo(Id) {
+
+        const _Cat_TipoEquipo = {
+            Id: Id,
+        }
+
+        fetch("/Inventario/CatTipoEquipoImagen/GetCat_TipoEquipoImagen_Seleccionar_IdTipoEquipo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_Cat_TipoEquipo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                $("#NumImagenes").html("0");
+                var TableHeader = "<div class='col-sm-12 table-responsive'>" +
+                    "<table class='table text-center'>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<tr>" +
+                    "<th class='text-center'>Rutina de la solucion</th>" +
+                    "<th class='text-center'></th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
+
+
+                var TableFooter = "</tbody>" +
+                    "</table>" +
+                    "</div>";
+
+                var Tabla = "";
+                if (res === null) {
+                    $("#NumImagenes").html("0");
+                    Tabla = "<tr>" +
+                        "<td>" +
+                        "</td>" +
+                        "<td>" +
+                        "</td>" +
+                        "</tr>";
+                } else if (res.length > 0) {
+                    $(res).each(function () {
+                        $("#NumImagenes").html(res.length);
+                        Tabla += "<tr>" +
+                            "<td>" +
+                            this.nombre.toUpperCase() +
+                            "</td>" +
+                            "<td>" +
+                            "<button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarImagenEquipo(" + this.id + ")'>" +
+                            "<i class='icofont icofont-trash'></i>" +
+                            "</button>" +
+                            "</td>" +
+                            "</tr>";
+                    });
+                }
+
+                $("#TabImagenEquipo").html(TableHeader + Tabla + TableFooter);
+            });
+    }
+
+    //Asignar el ticket al IDC
+    function AsignarCuadrilla(Id) {
+
+        var Notificar = 0;
+        if ($('#Modal_NAsignacion_Notificar').is(':checked')) {
+            Notificar = 1;
+        }
+
+        const Ticket = {
+            Id: Id
+        }
+
+        const Cuadrilla = {
+            Id: $("#Ticket_Cuadrilla option:selected").val()
+        }
+
+        const Usuario = {
+            Id: $("#Ticket_UsuarioAtencion option:selected").val()
+        }
+
+        let isValid = true;
+
+        // Verificar Cuadrilla
+        if (Cuadrilla.Id == 0) {
+            $("#Ticket_Cuadrilla").addClass("select-error");
+            isValid = false;
+        } else {
+            $("#Ticket_Cuadrilla").removeClass("select-error");
+        }
+
+        // Verificar Usuario
+        if (Usuario.Id == 0) {
+            $("#Ticket_UsuarioAtencion").addClass("select-error");
+            isValid = false;
+        } else {
+            $("#Ticket_UsuarioAtencion").removeClass("select-error");
+        }
+
+        // Si no es válido, mostrar alerta y salir
+        if (!isValid) {
+            toastr.error("Completa el formulario", "Datos incorrectos");
+            return;
+        }
+
+        const _modelo = {
+            Ticket: Ticket,
+            Cuadrilla: Cuadrilla,
+            Usuario: Usuario,
+            Observaciones: $("#Ticket_Descripcion").val(),
+            Notificar: Notificar
+        };
+
+        fetch("/Ticket/TicketCuadrilla/CreateTicketCuadrilla", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(_modelo)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.ticket.id > 0) {
+
+                    swal({
+                        title: "Ticket asignado.",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+                        showCancelButton: false,
+                        confirmButtonColor: "#3070A9",
+                        confirmButtonText: "Aceptar",
+                        closeOnConfirm: false,
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                swal.close();
+                                window.location.href = "/TicketUnitario/Operacion";
+                            }
+                        });
+
+                } else {
+                    // Manejar caso cuando res.ticket.id <= 0 si es necesario
+                }
+
+            });
+    }
+
+
+</script>
+@{
+    if (ViewBag.equipo != null)
+    {
+    <script>
+
+         $(document).ready(function() {
+                ConsultarRutinaEquipo(@ViewBag.equipo.Cat_TipoEquipo.Id);
+                ConsultarImagenEquipo(@ViewBag.equipo.Cat_TipoEquipo.Id);
+            });
+
+        //Se buscan las imagenes y rutinas en sesion para grabarlos por el equipo
+        function AsignarRutinasIMG() {
+
+            const cat_TipoEquipo = {
+                Id: @ViewBag.equipo.Id,
+            }
+
+            const equipo = {
+                Id:@ViewBag.equipo.Equipo.Id,
+                cat_TipoEquipo: cat_TipoEquipo,
+            };
+
+            fetch("/Inventario/Equipo/AsignarRutinasIMG", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(equipo)
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.id == -3) {
+                    swal({
+                        title: "Equipo no registrado",
+                        text: " Debe de agregar un regla de rutina  !",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+
+                    });
+                } else if (res.id == -2) {
+                    swal({
+                        title: "Equipo no registrado",
+                        text: "Debes de agregar un nombre de imagen antes vs despues  !",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+
+                    });
+                } else if (res.id == -1) {
+                    swal({
+                        title: "Equipo no registrado",
+                        text: "El equipo que intentas agregar ya se encuentra registrado. !",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+
+                    });
+                } else if (res.id == 0) {
+                    swal({
+                        title: "Equipo no registrado",
+                        text: "No es posible registrar las actividades. !",
+                        imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+
+                    });
+                } else if (res.id > 0) {
+
+                    AsignarCuadrilla( @ViewBag.Ticket.Ticket.Id)
+
+                }
+            });
+
+        }
+
+
+    </script>
+    }
+}

@@ -1,0 +1,374 @@
+﻿@{
+    ViewData["Title"] = "ListCuadrilla";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Modal Nueva Cuadrilla -->
+<div class="modal fade" id="ModalNuevaCuadrilla" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form onsubmit="return false;" action="#" id="NuevaCuadrilla">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nueva Cuadrilla </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre de la Cuadrilla </label>
+                                <input type="text" class="form-control" placeholder="Cuadrilla" id="Modal_Cuadrilla_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="NuevaCuadrilla()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>ListCuadrilla</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Proyecto </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> ListCuadrilla </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-9 col-lg-10">
+                            <h5 class="card-header-text">ListCuadrilla</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-block">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label" style="margin-left: 3%;">Empresa</label>
+                                <select class="form-control " id="selectEmpresa" style="margin-left: 10px;" onchange="Buscar()">
+                                    <option value="0">Seleccionar</option>
+                                    @foreach (var item in ViewBag.Empresa)
+                                    {
+                                        <option value="@item.Id">@item.Nombre</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="form-group">
+                                <p style="margin-top: 32px;"> </p>
+                                <a href="#NuevaCua">
+                                    <button onclick="AgregarCuadrilla()" id="NuevaCuadrilla" type="button" class="btn btn-flat flat-info txt-info waves-effect waves-light">
+                                        <i class="icofont icofont-plus-circle"></i>
+                                        <span class="m-l-10">Nueva Cuadrilla</span>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table id="TablaCuadrillas" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Nombre</th>
+                                        <th style="text-align: center;">Eliminar</th>
+                                        <th style="text-align: center;">Detalle</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider" id="Contenido">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+          
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#MenuCuadrilla").addClass("active");
+        $("#ListaCuadrilla").addClass("active");
+
+        $('#TablaCuadrillas').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        }).on('init.dt', function () {
+            $('.dataTables_filter input').attr('placeholder', 'Buscar Cuadrillas');
+        });
+          
+    });  
+
+    function AgregarCuadrilla() {
+        if (Validar()) {
+            $("#ModalNuevaCuadrilla").modal("show");
+        } else {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "iconClass": "toast-error" // Puedes usar diferentes clases de iconos de FontAwesome
+            };
+
+            toastr.error("Selecciona una Empresa para agregar una cuadrilla", "Notificación");
+
+        }
+    }
+
+    function Validar() {
+        var result = false;
+        $('#selectEmpresa').css("border", "1px solid #ff0049");
+        if ($("#selectEmpresa option:selected").val() > 0) { $('#selectEmpresa').css("border", "1px solid #cccccc"); }
+        result = (
+            $("#selectEmpresa option:selected").val() > 0
+        );
+        return result;
+    }
+
+    function eliminar(Ids) {
+        swal({
+            title: "Eliminar",
+            text: "Eliminar registro?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, Eliminar!",
+            cancelButtonText: "No, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+
+                    const Cuadrilla = {
+                        Id: Ids
+                    };
+
+                    fetch("/Empresa/Cuadrilla/Delete_Cuadrilla", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        body: JSON.stringify(Cuadrilla)
+                    })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.id > 0) {
+                                swal({
+                                    title: "Eliminado!",
+                                    text: "El registro ha sido eliminado.",
+                                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/delete.png",
+                                },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            // CargaCuadrillas(); 
+                                            location.reload();
+                                        }
+                                    });
+
+                            } else {
+                                swal({
+                                    title: "Registro no eliminado",
+                                    text: "No es posible realizar la operacion selecionada!",
+                                    imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                                    buttons: true,
+                                    dangerMode: true,
+                                }).then((willDelete) => {
+
+                                });
+                            }
+                        });
+
+                }
+            });
+    }
+
+    function Buscar() {
+        let Id = $("#selectEmpresa").val();
+
+        
+            const Cuadrilla = {
+                Id: Id
+            };
+
+            fetch("/Empresa/Cuadrilla/GetCuadrillaIdEmpresa", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(Cuadrilla)
+            })
+                .then(res => res.json())
+                .then(res => {
+                    tabla(res);
+                });
+        
+    }
+
+    function tabla(datos) {
+        var table = $('#TablaCuadrillas').DataTable();
+        table.destroy();
+        Contenido.innerHTML = "";
+
+
+        for (let valor of datos) {
+
+            Contenido.innerHTML += `
+
+                    <tr>
+                            <td style="text-align: center;">${valor.nombre}</td>
+                            <td style="text-align: center;">
+                                <i onclick="eliminar(${valor.id})" class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light"></i>
+                            </td>
+                            <td style="text-align: center;">
+                                <i onclick="DetalleCuadrilla(${valor.id})" class="icofont icofont-eye-alt btn btn-inverse-success waves-effect waves-light"></i>
+                            </td>
+
+                    </tr>
+            `
+        }
+
+        $('#TablaCuadrillas').DataTable({
+            pageLength: 5,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todas']],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json'
+            }
+        });
+    }
+
+    function DetalleCuadrilla(Id) {
+        window.location.href = "/Empresa/CuadrillaZona/DetailCuadrilla?cont=" + Id;
+        }
+    ///// NUEVA CUADRILLA ///////
+    function NuevaCuadrilla() {
+
+        if (ValidateNuevaCuadrilla()) {
+            var NewIdCuadrilla = 0;
+
+            const Empresa = {
+                Id: $("#selectEmpresa option:selected").val(),
+            }
+
+            const _model = {
+                Empresa: Empresa,
+                Nombre: $("#Modal_Cuadrilla_Nombre").val(),
+            };
+
+
+            fetch("/Empresa/Cuadrilla/CreateCuadrilla", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(_model)
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.id == -1) {
+                        swal({
+                            title: "Cuadrilla no registrada",
+                            text: "La cuadrilla que intentas agregar ya se encuentra registrada. !",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+
+                        });
+                    } else if (res.id == 0) {
+                        swal({
+                            title: "Cuadrilla no registrada",
+                            text: "No es posible registrar la cuadrilla. !",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+
+                        });
+                    } else if (res.id > 0) {
+                        NewIdCuadrilla = res.id;
+                        swal({
+                            title: "Nueva cuadrilla registrada.",
+                            text: $("#Modal_Cuadrilla_Nombre").val(),
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+
+                            showCancelButton: false,
+                            confirmButtonColor: "#3070A9",
+                            confirmButtonText: "Aceptar",
+                            closeOnConfirm: false,
+                        },
+                            function (isConfirm) {
+                                swal.close();
+                                $('#ModalNuevaCuadrilla').modal('hide');
+
+                                location.reload();
+                                // Cargacuadrillas();
+
+                            }
+                        );
+                    }
+                });
+        }
+    } 
+
+    function ValidateNuevaCuadrilla() {
+        var result = false;
+        $('#Modal_Cuadrilla_Nombre').css("border", "1px solid red");
+
+        if ($('#Modal_Cuadrilla_Nombre').val().length > 0) {
+            $('#Modal_Cuadrilla_Nombre').css("border", "1px solid rgba(0, 0, 0, .15)");
+        }
+
+        if ($('#Modal_Cuadrilla_Nombre').val().length > 0) {
+            result = true;
+        }
+
+        return result;
+
+    }
+
+
+</script>
+
+

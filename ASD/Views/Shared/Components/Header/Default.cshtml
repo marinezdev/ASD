@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@{
+   
+}
+<style>
+    .able-logo {
+        display: inline-block;
+        margin-right: 10px;
+        width: 95px;
+    }
+
+    /*.main-header-top {
+        background-color: #ffffff;
+    }*/
+</style>
+
+<header class="main-header-top hidden-print">
+    <a href="index.html" class="logo"><img class="img-fluid able-logo" src="~/icons/Empresa/icono_empresamenu.png" width="20%" alt="Theme-logo"></a>
+    <nav class="navbar navbar-static-top">
+        <!-- Sidebar toggle button-->
+        <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
+        <ul class="top-nav lft-nav">
+        </ul>
+        <!-- Navbar Right Menu-->
+        <div class="navbar-custom-menu f-right">
+
+            <ul class="top-nav">
+                <!--Notification Menu-->
+
+                <li class="dropdown notification-menu">
+                    <a href="#!" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                        <i class="icon-bell"></i>
+                    </a>
+
+                </li>
+                <!-- chat dropdown -->
+                <li class="pc-rheader-submenu ">
+                    <a href="#!" class="drop icon-circle displayChatbox">
+                        <i class="icon-bubbles"></i>
+                    </a>
+
+                </li>
+                <!-- window screen -->
+                <li class="pc-rheader-submenu">
+                    <a href="#!" class="drop icon-circle" onclick="javascript:toggleFullScreen()">
+                        <i class="icon-size-fullscreen"></i>
+                    </a>
+
+				</li>
+
+                <!-- User Menu-->
+                <li class="dropdown">
+                    <a href="#!" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle drop icon-circle drop-image">
+                        <span><img class="img-circle " src="~/icons/Empresa/icono_empresauser.png" style="width:40px;" alt="User Image"></span>
+                        
+                        <span>@User.Identity.Name.ToString() <i class=" icofont icofont-simple-down"></i></span>
+
+                    </a>
+                    <ul class="dropdown-menu settings-menu">
+                        <li><a href="#!"><i class="icon-settings"></i> Ajustes</a></li>
+                        <li><a href="#"><i class="icon-user"></i> Perfil</a></li>
+                        <li><a href="#"><i class="icon-envelope-open"></i> Mis mensajes</a></li>
+                        <li class="p-0">
+                            <div class="dropdown-divider m-0"></div>
+                        </li>
+                        <li id="CerrarSesion" onclick="CerrarSesion()">
+                            <a href="#">
+                                <i class="icon-logout"></i>
+                                Cerrar sesión
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,539 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .fondo {
+        background: linear-gradient(to right, #00BCD4, #2196F3);
+        color: #ffffff;
+    }
+
+    #contenedorGrafica {
+        width: 100%; /* Ancho del contenedor */
+        height: 248px !important; /* Altura deseada */
+        /*border: 1px solid #ccc;*/ /* Solo para propósitos de visualización */
+    }
+
+    #graficaPastel {
+        max-width: 100%; /* Para que no se desborde del contenedor */
+        max-height: 100%; /* Para que no se desborde del contenedor */
+        width: 100%; /* Para que se ajuste al contenedor */
+        height: auto; /* Para mantener la proporción de aspecto */
+    }
+
+    select.form-control:not([size]):not([multiple]) {
+        height: 17px;
+        width: 160px;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+
+    div.container {
+        width: 80%;
+    }
+
+    #container {
+        height: 500px;
+        min-width: 310px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .loading {
+        margin-top: 10em;
+        text-align: center;
+        color: gray;
+    }
+
+    .ColorHeader {
+        padding: 20px;
+        background-color: transparent;
+        color: #ffffff;
+        border-bottom: none;
+        background: linear-gradient(to top, #39444e, #495865);
+        color: #ffffff;
+    }
+
+    .ColorHeaderInfor {
+        padding: 20px;
+        background-color: transparent;
+        color: #ffffff;
+        border-bottom: none;
+        background: linear-gradient(to top, #34457d, #4375a3);
+        color: #ffffff;
+    }
+</style>
+
+
+<!-- Modal Nuevo Estdo -->
+<div class="modal fade" id="ModalTiempoAtencion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Tiempos de atentación </h5>
+            </div>
+            <div class="modal-body" >
+                <div class="row">
+                    <div id="DivModalTiempoAtencion">
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                    <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="ModalTicketTiempoAtencion" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Tickets tiempos de atentación </h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div id="DivModalTicketTiempoAtencion">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                    <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Manual de usuario -->
+<div class="modal fade bd-example-modal-lg" id="ModalManualDeUsuario" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"> Manual de usuario </h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+					<div class="col-md-12">
+                        <iframe src="~/pdf/manual_supervisorasae.pdf" width="100%" height="600px"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                    <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-xl-4 col-md-12">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="card fondo">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col text-center" style="padding: 30px 20px 30px 20px">
+                                    <h4 style="font-size:38px;">¡Hola de nuevo, @ViewBag.Nombre! </h4>
+
+                                    <p style="font-size:22px; color:#FFFFFF">Estas son las novedades de hoy en tu cuenta.</p>
+                                    <br />
+                                    <button type="button" class="btn btn-default waves-effect" data-toggle="modal" data-target="#ModalManualDeUsuario" title="" data-original-title=".btn-default">
+                                        Manual
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8 col-md-12">
+            <div class="row dashboard-header">
+                @{
+                    if (ViewBag.Prioridad != null)
+                    {
+                        foreach (var item in ViewBag.Prioridad)
+                        {
+                            <div class="col-lg-6 col-md-6">
+                                <div class="card dashboard-product" style="background: linear-gradient(to top, #01bad5, #1e9af1); color: #ffffff;" onclick="ConsultarOperacion()">
+                                    <span>@item.Cat_Prioridad.Nombre</span>
+                                    <h2 class="dashboard-total-products">@item.Total</h2>
+                                    <span class="label label-primary">Mostrar</span> Tickets con prioridad
+                                    <div class="side-box">
+                                        <i class="ti-alert" style="color:@item.Cat_Prioridad.Color"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                
+                <div class="col-lg-6 col-md-6">
+                    <div class="card dashboard-product" onclick="ConsultarOperacion()">
+                        <span>Pendientes </span>
+                        <h2 class="dashboard-total-products">@ViewBag.Pendiente.Total</h2>
+                        <span class="label label-warning">Mostrar</span>Tickets pendientes
+                        <div class="side-box">
+                            <i class="ti-announcement text-warning-color"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col-xl-5 col-md-12">
+            <div class="card">
+                <div class="card-header ColorHeader">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>
+                        Tickes en operación
+                    </h5>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table table-striped row-border order-column table-hover" id="" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th> Etapa</th>
+                                        <th> Total tickets  </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Etapas != null)
+                                        {
+                                            foreach (var item in ViewBag.Etapas)
+                                            {
+                                                <tr onclick="ConsultarOperacion()">
+                                                    <td>@item.Etapa.Nombre</td>
+                                                    <td>@item.Total
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-7 col-lg-12">
+            <div class="card">
+                <div class="card-header ColorHeader">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>
+                        Tickes en operación
+                    </h5>
+                </div>
+                <div class="card-block">
+                    <div id="piechart2" style="min-width: 250px; height: 250px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xl-6 col-lg-12">
+            <div class="card">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-alarm-clock"></i>
+                        </strong>
+                        Tiempos de atención
+                    </h5>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table table-striped row-border order-column table-hover" id="TableTiemposAtencion" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        @*<th>Periodo </th>*@
+                                        <th style="background-color: #ffffff;">Etapa</th>
+                                        <th> Tickets </th>
+                                        <th> Tiempos de atentación </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.TiempoAtencion != null)
+                                        {
+                                            foreach (var item in ViewBag.TiempoAtencion)
+                                            {
+
+                                                <tr>
+                                                    <!-- <td>1-2024</td> -->
+                                                    <td> <strong>@item.Etapa.Nombre</strong></td>
+                                                    <td>@item.Tickets</td>
+                                                    <td>@item.TiempoAtencion</td>
+                                                    <td>
+                                                        <button onclick="ConsultarTicketsEtapa('@item.Etapa.Nombre')" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mostrar tickets">
+                                                            <i class="icofont icofont-eye-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-lg-12">
+            <div class="card">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-alarm-clock"></i>
+                        </strong>
+                        Porcentaje en tiempos de atención
+                    </h5>
+                </div>
+                <div class="card-block">
+                    <div id="PorcentajeTiempoAtencion" style="min-width: 250px; height: 300px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12" style="display: none">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Servicios </h5>
+                </div>
+                <div class="card-block">
+                    <div id="piechart" style="min-width: 250px; height: 250px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col-xl-6 col-lg-6">
+            <div class="card">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-map-alt"></i>
+                        </strong>
+                        Mapa de tickets de atención
+                    </h5>
+                </div>
+                <div class="card-block">
+                    <div id="container" style="min-width: 100%; height: 600px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-lg-6">
+            <div class="card">
+                <div class="card-header ColorHeaderInfor">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-cup"></i>
+                        </strong>Calificación del servicio
+                    </h5>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="Pregunta1" style="min-width: 250px; height: 200px; margin: 0 auto"></div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div id="Pregunta2" style="min-width: 250px; height: 200px; margin: 0 auto"></div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div id="Pregunta3" style="min-width: 250px; height: 200px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header ColorHeader">
+                    <h5 class="card-header-text" style="color: #ffffff">
+                        <strong>
+                            <i class="ti-blackboard"></i>
+                        </strong>Estatus Tickets
+                    </h5>
+                </div>
+                <div class="card-block">
+                    <div id="GraficaEstatusticket" style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>Tickets en operación
+                    </h5>
+                    <p>Lista de tickets registrados aun no estan cerrados,  <code> selecciona el registro </code>  para mostrar mas detalles</p>
+                </div>
+                <div class="card-block">
+                    <div class="row align-items-center">
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table table-striped row-border order-column table-hover" id="mydatatable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        @*<th>Periodo </th>*@
+                                        <th style="background-color: #ffffff;">Folio</th>
+                                        <th> Asignado </th>
+                                        <th class="text-center">Tipo de servicio</th>
+                                        <th>Sucursal </th>
+                                        <th>Creación </th>
+                                        <th class="text-center">Fecha atención </th>
+                                        <th class="text-center">Tiempo de atención  </th>
+                                        <th>Cuadrilla </th>
+                                        <th class="text-center"> Usuario (asignado) </th>
+                                        <th>Status </th>
+                                        <th>Prioridad </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Tickets != null)
+                                        {
+                                            foreach (var item in ViewBag.Tickets)
+                                            {
+
+                                                <tr>
+                                                    <!-- <td>1-2024</td> -->
+                                                    <td style="background-color:#FFFFFF">@item.Folio.Folio</td>
+                                                    <td>
+                                                        @{
+                                                            if (@item.Cat_AsignacionEmpresa != null)
+                                                            {
+                                                                @item.Cat_AsignacionEmpresa.Nombre
+                                                            }
+                                                        }
+
+                                                    </td>
+                                                    <td>@item.Ticket.Flujo.Nombre</td>
+                                                    <td>@item.Ticket.Sucursal.Nombre</td>
+                                                    <td>@Convert.ToDateTime(@item.Ticket.FechaRegistro).ToString("yyyy-MM-dd")</td>
+                                                    <td class="text-center">
+                                                        @Convert.ToDateTime(@item.FechaAtencion.FechaAtencion).ToString("yyyy-MM-dd")
+                                                    </td>
+                                                    <td>@item.TiempoAtencion</td>
+                                                    <td>
+                                                        @{
+                                                            if (@item.Cuadrilla != null)
+                                                            {
+                                                                @item.Cuadrilla.Nombre
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            if (@item.CuadrillaUsuario != null)
+                                                            {
+                                                                @item.CuadrillaUsuario.Persona.Nombre
+
+                                                                @item.CuadrillaUsuario.Persona.ApellidoPaterno
+
+                                                                @item.CuadrillaUsuario.Persona.ApellidoMaterno
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <div class="label-main"><label class="label label-md" style="background-color: @item.Ticket.Cat_EstatusTicket.Color">@item.Ticket.Cat_EstatusTicket.Nombre</label></div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="label-main"><label class="label label-md" style="background-color: @item.Ticket.Cat_Prioridad.Color">@item.Ticket.Cat_Prioridad.Nombre</label></div>
+                                                    </td>
+                                                    <td>
+                                                        <button onclick="ConsultarTiempos(@item.Ticket.Id)" type="button" class="btn btn-defualt waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tiempos de atentación">
+                                                            <i class="icofont icofont-clock-time"></i>
+                                                        </button>
+                                                        <button onclick="ConsultarTicket(@item.Ticket.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mostrar ticket">
+                                                            <i class="icofont icofont-eye-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<!-- Main content ends -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/Dhasbord/_SuperVisor.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        // Grafica 1
+        CargaTotalFlujo(@Html.Raw(Json.Serialize(ViewBag.TicketFlujo)));
+        CargaTotalEtapas(@Html.Raw(Json.Serialize(ViewBag.Etapas)));
+        CargaTiemposAtencion(@Html.Raw(Json.Serialize(ViewBag.TiempoAtencion)));
+        CargaEstatusTickets(@Html.Raw(Json.Serialize(ViewBag.Estatus)));
+        CargaEncuenta1(@Html.Raw(Json.Serialize(ViewBag.Pregunta1)));
+        CargaEncuenta2(@Html.Raw(Json.Serialize(ViewBag.Pregunta2)));
+        CargaEncuenta3(@Html.Raw(Json.Serialize(ViewBag.Pregunta3)));
+        PintaMapa(@Html.Raw(Json.Serialize(ViewBag.MapaEstados)));
+    });
+
+</script>
+

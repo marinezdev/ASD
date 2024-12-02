@@ -1,0 +1,579 @@
+﻿
+@{
+    ViewData["Title"] = "CrearTicketUsuer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .select2-container .select2-selection--single {
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        height: 34px;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: 4px;
+    }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #55595c;
+            line-height: 33px;
+            border-radius: 0.25rem;
+        }
+
+    .btnsearch {
+        margin-right: 0;
+        margin-top: 10px;
+    }
+
+    .bg-info {
+        /* background-color: #40c4ff !important; */
+        BACKGROUND: linear-gradient(to right, #5e71d5, #0099d4);
+        border-radius: 5px;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    }
+
+    @@media (min-width: 544px) {
+        .modal-dialog {
+            max-width: 450px;
+            margin: 30px auto;
+        }
+    }
+</style>
+
+<!-- Modal Nuevo tipo equipo -->
+<div class="modal fade" id="ModalTipoEquipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoTipoEquipo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo tipo equipo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Tipo Equipo </label>
+                                <input type="text" class="form-control" placeholder="Tipo equipo" id="Modal_TipoEquipo_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva categoria -->
+<div class="modal fade" id="ModalCategoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaCategoria">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nueva Categoría  </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre categoría </label>
+                                <input type="text" class="form-control" placeholder="Categoria" id="Modal_Categoria_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo modelo-->
+<div class="modal fade" id="ModalModelo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo modelo de equipo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre modelo </label>
+                                <input type="text" class="form-control" placeholder="Nombre modelo" id="Modal_Modelo_Nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal carga archivo -->
+<div class="modal fade" id="ModalCargaArchivo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Carga de archivo </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12" id="DivCargaArchivo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal" id="BtnCargaArchivo">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Nuevo ticket</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Ticket </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">  </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-8">
+            <!-- Nuevo ticket -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>Nuevo ticket
+                    </h5>
+                    <p>Completa los campos marcados <code> * </code> </p>
+                </div>
+                <div class="card-block">
+                    <form action="#" id="NuevoTicket">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label"> Tipo de servicio </label>
+                                    <select class="form-control js-example-basic-single" id="Ticket_TipoServicio">
+                                        <option value="0" selected>Seleccionar</option>
+                                        @{
+                                            if (ViewBag.Flujos != null)
+                                            {
+                                                foreach (var item in ViewBag.Flujos)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Titulo (Asunto) </label>
+                                    <input type="text" class="form-control" id="Ticket_Titulo" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12">
+                                <label class="">Marca la casilla si tu <strong> equipo de trabajo </strong> tiene problemas. </label>
+                                <div class="form-check">
+                                    <label for="chkAddEquipo" class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" id="chkAddEquipo" onclick="showEquipoForm()">
+                                        Seleccionar un equipo
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none;" id="equipoForm">
+                            <div class="col-xl-12 col-lg-12">
+                                <label class="form-control-label">* Equipo </label>
+                                <div class="input-group">
+                                    <select id='Ticket_Equipo' class="form-select js-example-basic-single " aria-label="Ticket_Equipo" style="width:90%">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                        @{
+                                            if (ViewBag.EquipoUsuarios != null)
+                                            {
+                                                foreach (var item in ViewBag.EquipoUsuarios)
+                                                {
+                                                    <option value="@item.Id">@item.Cat_Modelo.Cat_Categoria.Cat_TipoEquipo.Nombre - @item.Cat_Modelo.Cat_Categoria.Nombre - @item.Serie</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarFormularioNuevoEquipo()" data-toggle="tooltip" data-placement="top" title="" data-original-title="Nuevo equipo">+</button>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12">
+                                <label class="">
+                                    Sube tus archivos para respaldar tu solicitud.
+                                </label>
+                                <div class="form-check">
+                                    <label for="chkArchivos" class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" id="chkArchivos" onclick="showArchivosForm()">
+                                        Agregar archivos
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none;" id="ArchivosForm">
+                            <div class="col-sm-12">
+                                <strong>Formatos admitidos: </strong> Fotografía (jpg, png), PDF, .zip y otros documentos digitales.
+                                <br />
+                                <strong>Tamaño máximo: </strong> 10 MB por archivo.
+                            </div>
+                        </div>
+                        <div class="row" style="display:none;" id="ArchivosForm2">
+                            <div class="col-lg-9">
+                            </div>
+                            <div class="col-lg-1">
+                                <button type='button' class='btn btn-primary waves-effect waves-light text-right' onclick="SubirArchivoAdicional()">Capturar archivo</button>
+                                <input id="FileArchivo" type="file" style="visibility:hidden" onchange="ValidaUploadFileAdicional()">
+                            </div>
+                            <div class="col-md-12">
+                                <div id="ListArchivos">
+                                    @if (ViewBag.Archivos != null)
+                                    {
+                                        <div class='col-sm-12 table-responsive'>
+                                            <table class='table text-center'>
+                                                <thead>
+                                                    <tr>
+                                                        <th class='text-center'>Archivo</th>
+                                                        <th class='text-center'></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @* @foreach (var item in ViewBag.Archivos)
+                                                {
+                                                <tr>
+                                                <td>@item.NmOriginal</td>
+                                                <td>
+                                                <button type='button' class='btn btn-primary waves-effect waves-light' data-original-title='.icofont-home' onclick='EliminarArchivo(@item.Id, @ViewBag.Ticket.Ticket.Id)'>
+                                                <i class='icofont icofont-trash'></i>
+                                                </button>
+                                                </td>
+                                                </tr>
+                                                }*@
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">Detalle del ticket </label>
+                                    <textarea class="form-control max-textarea" rows="4" id="Ticket_Detalle"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                                    <i class="icofont icofont-save "></i><span class="m-l-10"> Enviar reporte </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card" Id="FormInstrucciones">
+                <div class="card-header ">
+                    <h5 class="card-header-text text-center">
+                        <strong>
+                            <i class="ti-cup"></i>
+                        </strong>
+                        Reporta tu incidencia de manera rápida y sencilla
+                    </h5>
+                </div>
+                <div class="card-block accordion-block">
+                    <div id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="accordion-panel">
+                            <div class="accordion-heading" role="tab" id="headingOne">
+                                <h3 class="card-title accordion-title">
+                                    <a class="accordion-msg scale_active bg-info" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <strong>
+                                            <i class="ti-desktop"></i>
+                                        </strong>Sección 1: Selección de servicio
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="accordion-content accordion-desc">
+                                    <li>
+                                        <strong>Elige el tipo de servicio afectado:</strong> En este menú desplegable encontrarás todos los servicios disponibles. Si el servicio que necesitas no aparece, contacta a soporte técnico para que lo agreguen a la lista.
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-panel">
+                            <div class="accordion-heading" role="tab" id="headingTwo">
+                                <h3 class="card-title accordion-title">
+                                    <a class="accordion-msg scale_active bg-info" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        <strong>
+                                            <i class="ti-pencil-alt"></i>
+                                        </strong>
+                                        Sección 2: Especificación de la incidencia
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="accordion-content accordion-desc">
+                                    <li>
+                                        <strong>¿En qué equipo ocurre la falla?</strong> Si la incidencia está relacionada con un equipo de trabajo específico, puedes seleccionarlo aquí. También puedes agregar nuevos equipos haciendo clic en el botón <strong>"+"</strong>.
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-panel">
+                            <div class=" accordion-heading" role="tab" id="headingThree">
+                                <h3 class="card-title accordion-title">
+                                    <a class="accordion-msg scale_active bg-info" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        <strong>
+                                            <i class="ti-cloud-up"></i>
+                                        </strong>
+                                        Sección 3: Adjuntar información
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                <div class="accordion-content accordion-desc">
+                                    <li>
+                                        <strong> Sube archivos relevantes: </strong> Puedes adjuntar fotos, documentos u otros archivos que ayuden a describir la incidencia de forma más precisa.
+
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-panel">
+                            <div class=" accordion-heading" role="tab" id="headingFor">
+                                <h3 class="card-title accordion-title">
+                                    <a class="accordion-msg scale_active bg-info" data-toggle="collapse" data-parent="#accordion" href="#collapseFor" aria-expanded="false" aria-controls="collapseFor">
+                                        <strong>
+                                            <i class="ti-mobile"></i>
+                                        </strong>
+                                        Llamadas a la acción:
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapseFor" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFor">
+                                <div class="accordion-content accordion-desc">
+                                    <li>
+                                        <strong>
+                                            Enviar reporte:
+                                        </strong>Una vez completada la información, haz clic en el botón <strong>"Enviar reporte"</strong> para que tu solicitud sea recibida por el equipo de soporte técnico.
+
+                                    </li>
+                                    <li>
+                                        <strong>Comunicarte con soporte técnico:</strong> Si tienes dudas o necesitas ayuda, puedes contactar a soporte técnico a través de los canales disponibles.
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" Id="FormNuevoEquipo" style="display:none;">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-harddrive"></i>
+                        </strong>
+                        Nuevo equipo
+                    </h5>
+                    <p> Completa los campos marcados <code> * </code> </p>
+                </div>
+                <form action="#" id="NuevoEquipo">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <p> Administración del equipo </p>
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Tipo Equipo </label>
+                                <div class="input-group">
+                                    <select id='NEquipo_TipoEquipo' class="form-select js-example-basic-single" style="width:80%" onchange="CargaCategorias();">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                        @{
+                                            if (ViewBag.CatTipoEquipo != null)
+                                            {
+                                                foreach (var item in ViewBag.CatTipoEquipo)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#ModalTipoEquipo">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Categoría </label>
+                                <div class="input-group">
+                                    <select id='NEquipo_Categoria' class="form-select js-example-basic-single" style="width:80%" onchange="CargaModelos();">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarModalCategoria()">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Modelo </label>
+                                <div class="input-group">
+                                    <select id='NEquipo_Modelo' class="form-select js-example-basic-single" style="width:80%">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                    </select>
+                                    <button class="btn btn-primary" type="button" onclick="MostrarModalModelo()">+</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Estatus equipo </label>
+                                <div class="input-group">
+                                    <select id='NEquipo_EstatusEquipo' class="form-select js-example-basic-single" style="width:100%">
+                                        <option value="0" selected>SELECCIONAR</option>
+                                        @{
+                                            if (ViewBag.CatEstatusEquipo != null)
+                                            {
+                                                foreach (var item in ViewBag.CatEstatusEquipo)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">* Numero de serie  </label>
+                                    <input type="text" class="form-control" id="NEquipo_NumeroSerie" />
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label"> Fecha de apertura  </label>
+                                    <input class="form-control" type="date" value="" id="NEquipo_FechaApartura">
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label"> Fecha de adquisición  </label>
+                                    <input class="form-control" type="date" value="" id="NEquipo_FechaAdquisicion">
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label"> Fecha caducidad </label>
+                                    <input class="form-control" type="date" value="" id="NEquipo_FechaCaducidad">
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label"> Fecha garantía </label>
+                                    <input class="form-control" type="date" value="" id="NEquipo_FechaGarantia">
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="exampleSelect1" class="form-control-label">Observaciones  </label>
+                                    <textarea class="form-control max-textarea" rows="4" id="NEquipo_Observaciones"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home">
+                                <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                            </button>
+                            <button type="button" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" onclick="CancelarNuevoEquipo()">
+                                <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/js/ticketUnitario/ticket/_CrearTicketUsuer.js"></script>
+

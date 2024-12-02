@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+
+<style>
+
+@@media only screen and (max-width: 767px) {
+		.overlay-container {
+			display: none
+		}
+
+		.sign-in-container {
+			left: 11%;
+			width: 80%;
+		}
+}
+
+</style>
+
+	<div class="form-container sign-up-container">
+		<form action="#">
+		<h1>¡Información  ASD !</h1>
+			<div class="social-container">
+				<img src="~/icons/asaelogo_colores_ra.png" width="70%" />
+			</div>
+		<span>Visita nuestro sitio web y contáctanos </span>
+			<br />
+		<button class="buttonAsae">Asae Consultores</button>
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<form action="#" id="IniciarSesion">
+			<h1>¡Bienvenido a ASD !</h1>
+		<div class="social-container">
+				<img src="~/icons/empresa/logologin.png" width="70%" />
+				@*<img src="~/icons/logo_empresa.png" width="100%" />*@
+			</div>
+			<span>Inicia sesión en tu cuenta y comienza la aventura.</span>
+			<input type="email" placeholder="Email" Id="txUsuario" onchange="ValidaInput('txUsuario')"/>
+			<input type="password" placeholder="Password" id="txPassword" onchange="ValidaInput('txPassword')" />
+			<a href="@Url.Action("RecuperarPass", "PasswordResetRequests", new { area = "Administracion" })">¿Olvidaste tu contraseña?</a>
+			<button type="submit" class="buttonAsae" >Iniciar sesión</button>
+			<span id="ErrorMensaje" class="text-danger"></span>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay ">
+			<div class="overlay-panel overlay-left overlayAsae">
+			<h1>¡Bienvenido de nuevo!</h1>
+			<p>Para mantenerse conectado con nosotros, inicie sesión con su información personal</p>
+				<button class="ghost" id="signIn">Volver </button>
+			</div>
+			<div class="overlay-panel overlay-right overlayAsae">
+				<h1>! Hola, amig@@ !</h1>
+				<p>Deseas conocer más información sobre ASD</p>
+				<button class="ghost" id="signUp">Continuar </button>
+			</div>
+		</div>
+	</div>

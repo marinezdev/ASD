@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Carga de tickets preventivos </h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Proyecto </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Servicio preventivo </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-6">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Carga de tickets preventivos </h5>
+                    <p>Selecciona el archivo que deseas cargar en formato <code> .xls </code>, si tienes problemas con la carga del archivo, consulta el formato de lectura. </p>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <form method="post" action="/Ticket/CargaTickets/ImportarExcel">
+                            <div>
+                                <input type="file" name="excel" id="excel" />
+                            </div>
+                            <button class="btn btn-primary" type="submit">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+        <div class="col-sm-6">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Archivos cargados </h5>
+                    <p>Lista de archivos cargados </p>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+
+    </div>
+
+</div>
+<!-- Main content ends -->

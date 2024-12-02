@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .sweet-overlay {
+        background-color: black;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+        background-color: rgba(0, 0, 0, 0.4);
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: none;
+        z-index: 10;
+    }
+</style>
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Ticket: @ViewBag.Ticket.Folio.Folio </h4>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text text-center"> Finalizar ticket  </h5>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12 text-justify">
+                            <p><strong> ¡¡ Felicitaciones !!</strong> 🎉🎉 estas aun paso de finalizar el ticket, recuerda que al finalizarlo la información capturada es inamovible, para ser validad por supervisores.</p>
+                        </div>
+                        <div class="col-sm-12 text-center">
+                            <img src="~/icons/Finalizar.png" width="60%" />
+                            <br /><br />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <button type="submit" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="Anterior(@ViewBag.Ticket.Ticket.Id)">
+                            <i class="icofont icofont-arrow-left"></i><span class="m-l-12"> Anterior </span>
+                        </button>
+
+                        <button type="button" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" style="width:49%" onclick="Finalizar(@ViewBag.Ticket.Ticket.Id)">
+                            <span class="m-l-12"> Finalizar </span> <i class="icofont icofont-exit"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+<!-- Main content ends -->
+<script src="~/js/ticketatencion/movil/_cierre.js"></script>

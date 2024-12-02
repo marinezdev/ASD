@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .fondo {
+        background: linear-gradient(to right, #00BCD4, #2196F3);
+        color: #ffffff;
+    }
+</style>
+
+<!-- Modal Manual de usuario -->
+<div class="modal fade bd-example-modal-lg" id="ModalManualDeUsuario" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"> Manual de usuario </h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+					<div class="col-md-12">
+                        <iframe src="~/pdf/manual_operador.pdf" width="100%" height="600px"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                    <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cerrar </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-xl-4 col-md-12">
+            <div class="card fondo">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col text-center" style="padding: 30px 20px 30px 20px">
+                            <h4 style="font-size:38px;">¡Hola de nuevo, @ViewBag.Nombre! </h4>
+
+                            <p style="font-size:22px; color:#FFFFFF">Estas son las novedades de hoy en tu cuenta.</p>
+                            <button type="button" class="btn btn-default waves-effect" data-toggle="modal" data-target="#ModalManualDeUsuario" title="" data-original-title=".btn-default">
+                                Manual
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-md-12">
+            <div class="row dashboard-header">
+                @{
+                    if (ViewBag.Prioridad != null)
+                    {
+                        foreach (var item in ViewBag.Prioridad)
+                        {
+                            <div class="col-lg-4 col-md-6">
+                                <div class="card dashboard-product" style="background: linear-gradient(to top, #01bad5, #1e9af1); color: #ffffff;" onclick="ConsultarOperacion()">
+                                    <span>@item.Cat_Prioridad.Nombre</span>
+                                    <h2 class="dashboard-total-products">@item.Total</h2>
+                                    <span class="label label-primary">Views</span> Tickets con prioridad
+                                    <div class="side-box">
+                                        <i class="ti-alert" style="color:@item.Cat_Prioridad.Color"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+
+            </div>
+            <div class="row dashboard-header">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card dashboard-product" onclick="ConsultarOperacion()">
+                        <span>Pendientes </span>
+                        <h2 class="dashboard-total-products">@ViewBag.Pendiente.Total</h2>
+                        <span class="label label-warning">Mostrar</span>Tickets pendientes
+                        <div class="side-box">
+                            <i class="ti-announcement text-warning-color"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Dhasbord/_Operador.js"></script>
+

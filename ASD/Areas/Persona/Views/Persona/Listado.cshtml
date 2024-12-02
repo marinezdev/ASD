@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewData["Title"] = "Listado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    @@media screen and (min-width: 1538px) and (max-width: 2000px) {
+    #btn-Persona {
+        padding-left: 6%;
+    }
+}
+</style>
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Usuarios</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Proyecto </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Usuarios </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    
+                        <div class="row">
+                        <div class="col-sm-8 col-md-9 col-lg-10">
+                                <h5 class="card-header-text">Usuarios</h5>
+                                <p>Listado de Usuarios activos en el sistema</p>
+                            </div>
+                        <div id="btn-Persona" class="col-sm-2  text-center text-sm-left">
+                                <button onclick="NewUser()" type="button" class="btn btn-flat flat-default txt-muted waves-effect btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="Agregar usuario">
+                                    Nuevo Usuario <i class="ti-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table id="TListadoUsuarios" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Teléfono</th>
+                                        <th>Rol</th>
+                                        <th class="text-center">Editar</th>
+                                        <th class="text-center">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Personas != null)
+                                        {
+                                            foreach (var item in ViewBag.Personas)
+                                            {
+                                                <tr>
+                                                    <td>@item.Persona.Nombre</td>
+                                                    <td>@item.Email.Email</td>
+                                                    <td>@item.Telefono.Telefono</td>
+                                                    <td>@item.CatRol.Nombre</td>
+                                                    <td onclick="EditUser(@item.Usuario.Id)" class="text-center"><i class="ti-pencil-alt"></i></td>
+                                                    <td onclick="eliminar(@item.Usuario.Id)" class="text-center"><i class="ti-close"></i></td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+<!-- Main content ends -->
+
+
+<script src="~/js/Persona/Listado.js"></script>

@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Menú de permisos</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Permisos Menú</a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!------------>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Administración de permisos por rol</h5>
+                    <p>Selecciona un Rol para visualizar el acceso de vistas</p>
+                </div>
+                <div class="card-block">
+                    <form onsubmit="return false;" action="#" id="categoria">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label" style="margin-left: 3%;">Rol</label>
+                                <select class="form-control " id="selectRol" style="margin-left: 10px;" onchange="CargarMenuAcceso()">
+                                    <option value="0">SELECCIONAR</option>
+                                    @{
+                                        if (ViewBag.Roles != null)
+                                        {
+                                            @foreach (var item in ViewBag.Roles)
+                                            {
+                                                <option value="@item.Id">@item.Nombre</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-9 text-right" style="margin-top: 2%;">
+                            <button onclick="AgregarPermiso()" type="button" class="btn btn-success waves-effect waves-light" data-toggle="modal" data-placement="top" data-original-title=".icofont-search-alt-2">
+                                <i class="icofont icofont-plus"></i> <span class="m-l-10">Agregar Permiso</span>
+                            </button>
+                        </div>
+
+                        <div class="col-sm-12 table-responsive">
+                            <table id="TURL" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>URL</th>
+                                        <th style="text-align:center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="Contenido">
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Nuevo Permiso-->
+<div class="modal fade" id="ModalPermiso" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Asignar Nuevo Menú al Rol</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect2" class="form-control-label">* Menús disponibles para el Rol</label>
+
+                                <select class="form-control " id="selectMenus">
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button onclick="AsignarMenu()" type="button" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Asignar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Administracion/Menu/_Menu.js"></script>
+

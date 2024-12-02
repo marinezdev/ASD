@@ -1,0 +1,301 @@
+﻿
+@{
+    ViewData["Title"] = "OperacionNoOrdenTrabajo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    select.form-control:not([size]):not([multiple]) {
+        height: 17px;
+        width: 160px;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+
+    div.container {
+        width: 80%;
+    }
+
+</style>
+
+<!-- Modal actualizar fecha de atencion -->
+<div class="modal fade" id="ModalFechaAtencion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        Nueva fecha de atencion
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Fecha de atencion  </label>
+                                <input type="date" id="Modal_NuevaFecha_FechaAtencion" class="form-control floating-label" placeholder="Nueva fecha de atencion" disabled>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NuevaFecha_Observaciones"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-check">
+                                <label for="Modal_FechaAtencion_Notificar" class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" id="Modal_FechaAtencion_Notificar">
+                                    Notificar a Asae
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-6">
+                            <div id="DivNuevaFechaAtencion">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="DivFechaAtencion">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal actualizar estatus ticket -->
+<div class="modal fade" id="ModalCambioEstatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoModelo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Cambio de estatus del ticket a <strong><span id="TituloEstatusTicket"></span></strong> </h5>
+                    <p></p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label"> Observaciones  </label>
+                                <textarea class="form-control max-textarea" rows="4" id="Modal_NEstatusTicket_Observaciones"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label">Firma de confirmación</label>
+                                <canvas id="Firma" class="z-depth-left-1" width="570;"></canvas>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-12 col-lg-6">
+                            <div class="form-check">
+                                <label for="Modal_NEstatusTicket_Notificar" class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" id="Modal_NEstatusTicket_Notificar">
+                                    Notificar a asae
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="DivEstatusTicket">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content starts -->
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Tickets en operación  </h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Proyecto </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#"> Operación </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Header end -->
+    <!-- Tables start -->
+    <!-- Row start -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Tickets abiertos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">
+                        <strong>
+                            <i class="ti-wallet"></i>
+                        </strong>
+                        Tickets en operación
+                    </h5>
+                    <p>Lista de tickets registrados aun no estan cerrados,  <code> selecciona el registro </code>  para mostrar mas detalles</p>
+                    <P style="text-align: right;">Los folios enmarcados con los colores representa </P>
+                    <div class="col-sm-12" style="text-align: right;">
+                        <i class="icofont icofont-ui-press" style="color:#cee99d;font-size: 100%;"><span style="font-family:Arial, Helvetica, sans-serif; color:black"> 1 día de retraso </span></i>
+                        <i class="icofont icofont-ui-press" style="color:#fac105;font-size: 100%;"><span style="font-family:Arial, Helvetica, sans-serif; color:black"> 2 días de retraso</span></i>
+                        <i class="icofont icofont-ui-press" style="color:#ee8787;font-size: 100%;"><span style="font-family:Arial, Helvetica, sans-serif; color:black"> Mayor o igual a 3 días de retraso</span></i>
+                    </div>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table stripe row-border order-column table-hover" id="mydatatable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color:#FFFFFF">Folio</th>
+                                        <th>Creación </th>
+                                        <th>Fecha atención </th>
+                                        <th>Tiempo de atención  </th>
+                                        <th>Tipo de servicio</th>
+                                        <th>Sucursal </th>
+
+                                        <th>Status </th>
+                                        <th>Prioridad </th>
+                                        <th>Mostrar</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.Tickets != null)
+                                        {
+                                            foreach (var item in ViewBag.Tickets)
+                                            {
+                                                <tr>
+                                                    <td style="@(item.ColorFechaAtencion != null ? "background:"+item.ColorFechaAtencion : "; background-color:#ffffff;")">@item.Folio.Folio</td>
+                                                        <td>@Convert.ToDateTime(@item.Ticket.FechaRegistro).ToString("yyyy-MM-dd")</td>
+                                                        <td class="text-center">
+                                                            <span id="Ticket_NuevaFecha@{@item.Ticket.Id}">
+                                                                @{
+                                                                    if (@item.NuevaFecha > 0)
+                                                                    {
+                                                                        @Convert.ToDateTime(@item.NuevaFechaAtencion).ToString("yyyy-MM-dd");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @Convert.ToDateTime(@item.FechaAtencion.FechaAtencion).ToString("yyyy-MM-dd");
+                                                                    }
+                                                                }
+                                                            </span>
+
+                                                            <div id="Ticket_NuevaFechaLabel@{  @item.Ticket.Id}">
+                                                                @{
+                                                                    if (@item.NuevaFecha > 0)
+                                                                    {
+                                                                        <div class="label-main"><label class="label bg-warning" onclick="CambioFechaAtencion(@item.Ticket.Id, @item.NuevaFecha)">Por aceptar </label></div>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </td>
+                                                        <td>@item.TiempoAtencion</td>
+                                                        <td>@item.Ticket.Flujo.Nombre</td>
+                                                        <td>@item.Ticket.Sucursal.Nombre </td>
+                                                        <td>
+                                                        @{
+                                                            if (@item.Ticket.Cat_EstatusTicket.Nombre == "Validado por asae")
+                                                            {
+                                                                <select class="form-control" id="Ticket_EstatusTicket@{
+                                                        @item.Ticket.Id
+}" onchange="CambioEstatusTicket(@item.Ticket.Id)">
+                                                                    <option value="0" selected>Seleccionar</option>
+                                                                    @{
+
+                                                                        if (ViewBag.CatEstatusTicket != null)
+                                                                        {
+                                                                            foreach (var itemEstatus in ViewBag.CatEstatusTicket)
+                                                                            {
+                                                                                if (@item.Ticket.Cat_EstatusTicket.Id == @itemEstatus.Id)
+                                                                                {
+                                                                                    <option value="@itemEstatus.Id" selected>@itemEstatus.Nombre</option>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <option value="@itemEstatus.Id">@itemEstatus.Nombre</option>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                            }
+                                                            else
+                                                            {
+                                                                <select class="form-control" id="Ticket_EstatusTicket@{
+                                                        @item.Ticket.Id
+}" onchange="CambioEstatusTicket(@item.Ticket.Id)" disabled>
+                                                                    <option value="0" selected>Seleccionar</option>
+                                                                    @{
+
+                                                                        if (ViewBag.CatEstatusTicket != null)
+                                                                        {
+                                                                            foreach (var itemEstatus in ViewBag.CatEstatusTicket)
+                                                                            {
+                                                                                if (@item.Ticket.Cat_EstatusTicket.Id == @itemEstatus.Id)
+                                                                                {
+                                                                                    <option value="@itemEstatus.Id" selected>@itemEstatus.Nombre</option>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <option value="@itemEstatus.Id">@itemEstatus.Nombre</option>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                            }
+                                                        }
+                                                        </td>
+                                                        <td>
+                                                            <div class="label-main"><label class="label label-md" style="background-color: @item.Ticket.Cat_Prioridad.Color">@item.Ticket.Cat_Prioridad.Nombre</label></div>
+                                                        </td>
+                                                        <td>
+                                                            <button onclick="ConsultarTicket(@item.Ticket.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mostrar ticket ">
+                                                                <i class="icofont icofont-eye-alt"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button onclick="EditarTicket(@item.Ticket.Id)" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar ticket ">
+                                                                <i class="icofont icofont-edit"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic Table ends -->
+        </div>
+    </div>
+</div>
+
+<!-- Main content ends -->
+<script src="~/js/ticket/ticket/_OperacionNoOrdenTrabajo.js"></script>
+

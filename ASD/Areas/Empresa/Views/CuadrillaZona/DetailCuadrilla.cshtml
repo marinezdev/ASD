@@ -1,0 +1,323 @@
+﻿
+@{
+    ViewData["Title"] = "DetailCuadrilla";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <!-- Header Starts -->
+    <div class="row">
+        <div class="col-sm-12 p-0">
+            <div class="main-header">
+                <h4>Detalle cuadrilla</h4>
+                <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="icofont icofont-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Detalle Cuadrilla</a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!------------>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-text">Detalle Cuadrilla</h5>
+                    <p>Zonas que atiende esta Cuadrilla</p>
+                </div>
+                <div class="card-block">
+                    <form onsubmit="return false;" action="#" id="Tipo de Equipo">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                            </div>
+
+                            <div class="col-md-6 text-right">
+
+                                <button onclick="Mostrarzona()" type="button" class="btn btn-success waves-effect waves-light" data-toggle="modal" data-placement="top" data-target="#ModalTipoEquipo" data-original-title=".icofont-search-alt-2">
+                                    <i class="icofont icofont-plus"></i> <span class="m-l-10">Nueva zona</span>
+                                </button>
+                            </div>
+                        </div>
+                        <br /><br />
+
+                        <div class="col-sm-12 table-responsive">
+                            <table id="TZona" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Estado</th>
+                                        <th>Poblacion</th>
+                                        <th>C.P</th>
+                                        <th>Colonia</th>
+                                        <th style="text-align:center">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="Contenido">
+                                    @{
+                                        if (ViewBag.CuadrillaZona != null)
+                                        {
+                                            foreach (var item in ViewBag.CuadrillaZona)
+                                            {
+                                                <tr>
+                                                    <td>@item.Colonia.Cat_CP.Cat_Poblacion.Cat_Estado.Nombre</td>
+                                                    <td>@item.Colonia.Cat_CP.Cat_Poblacion.Nombre</td>
+                                                    <td>@item.Colonia.Cat_CP.Nombre</td>
+                                                    <td>@item.Colonia.Nombre</td>
+                                                    <td style="text-align:center">
+                                                        <i onclick="eliminar(@item.Id)" class="icofont icofont-ui-delete btn btn-inverse-danger waves-effect waves-light"></i>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-sm-4">
+            <div class="card" Id="FormNuevaSucursal" style="display:none;">
+                <div class="card-header">
+                    <h5 class="card-header-text">Nueva Zona atención</h5>
+                    <p>Completa los campos marcados <code> * </code> </p>
+                </div>
+                <div class="card-block">
+                    <form action="#" id="NuevaSucursal">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <span> Dirección de la sucursal </span>
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Estado </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon" data-toggle="modal" data-target="#ModalEstado">
+                                        <i class="icofont icofont-plus"></i>
+                                    </span>
+                                    <select class="form-control" id="NSucursal_Estado" onchange="CargaPoblacion();">
+                                        <option value="0">Seleccionar</option>
+                                        @{
+                                            if (ViewBag.CatEstados != null)
+                                            {
+                                                foreach (var item in ViewBag.CatEstados)
+                                                {
+                                                    <option value="@item.Id">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Población </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon" onclick="MostrarModalPoblacion()">
+                                        <i class="icofont icofont-plus"></i>
+                                    </span>
+                                    <select class="form-control" id="NSucursal_Poblacion" onchange="CargaCP();">
+                                        <option value="0">Seleccionar</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* CP </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icofont icofont-plus" onclick="MostrarModalCP()"></i></span>
+                                    <select class="form-control" id="NSucursal_CP" onchange="CargaColonia();">
+                                        <option value="0">Seleccionar</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-6">
+                                <label class="form-control-label">* Colonia </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon" onclick="MostrarModalColonia()">
+                                        <i class="icofont icofont-plus"></i>
+                                    </span>
+                                    <select class="form-control" id="NSucursal_Colonia">
+                                        <option value="0">Seleccionar</option>
+
+
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="row">
+                            <button onclick="RegistrarZona()" type="button" class="btn btn-primary waves-effect waves-light col-xl-6 " data-original-title=".icofont-home">
+                                <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                            </button>
+                            <button type="button" class="btn btn-default waves-effect waves-light col-xl-6 " data-original-title=".icofont-home" onclick="Ocultarzona()">
+                                <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Nuevo Estdo -->
+<div class="modal fade" id="ModalEstado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoEstado">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo estado</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre estado </label>
+                                <input type="text" class="form-control" placeholder="Estado" id="Modal_NEstado" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Nueva poblacion -->
+<div class="modal fade" id="ModalPoblacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaPoblacion">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nueva población </h5>
+                    @*  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>*@
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre población </label>
+                                <input type="text" class="form-control" placeholder="Estado" id="Modal_NPoblacion" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo codigo postal -->
+<div class="modal fade" id="ModalCP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevoCP">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nuevo código postal </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Código postal  </label>
+                                <input type="text" class="form-control" placeholder="Codigo postal" id="Modal_NCP" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva Colonia -->
+<div class="modal fade" id="ModalColonia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bd-example-modal-sm" role="document">
+        <div class="modal-content">
+            <form action="#" id="NuevaColonia">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Nueva colonia </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleSelect1" class="form-control-label">* Nombre Colonia </label>
+                                <input type="text" class="form-control" placeholder="Colonia" id="Modal_NColonia" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default waves-effect waves-light  " data-dismiss="modal">
+                        <i class="icofont icofont-close-squared-alt"></i><span class="m-l-12"> Cancelar </span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light " data-original-title=".icofont-home">
+                        <i class="icofont icofont-save "></i><span class="m-l-12"> Registrar </span>
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+        var xona = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Cuadrilla.Id));
+</script>
+<script src="~/js/Empresa/CuadrillaZona/DetailCuadrilla.js"></script>

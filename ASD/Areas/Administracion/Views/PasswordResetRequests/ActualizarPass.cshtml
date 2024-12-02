@@ -1,0 +1,256 @@
+﻿
+@{
+    ViewData["Title"] = "ActualizarPass";
+    Layout = "~/Views/Shared/_LayoutPassword.cshtml";
+}
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f2f2f2;
+        position: relative; /* Permitirá posicionar la imagen */
+    }
+
+    form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        position: relative; /* Establece el contexto de posición para la imagen */
+        z-index: 1; /* Asegura que el formulario esté por encima de la imagen */
+        text-align: center;
+    }
+
+    h2, .enviar {
+        margin-bottom: 10px;
+    }
+
+    input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .enviar {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .enviar:hover {
+            background-color: #0056b3;
+        }
+
+    .form-image {
+        width: 100px;
+        margin-bottom: 20px;
+    }
+
+    /* Agrega espacio entre los elementos */
+    h2, .input-group, .enviar {
+        margin-bottom: 10px;
+    }
+
+    /* Estilos para la fortaleza de la contraseña */
+    .password-strength {
+        display: block;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .weak {
+        color: red;
+    }
+
+    .medium {
+        color: orange;
+    }
+
+    .strong {
+        color: green;
+    }
+</style>
+
+
+<form>
+    <img class="form-image" src="/assets/images/acttuali.png" alt="Imagen">
+    <h2>Actualizar Contraseña</h2>
+
+    <div class="input-group">
+        <span class="input-group-addon"><i class="icofont icofont-key"></i></span>
+        <input id="Pass" type="password" class="form-control" placeholder="Contraseña Nueva" required>
+    </div>
+    <span id="password-strength" class="password-strength"></span>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="icofont icofont-ui-lock"></i></span>
+        <input id="ConfirmPass" type="password" class="form-control" placeholder="Confirmar Contraseña " required>
+    </div>
+    <input class="enviar" type="button" onclick="Actualizarpass()" value="Confirmar">
+</form>
+
+
+
+@*<script src="~/js/Administracion/PasswordResetRequests/ActualizarPass.js"></script>*@
+
+
+<script>
+    document.getElementById("Pass").addEventListener("input", function () {
+        var password = document.getElementById("Pass").value;
+        var strengthText = document.getElementById("password-strength");
+
+        // Verificar la fuerza de la contraseña
+        var strength = 0;
+        if (password.match(/[a-z]/)) {
+            strength += 1;
+        }
+        if (password.match(/[A-Z]/)) {
+            strength += 1;
+        }
+        if (password.match(/[0-9]/)) {
+            strength += 1;
+        }
+        if (password.length >= 8) {
+            strength += 1;
+        }
+
+        // Mostrar la fuerza de la contraseña
+        switch (strength) {
+            case 0:
+            case 1:
+                strengthText.innerText = "Fuerza de la contraseña: Débil";
+                strengthText.className = "password-strength weak";
+                break;
+            case 2:
+                strengthText.innerText = "Fuerza de la contraseña: Mediana";
+                strengthText.className = "password-strength medium";
+                break;
+            case 3:
+            case 4:
+                strengthText.innerText = "Fuerza de la contraseña: Fuerte";
+                strengthText.className = "password-strength strong";
+                break;
+        }
+    });
+
+
+function Actualizarpass() {
+    if (Validar()) {
+        if (validatepass()) {
+            const Usuario = {
+                Id: @ViewBag.User,
+                Password: $('#Pass').val(),
+            }
+
+            const _model = {
+                Usuario: Usuario,
+            };
+
+            fetch("/Administracion/PasswordResetRequests/Usuario_ActualizarPass", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(_model)
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.id == 2) {
+                        swal({
+                            title: "Error",
+                            text: "Por el momento no es posible realizar esta operación.!",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+
+                        });
+                    } else if (res.id == 0) {
+                        swal({
+                            title: "Función no disponible temporalmente",
+                            text: "Por el momento no es posible realizar esta operación. !!",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                            buttons: true,
+                            dangerMode: true,
+                        }).then((willDelete) => {
+
+                        });
+                    } else if (res.id > 0) {
+                        swal({
+                            title: "Exito.",
+                            text: "Contraseña Restaurada",
+                            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/create.png",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3070A9",
+                            confirmButtonText: "Aceptar",
+                            closeOnConfirm: true,
+                        },
+                            function (isConfirm) {
+                                window.location.href = '/Administracion';
+                            }
+                        );
+                    }
+                });
+        } else {
+            swal({
+                title: "Error Contraseña",
+                text: "Verifica que las contraseñas sean las mismas",
+                imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+                buttons: true,
+                dangerMode: true,
+            })
+        }
+    } else {
+        swal({
+            title: "Datos incompletos",
+            text: "Completa los datos solicitados",
+            imageUrl: "https://asddemo.asae.com.mx/icons/operacion/alert.png",
+            buttons: true,
+            dangerMode: true,
+        })
+    }
+}
+
+    function validatepass() {
+        pass1 = document.getElementById('Pass');
+        pass2 = document.getElementById('ConfirmPass');
+
+        if (pass1.value != pass2.value) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function Validar() {
+        var result = false;
+
+        // Establecer el borde rojo para los campos de contraseña
+        $('#Pass, #ConfirmPass').css("border", "1px solid #ff0049");
+
+        // Verificar si los campos de contraseña tienen longitud mayor a 0 y restablecer el borde si es así
+        if ($('#Pass').val().length > 0) { $('#Pass').css("border", "1px solid #cccccc"); }
+        if ($('#ConfirmPass').val().length > 0) { $('#ConfirmPass').css("border", "1px solid #cccccc"); }
+
+        // Validar si ambos campos de contraseña tienen contenido
+        result = ($('#Pass').val().length > 0 && $('#ConfirmPass').val().length > 0);
+
+        return result;
+    }
+
+
+
+</script>
+
+
+
+
